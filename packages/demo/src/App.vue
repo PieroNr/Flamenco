@@ -1,43 +1,29 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import SoundAnalyser from 'flamencojs';
+import Flamenco from 'flamencojs';
 
-const analyser = new SoundAnalyser();
-const animatedElement = ref(null);
+const flamenco = new Flamenco();
+flamenco.setMusic('sound/soupe.mp3');
 
-onMounted(() => {
-  analyser.audioContext.resume();
-  animatedElement.value = document.querySelector('.animated-element');
-});
-
-
-const startSoundAnalysis = async () => {
-  try {
-    const response = await fetch('./sound/freeze.mp3');
-    const buffer = await response.arrayBuffer();
-    const audioBuffer = await analyser.audioContext.decodeAudioData(buffer);
-
-    analyser.analyzeSound(audioBuffer, (dataArray) => {
-      // je veux que mon dataArray s'anime de manière fluide en fonction de sa valeur (0 à 255)
-      animatedElement.value.style.transform = `scale(${dataArray[0] / 255})`;
-
-
-    });
-  } catch (error) {
-    console.error('Erreur de chargement du fichier audio', error);
-  }
+const start = () => {
+  flamenco.play();
 };
+
+
+
+
+
 </script>
 
 <template>
-  <div>
-    <button @click="startSoundAnalysis">Start sound analysis</button>
-    <a href="https://vitejs.dev" target="_blank">
-      <img ref="animatedElement" src="/vite.svg" alt="Vite logo" class="animated-element" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="animated">
+    <button @click="start">Start sound analysis</button>
+
+    <div class="animated-element1"/>
+    <div class="animated-element2"/>
+    <div class="animated-element3"/>
+    <div class="animated-element4"/>
+    <div class="animated-element5"/>
   </div>
   <HelloWorld msg="Vite + Vue" />
 </template>
@@ -50,7 +36,18 @@ const startSoundAnalysis = async () => {
   will-change: filter;
   transition: filter 300ms;
 }
-
+.animated-element1{
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  transition: height 0.1s ease-in-out;
+}
+.animated-element1, .animated-element2, .animated-element3, .animated-element4, .animated-element5{
+  background-color: white;
+  width: 20px;
+  height: 2px;
+  transition: height 0.1s ease-in-out;
+}
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
@@ -59,7 +56,12 @@ const startSoundAnalysis = async () => {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
 
-.animated-element {
-  transition: transform 300ms;
+.animated {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  height: 100vh;
+  gap: 5px;
 }
 </style>
