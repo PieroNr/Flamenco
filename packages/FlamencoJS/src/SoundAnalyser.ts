@@ -1,5 +1,5 @@
 class SoundAnalyzer {
-    private audioContext: AudioContext;
+    audioContext: AudioContext;
     private analyser: AnalyserNode;
     private dataArray: Uint8Array;
 
@@ -46,6 +46,11 @@ class SoundAnalyzer {
 
     getDataArray(): Uint8Array {
         return this.dataArray;
+    }
+
+    stop(): void {
+        this.analyser.disconnect();
+        this.audioContext.close();
     }
 }
 
