@@ -1,4 +1,10 @@
+import SoundAnalyser from './SoundAnalyser';
+
+
 class Player {
+    private analyser: SoundAnalyser;
+    private audioBuffer: AudioBuffer | null;
+
     private browserAudioCtx: typeof window.AudioContext
     private audioCtx: AudioContext;
     private connectedSources: MediaElementAudioSourceNode[];
@@ -14,6 +20,10 @@ class Player {
     };
 
     constructor(forceAudioContext?: AudioContext) {
+        this.analyser = new SoundAnalyser();
+        this.audioBuffer = null;
+
+
         this.browserAudioCtx = window.AudioContext
         this.audioCtx = forceAudioContext || new this.browserAudioCtx();
         this.connectedSources = [];
@@ -60,11 +70,22 @@ class Player {
         }
     };
 
-    setMusic = (trackUrl: string): void => {
-        this.audio = new Audio(trackUrl);
-        this.currentInputType = this.inputTypeList.TRACK;
-        this.source = this.createSourceFromAudioElement(this.audio as HTMLAudioElement);
-        this.connectSource(this.source);
+    setMusic = (trackUrl: string): Promise<void> => {
+        console.log(trackUrl)
+        return new Promise((resolve, reject) => {
+            fetch(trackUrl)
+                .then(response => response.arrayBuffer())
+                .then(buffer => this.analyser.getAudioContext().decodeAudioData(buffer))
+                .then(audioBuffer => {
+                    this.audioBuffer = audioBuffer;
+                    resolve();
+                })
+                .catch(error => reject(error));
+        });
+        //this.audio = new Audio(trackUrl);
+        //this.currentInputType = this.inputTypeList.TRACK;
+        //this.source = this.createSourceFromAudioElement(this.audio as HTMLAudioElement);
+        //this.connectSource(this.source);
     };
 
     setGain = (value: number): void => {
@@ -72,21 +93,19 @@ class Player {
     };
 
     start = (): void => {
-        if (this.currentInputType === this.inputTypeList.TRACK) {
-            if (this.audioCtx.state === 'suspended') {
-                this.audioCtx.resume().then(() => (this.audio as HTMLAudioElement).play());
-            } else {
-                (this.audio as HTMLAudioElement).play();
-            }
-        }
+
+        this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
+            // Ajoutez votre logique d'animation ici, par exemple :
+
+            // const shouldRotate = dataArray[10] > 128;
+            // if (shouldRotate) {
+            //   // Appliquer la rotation à votre élément DOM
+            // }
+        });
     };
 
     stop = (): void => {
-        if (this.currentInputType === this.inputTypeList.TRACK) {
-            (this.audio as HTMLAudioElement).pause();
-        } else if (this.currentInputType === this.inputTypeList.STREAM) {
-            (this.audio as MediaStream).getAudioTracks()[0].enabled = false;
-        }
+        this.audioBuffer.pause();
     };
 }
 
