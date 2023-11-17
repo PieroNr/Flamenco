@@ -93,19 +93,24 @@ class Player {
     };
 
     start = (): void => {
+        if (this.audioBuffer) {
+            const flamencoElements = document.querySelectorAll('.flamenco');
+            this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
+                flamencoElements.forEach((element, i) => {
+                    // Exemple : Appliquez la largeur en fonction des données d'analyse
+                    const min = 2;
+                    const max = 50;
+                    const scaledHeight = dataArray[i* Math.round(128/ flamencoElements.length)] / 255 * (max - min) + min - 25;
+                    console.log(scaledHeight);
 
-        this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
-            // Ajoutez votre logique d'animation ici, par exemple :
-
-            // const shouldRotate = dataArray[10] > 128;
-            // if (shouldRotate) {
-            //   // Appliquer la rotation à votre élément DOM
-            // }
-        });
+                    element.style.height = `${scaledHeight * 100}px`;
+                });
+            });
+        }
     };
 
     stop = (): void => {
-        this.audioBuffer.pause();
+        this.analyser.stop();
     };
 }
 

@@ -2,9 +2,6 @@
 import { ref, onMounted } from 'vue';
 import Flamenco from 'flamencojs';
 
-const stop = () => {
-  flamenco.stop();
-};
 
 const flamenco = new Flamenco();
 var isPlaying = false;
@@ -30,7 +27,6 @@ const start = () => {
 <template>
   <div class="animated">
     <button @click="start">Start sound analysis</button>
-    <button @click="stop">Stop  sound analysis</button>
 
     <div class="animated-element1 flamenco"/>
     <div class="animated-element2 flamenco"/>
