@@ -1,3 +1,5 @@
+import SoundAnalyser from './SoundAnalyser';
 export const main = (): string => 'Hello World';
+export const HelloName = (name: string): string => `Hello ${name}`;
 
-console.log(main());
+export default SoundAnalyser;
