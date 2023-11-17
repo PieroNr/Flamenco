@@ -13,7 +13,7 @@ class Flamenco {
         return new Promise((resolve, reject) => {
             fetch(musicPath)
                 .then(response => response.arrayBuffer())
-                .then(buffer => this.analyser.getAudioContext().decodeAudioData(buffer))
+                .then(buffer => this.analyser.audioContext.decodeAudioData(buffer))
                 .then(audioBuffer => {
                     this.audioBuffer = audioBuffer;
                     resolve();
@@ -24,19 +24,24 @@ class Flamenco {
 
     play(): void {
         if (this.audioBuffer) {
+            const flamencoElements = document.querySelectorAll('.flamenco');
             this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
-                // Ajoutez votre logique d'animation ici, par exemple :
-                // const shouldRotate = dataArray[10] > 128;
-                // if (shouldRotate) {
-                //   // Appliquer la rotation à votre élément DOM
-                // }
+                flamencoElements.forEach((element, i) => {
+                    // Exemple : Appliquez la largeur en fonction des données d'analyse
+                    const min = 2;
+                    const max = 50;
+                    const scaledHeight = dataArray[i* Math.round(128/ flamencoElements.length)] / 255 * (max - min) + min - 25;
+                    console.log(scaledHeight);
+
+                    element.style.height = `${scaledHeight * 100}px`;
+                });
             });
         }
     }
 
     stop(): void {
-        // Arrêtez l'analyse ou effectuez d'autres opérations de nettoyage si nécessaire
-        // Note : Actuellement, il n'y a pas de méthode stop() dans l'exemple de SoundAnalyser fourni précédemment.
+        this.analyser.stop();
+
     }
 }
 

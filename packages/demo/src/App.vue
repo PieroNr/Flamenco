@@ -3,10 +3,17 @@ import { ref, onMounted } from 'vue';
 import Flamenco from 'flamencojs';
 
 const flamenco = new Flamenco();
+var isPlaying = false;
 flamenco.setMusic('sound/soupe.mp3');
 
 const start = () => {
-  flamenco.play();
+  if (isPlaying) {
+    flamenco.stop();
+    isPlaying = false;
+  } else {
+    flamenco.play();
+    isPlaying = true;
+  }
 };
 
 
@@ -19,11 +26,11 @@ const start = () => {
   <div class="animated">
     <button @click="start">Start sound analysis</button>
 
-    <div class="animated-element1"/>
-    <div class="animated-element2"/>
-    <div class="animated-element3"/>
-    <div class="animated-element4"/>
-    <div class="animated-element5"/>
+    <div class="animated-element1 flamenco"/>
+    <div class="animated-element2 flamenco"/>
+    <div class="animated-element3 flamenco"/>
+    <div class="animated-element4 flamenco"/>
+    <div class="animated-element5 flamenco"/>
   </div>
   <HelloWorld msg="Vite + Vue" />
 </template>
@@ -63,4 +70,5 @@ const start = () => {
   height: 100vh;
   gap: 5px;
 }
+
 </style>
