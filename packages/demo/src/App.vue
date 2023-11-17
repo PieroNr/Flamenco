@@ -7,7 +7,8 @@ const animatedElement = ref(null);
 
 onMounted(() => {
   analyser.audioContext.resume();
-  animatedElement.value = document.querySelector('.animated-element');});
+  animatedElement.value = document.querySelector('.animated-element');
+});
 
 
 const startSoundAnalysis = async () => {
@@ -17,7 +18,10 @@ const startSoundAnalysis = async () => {
     const audioBuffer = await analyser.audioContext.decodeAudioData(buffer);
 
     analyser.analyzeSound(audioBuffer, (dataArray) => {
-      animatedElement.value.style.height = `${dataArray[10]/2}px`;
+      // je veux que mon dataArray s'anime de manière fluide en fonction de sa valeur (0 à 255)
+      animatedElement.value.style.transform = `scale(${dataArray[0] / 255})`;
+
+
     });
   } catch (error) {
     console.error('Erreur de chargement du fichier audio', error);
@@ -29,7 +33,7 @@ const startSoundAnalysis = async () => {
   <div>
     <button @click="startSoundAnalysis">Start sound analysis</button>
     <a href="https://vitejs.dev" target="_blank">
-      <img ref="animatedElement" src="/vite.svg" alt="Vite logo" class="animated-element"/>
+      <img ref="animatedElement" src="/vite.svg" alt="Vite logo" class="animated-element" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
@@ -46,9 +50,11 @@ const startSoundAnalysis = async () => {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
