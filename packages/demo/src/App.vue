@@ -2,9 +2,11 @@
 import { ref, onMounted } from 'vue';
 import Flamenco from 'flamencojs';
 
+
 const flamenco = new Flamenco();
 var isPlaying = false;
 flamenco.setMusic('sound/soupe.mp3');
+
 
 const start = () => {
   if (isPlaying) {
@@ -58,6 +60,7 @@ const start = () => {
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
