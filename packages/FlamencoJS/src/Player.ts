@@ -82,6 +82,8 @@ class Player {
                 })
                 .catch(error => reject(error));
         });
+
+
         //this.audio = new Audio(trackUrl);
         //this.currentInputType = this.inputTypeList.TRACK;
         //this.source = this.createSourceFromAudioElement(this.audio as HTMLAudioElement);
@@ -101,7 +103,6 @@ class Player {
                     const min = 2;
                     const max = 50;
                     const scaledHeight = dataArray[i* Math.round(128/ flamencoElements.length)] / 255 * (max - min) + min - 25;
-                    console.log(scaledHeight);
 
                     element.style.height = `${scaledHeight * 100}px`;
                 });

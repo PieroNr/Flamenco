@@ -1,5 +1,5 @@
 // Flamenco.ts
-import player from './player';
+import player from './Player';
 
 class Flamenco {
     private player: player;
