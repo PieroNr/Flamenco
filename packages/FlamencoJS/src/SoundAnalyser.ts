@@ -23,7 +23,7 @@ class SoundAnalyzer {
         // Utilisez une fonction fléchée pour garantir que le contexte (this) est correct
         const analyze = (): void => {
             // Mettez à jour dataArray avec les données actuelles de l'analyseur
-            this.analyser.getByteFrequencyData(this.dataArray);
+            this.analyser.getByteTimeDomainData(this.dataArray);
 
             // Appelez la fonction de rappel d'animation avec les données d'analyse
             animationCallback(this.dataArray);
@@ -34,6 +34,18 @@ class SoundAnalyzer {
 
         // Démarrez l'analyse
         analyze();
+    }
+
+    getAnalyser(): AnalyserNode {
+        return this.analyser;
+    }
+
+    getAudioContext(): AudioContext {
+        return this.audioContext;
+    }
+
+    getDataArray(): Uint8Array {
+        return this.dataArray;
     }
 }
 
