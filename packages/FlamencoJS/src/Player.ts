@@ -96,19 +96,18 @@ class Player {
         this.gain.gain.value = value;
     };
 
-    start = (name: string[], classEffect: string[]): void => {
-        console.log('oui')
+    start = (name: string[]): void => {
         if (this.audioBuffer) {
-            console.log('oui2')
             this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
 
                 const functionsMap: Record<string, () => void> = {
-                    'height': () => this.height.set(dataArray, classEffect),
+                    'height': () => this.height.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'height')),
                     // Ajoutez d'autres associations au besoin
                 };
 
-                name.forEach((names: string) => {
-                    const func = functionsMap[names];
+                name.forEach((item) => {
+                    const itemName = typeof item === 'string' ? item : item.name;
+                    const func = functionsMap[itemName];
                     if (func) {
                         func();
                     }
