@@ -77,6 +77,7 @@ const effects = ref([
   { name: 'height', isDoubleWidth: false,animated: true },
   { name: 'Border', isDoubleWidth: true,animated: true },
   { name: 'Background', isDoubleWidth: false,animated: true },
+  { name: 'height', isDoubleWidth: true,backgroundColor: 'black',animated: true },
 ]);
 </script>
 
