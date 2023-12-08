@@ -1,9 +1,10 @@
 import SoundAnalyser from './SoundAnalyser';
-
+import Height from './setEffect/Height';
 
 class Player {
     private analyser: SoundAnalyser;
     private audioBuffer: AudioBuffer | null;
+    private height: Height;
 
     private browserAudioCtx: typeof window.AudioContext
     private audioCtx: AudioContext;
@@ -23,6 +24,7 @@ class Player {
         this.analyser = new SoundAnalyser();
         this.audioBuffer = null;
 
+        this.height = new Height();
 
         this.browserAudioCtx = window.AudioContext
         this.audioCtx = forceAudioContext || new this.browserAudioCtx();
@@ -71,7 +73,7 @@ class Player {
     };
 
     setMusic = (trackUrl: string): Promise<void> => {
-        console.log(trackUrl)
+
         return new Promise((resolve, reject) => {
             fetch(trackUrl)
                 .then(response => response.arrayBuffer())
@@ -94,17 +96,21 @@ class Player {
         this.gain.gain.value = value;
     };
 
-    start = (): void => {
+    start = (name: string[]): void => {
         if (this.audioBuffer) {
-            const flamencoElements = document.querySelectorAll('.flamenco');
             this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
-                flamencoElements.forEach((element, i) => {
-                    // Exemple : Appliquez la largeur en fonction des données d'analyse
-                    const min = 2;
-                    const max = 50;
-                    const scaledHeight = dataArray[i* Math.round(128/ flamencoElements.length)] / 255 * (max - min) + min - 25;
 
-                    element.style.height = `${scaledHeight * 100}px`;
+                const functionsMap: Record<string, () => void> = {
+                    'height': () => this.height.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'height')),
+                    // Ajoutez d'autres associations au besoin
+                };
+
+                name.forEach((item) => {
+                    const itemName = typeof item === 'string' ? item : item.name;
+                    const func = functionsMap[itemName];
+                    if (func) {
+                        func();
+                    }
                 });
             });
         }
