@@ -1,5 +1,5 @@
 <template>
-  <div :class="['tile', { 'double-width': isDoubleWidth, 'first-tile': isFirstTile }]" :style="{ backgroundColor: backgroundColor }">
+  <div :class="['tile', '--'+effectName, { 'double-width': isDoubleWidth, 'first-tile': isFirstTile}]" :style="{ backgroundColor: backgroundColor }">
     <div class="content">
       <b v-if="!customContent">{{ effectName }}</b>
       <div v-if="customContent" class="custom-content" v-html="customContent"></div>
@@ -8,7 +8,11 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import {onMounted} from "vue";
+import Flamenco from 'flamencojs';
+
+
+const props = defineProps<{
   effectName: {
     type: String,
     required: true
@@ -28,12 +32,24 @@ defineProps<{
   backgroundColor: {
     type: String,
     default: ''
-  }
+  },
   isFirstTile: {
     type: Boolean,
     default: false
+  },
+  flamenco: {
+    type: Flamenco,
+    required: true
   }
+
 }>()
+
+onMounted(() => {
+  if (props.animated) {
+    console.log(props.effectName, '.--'+props.effectName  );
+    props.flamenco.setEffect(props.effectName, '.--'+props.effectName);
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -84,6 +100,6 @@ defineProps<{
 
 .double-width {
   grid-column: span 2;
-  aspect-ratio: 2!important; /* Maintient le rapport hauteur/largeur à 1:2 */
+  aspect-ratio: 2!important;
 }
 </style>

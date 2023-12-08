@@ -2,6 +2,10 @@
   <div>
     <header>
       <h1>FlamencoJs</h1>
+      <div>
+        <button @click="start">Play</button>
+        <button @click="flamenco.stop()">Stop</button>
+      </div>
       <div class="menu">
 
         <button class="--active">Effects</button>
@@ -19,6 +23,7 @@
           :animated="effect.animated"
           :backgroundColor="effect.backgroundColor"
           :isFirstTile="effect.isFirstTile"
+          :flamenco="flamenco"
       />
     </div>
   </div>
@@ -29,6 +34,22 @@ import TileEffect from "../components/TileEffect.vue";
 import {ref} from "vue";
 import github from '../assets/img/logo_github.png';
 import npm from '../assets/img/logo_npm.png';
+import Flamenco from 'flamencojs';
+
+
+const flamenco = new Flamenco();
+var isPlaying = false;
+flamenco.setMusic('sound/freeze.mp3');
+
+const start = () => {
+  if (isPlaying) {
+    flamenco.stop();
+    isPlaying = false;
+  } else {
+    flamenco.play();
+    isPlaying = true;
+  }
+};
 
 const effects = ref([
   { name: 'Introduction', isDoubleWidth: true,backgroundColor: '#343434',customContent:
@@ -53,7 +74,7 @@ const effects = ref([
   { name: 'NPM', isDoubleWidth: false, backgroundColor: '#ce6462', customContent: `<a href="https://www.npmjs.com/package/@flamencojs/flamencojs" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${npm}" alt="npm" /></a>` },
   { name: 'Color', isDoubleWidth: false, animated: true },
   { name: 'Width', isDoubleWidth: true,animated: true },
-  { name: 'Height', isDoubleWidth: false,animated: true },
+  { name: 'height', isDoubleWidth: false,animated: true },
   { name: 'Border', isDoubleWidth: true,animated: true },
   { name: 'Background', isDoubleWidth: false,animated: true },
 ]);

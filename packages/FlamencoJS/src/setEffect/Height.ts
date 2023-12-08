@@ -1,6 +1,7 @@
 class Height {
 
     set(dataArray, classEffect): void {
+        console.log(classEffect, dataArray);
         const flamencoElements = document.querySelectorAll(classEffect);
 
 
@@ -14,7 +15,7 @@ class Height {
             // Exemple : Appliquez la couleur en fonction des données d'analyse
             const red = dataArray[i * Math.round(128 / flamencoElements.length)];
             const blue = 255 - red;
-            console.log(red, blue)
+
             element.style.backgroundColor = `rgb(${red}, 0, ${blue})`;
 
 

@@ -73,7 +73,7 @@ class Player {
     };
 
     setMusic = (trackUrl: string): Promise<void> => {
-        console.log(trackUrl)
+
         return new Promise((resolve, reject) => {
             fetch(trackUrl)
                 .then(response => response.arrayBuffer())
@@ -97,9 +97,9 @@ class Player {
     };
 
     start = (name: string[], classEffect: string[]): void => {
-        console.log('oui')
+
         if (this.audioBuffer) {
-            console.log('oui2')
+
             this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
 
                 const functionsMap: Record<string, () => void> = {
