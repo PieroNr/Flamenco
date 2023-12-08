@@ -1,8 +1,8 @@
-class Height {
+class Width {
 
     set(dataArray, classEffect): void {
+        const flamencoElements = document.querySelectorAll(classEffect);
 
-        const flamencoElements = document.querySelectorAll(classEffect[0].class);
 
         flamencoElements.forEach((element, i) => {
             // Exemple : Appliquez la largeur en fonction des données d'analyse
@@ -23,4 +23,4 @@ class Height {
 
 }
 
-export default Height;
+export default Width;
