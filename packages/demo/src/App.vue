@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import { onMounted } from 'vue';
 import Flamenco from 'flamencojs';
 import Home from './pages/Home.vue';
 
@@ -7,6 +8,11 @@ import Home from './pages/Home.vue';
 // var isPlaying = false;
 // flamenco.setMusic('sound/freeze.mp3');
 
+
+
+const flamenco = new Flamenco();
+var isPlaying = false;
+flamenco.setMusic('sound/freeze.mp3');
 
 // const start = () => {
 //   if (isPlaying) {
@@ -18,6 +24,20 @@ import Home from './pages/Home.vue';
 //   }
 // };
 
+onMounted(() => {
+  flamenco.setEffect('height', '.flamenco');
+});
+
+
+const start = () => {
+  if (isPlaying) {
+    flamenco.stop();
+    isPlaying = false;
+  } else {
+    flamenco.play();
+    isPlaying = true;
+  }
+};
 
 
 </script>
