@@ -73,7 +73,7 @@ class Player {
     };
 
     setMusic = (trackUrl: string): Promise<void> => {
-        console.log(trackUrl)
+
         return new Promise((resolve, reject) => {
             fetch(trackUrl)
                 .then(response => response.arrayBuffer())
