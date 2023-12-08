@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import Flamenco from 'flamencojs';
 
 
 const flamenco = new Flamenco();
 var isPlaying = false;
-flamenco.setMusic('sound/soupe.mp3');
+flamenco.setMusic('sound/freeze.mp3');
 
 
 const start = () => {
@@ -17,10 +16,6 @@ const start = () => {
     isPlaying = true;
   }
 };
-
-
-
-
 
 </script>
 
@@ -34,7 +29,6 @@ const start = () => {
     <div class="animated-element4 flamenco"/>
     <div class="animated-element5 flamenco"/>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
@@ -49,13 +43,11 @@ const start = () => {
   background-color: white;
   width: 20px;
   height: 20px;
-  transition: height 0.1s ease-in-out;
 }
 .animated-element1, .animated-element2, .animated-element3, .animated-element4, .animated-element5{
   background-color: white;
   width: 20px;
   height: 2px;
-  transition: height 0.1s ease-in-out;
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);

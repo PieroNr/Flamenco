@@ -1,6 +1,6 @@
 {
-  "name": "flamencojs",
-  "version": "0.0.1",
+  "name": "@flamencojs/flamencojs",
+  "version": "0.0.2",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
