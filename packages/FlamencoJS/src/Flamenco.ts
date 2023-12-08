@@ -6,18 +6,15 @@ import player from './Player';
 
 class Flamenco {
     private player: player;
-    private nameEffect: string[];
-    private classEffect: string[];
+    private nameEffect: Array<{ name: string, class: string }>;
 
     constructor() {
         this.player = new player();
         this.nameEffect = [];
-        this.classEffect = [];
     }
 
     setEffect(effectName: string, className: string): void {
-        this.nameEffect.push(effectName);
-        this.classEffect.push(className);
+        this.nameEffect.push({ name: effectName, class: className });
     }
 
 
@@ -27,7 +24,7 @@ class Flamenco {
     }
 
     play(): void {
-        this.player.start(this.nameEffect, this.classEffect)
+        this.player.start(this.nameEffect)
     }
 
     stop(): void {
