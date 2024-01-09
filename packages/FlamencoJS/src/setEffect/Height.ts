@@ -1,6 +1,6 @@
 class Height {
 
-    set(dataArray, classEffect): void {
+    set(dataArray: Uint8Array, classEffect: Array<{ name: string; class: string }>): void {
 
         const flamencoElements = document.querySelectorAll(classEffect[0].class);
 

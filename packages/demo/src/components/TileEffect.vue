@@ -1,8 +1,9 @@
 <template>
-  <div :class="['tile', '--'+effectName, { 'double-width': isDoubleWidth, 'first-tile': isFirstTile}]" :style="{ backgroundColor: backgroundColor }">
+  <div :class="['tile', { 'double-width': isDoubleWidth, 'first-tile': isFirstTile}]" :style="{ backgroundColor: backgroundColor }">
     <div class="content">
       <b v-if="!customContent">{{ effectName }}</b>
       <div v-if="customContent" class="custom-content" v-html="customContent"></div>
+      <div :class="['--'+effectName]" :style="{ width: '50%', aspectRatio: 1, position: 'absolute', zIndex: 0, borderRadius: '20px'}"></div>
     </div>
   </div>
 </template>
@@ -72,6 +73,12 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    b {
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 1;
+    }
   }
 
   .custom-content {

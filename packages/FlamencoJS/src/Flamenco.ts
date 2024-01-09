@@ -1,9 +1,6 @@
 // Flamenco.ts
 import player from './Player';
 
-
-
-
 class Flamenco {
     private player: player;
     private nameEffect: Array<{ name: string, class: string }>;

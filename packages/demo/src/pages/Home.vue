@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home-container">
     <header>
       <h1>FlamencoJs</h1>
       <div>
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import TileEffect from "../components/TileEffect.vue";
-import {ref} from "vue";
+import {ref, StyleValue} from "vue";
 import github from '../assets/img/logo_github.png';
 import npm from '../assets/img/logo_npm.png';
 import Flamenco from 'flamencojs';
@@ -51,7 +51,8 @@ const start = () => {
   }
 };
 
-const effects = ref([
+const effects: { name: string, isDoubleWidth: boolean, customContent: string, animated: boolean, backgroundColor: StyleValue | undefined, isFirstTile: boolean }[]
+    = ref([
   { name: 'Introduction', isDoubleWidth: true,backgroundColor: '#343434',customContent:
         `<style> p,h2{color: white};p{margin-top: 20px}</style>
         <div style="width: 100%; text-align: left; margin-bottom: 20px">
@@ -77,16 +78,28 @@ const effects = ref([
   { name: 'height', isDoubleWidth: false,animated: true },
   { name: 'Border', isDoubleWidth: true,animated: true },
   { name: 'Background', isDoubleWidth: false,animated: true },
-  { name: 'height', isDoubleWidth: true,backgroundColor: 'black',animated: true },
 ]);
 </script>
 
 <style scoped lang="scss">
+
+.home-container{
+
+  margin: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: calc(100% - 96px);
+  max-width: 1920px;
+  justify-content: center;
+  align-items: center;
+}
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
   width: 100%;
+  max-width: 1920px;
 
 }
 
@@ -95,6 +108,7 @@ header{
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  width: 100%;
   .menu {
     display: flex;
     border-radius: 25px;
