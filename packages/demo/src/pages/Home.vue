@@ -46,7 +46,8 @@ const start = () => {
   }
 };
 
-const effects: { name: string, isDoubleWidth: boolean, customContent: string, animated: boolean, backgroundColor: StyleValue | undefined, isFirstTile: boolean }[]
+const effects: { name: string, isDoubleWidth: boolean, customContent: string, animated: boolean, backgroundColor: string | undefined, isFirstTile: boolean
+}[]
     = ref([
   { name: 'Introduction', isDoubleWidth: true,backgroundColor: '#343434',customContent:
         `<style> p,h2{color: white};p{margin-top: 20px}</style>
