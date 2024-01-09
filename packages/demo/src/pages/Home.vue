@@ -26,7 +26,6 @@
 
 <script setup lang="ts">
 import TileEffect from "../components/TileEffect.vue";
-import {ref} from "vue";
 import github from '../assets/img/logo_github.png';
 import npm from '../assets/img/logo_npm.png';
 import Flamenco from 'flamencojs';
