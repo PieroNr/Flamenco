@@ -12,12 +12,7 @@ class Width {
             const max = 200;
             const scaledWidth = dataArray[i * Math.round(128 / flamencoElements.length)] / 255 * (max - min) + min;
             element.style.width = `${scaledWidth}px`;
-            element.style.height = `100px`;
-
-            // Exemple : Appliquez la couleur en fonction des données d'analyse
-            const red = dataArray[i * Math.round(128 / flamencoElements.length)];
-            const blue = 255 - red;
-            element.style.backgroundColor = `rgb(${red}, 0, ${blue})`;
+            element.style.height = `calc(100% - 20px)`;
         });
     }
 

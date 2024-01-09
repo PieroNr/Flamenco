@@ -2,6 +2,7 @@ import SoundAnalyser from './SoundAnalyser';
 import Height from './setEffect/Height';
 import Width from './setEffect/Width';
 import Color from './setEffect/FontColor';
+import BackgroundColor from './setEffect/Background';
 
 class Player {
     private analyser: SoundAnalyser;
@@ -10,6 +11,7 @@ class Player {
     private height: Height;
     private width: Width;
     private color: Color;
+    private backgroundColor: BackgroundColor;
 
     private browserAudioCtx: typeof window.AudioContext
     private audioCtx: AudioContext;
@@ -32,6 +34,7 @@ class Player {
         this.height = new Height();
         this.width = new Width();
         this.color = new Color();
+        this.backgroundColor = new BackgroundColor();
 
         this.browserAudioCtx = window.AudioContext
         this.audioCtx = forceAudioContext || new this.browserAudioCtx();
@@ -111,6 +114,7 @@ class Player {
                     'height': () => this.height.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'height')),
                     'Width': () => this.width.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'Width')),
                     'Color': () => this.color.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'Color')),
+                    // 'Background': () => this.backgroundColor.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'BackgroundColor')),
                     // Ajoutez d'autres associations au besoin
                 };
 
