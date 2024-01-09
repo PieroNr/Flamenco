@@ -17,12 +17,7 @@
       <TileEffect
           v-for="effect in effects"
           :key="effect.name"
-          :effectName="effect.name"
-          :isDoubleWidth="effect.isDoubleWidth"
-          :customContent="effect.customContent"
-          :animated="effect.animated"
-          :backgroundColor="effect.backgroundColor"
-          :isFirstTile="effect.isFirstTile"
+          :effect="effect"
           :flamenco="flamenco"
       />
     </div>

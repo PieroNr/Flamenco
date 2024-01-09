@@ -1,9 +1,9 @@
 <template>
-  <div :class="['tile', { 'double-width': isDoubleWidth, 'first-tile': isFirstTile}]" :style="{ backgroundColor: backgroundColor }">
+  <div v-if="effect" :class="['tile', { 'double-width': effect.isDoubleWidth, 'first-tile': effect.isFirstTile}]" :style="{ backgroundColor: effect.backgroundColor }">
     <div class="content">
-      <b v-if="!customContent">{{ effectName }}</b>
-      <div v-if="customContent" class="custom-content" v-html="customContent"></div>
-      <div :class="['--'+effectName]" :style="{ width: '50%', aspectRatio: 1, position: 'absolute', zIndex: 0, borderRadius: '20px'}"></div>
+      <b v-if="!effect.customContent">{{ effect.name }}</b>
+      <div v-if="effect.customContent" class="custom-content" v-html="effect.customContent"></div>
+      <div :class="['--'+effect.name]" :style="{ width: '50%', aspectRatio: 1, position: 'absolute', zIndex: 0, borderRadius: '20px'}"></div>
     </div>
   </div>
 </template>
@@ -14,41 +14,19 @@ import Flamenco from 'flamencojs';
 
 
 const props = defineProps<{
-  effectName: {
-    type: String,
-    required: true
-  },
-  isDoubleWidth: {
-    type: Boolean,
-    default: false
-  },
-  customContent: {
-    type: String,
-    default: ''
-  },
-  animated: {
-    type: Boolean,
-    default: false
-  },
-  backgroundColor: {
-    type: String,
-    default: ''
-  },
-  isFirstTile: {
-    type: Boolean,
-    default: false
+  effect: {
+    type: { name: string, isDoubleWidth: boolean, customContent: string, animated: boolean, backgroundColor: string | undefined, isFirstTile: boolean },
   },
   flamenco: {
     type: Flamenco,
-    required: true
-  }
+  },
 
 }>()
 
 onMounted(() => {
-  if (props.animated) {
-    console.log(props.effectName, '.--'+props.effectName  );
-    props.flamenco.setEffect(props.effectName, '.--'+props.effectName);
+  if (props.effect.animated) {
+    console.log(props.effect.name, '.--'+props.effect.name  );
+    props.flamenco.setEffect(props.effect.name, '.--'+props.effect.name);
   }
 });
 </script>
