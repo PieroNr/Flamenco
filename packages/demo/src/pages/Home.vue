@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import TileEffect from "../components/TileEffect.vue";
-import {ref, StyleValue} from "vue";
+import {ref} from "vue";
 import github from '../assets/img/logo_github.png';
 import npm from '../assets/img/logo_npm.png';
 import Flamenco from 'flamencojs';
@@ -46,9 +46,9 @@ const start = () => {
   }
 };
 
-const effects: { name: string, isDoubleWidth: boolean, customContent: string, animated: boolean, backgroundColor: string | undefined, isFirstTile: boolean
+const effects: { name: string, isDoubleWidth?: boolean, customContent?: string, animated?: boolean , backgroundColor?: string | undefined, isFirstTile?: boolean
 }[]
-    = ref([
+    = [
   { name: 'Introduction', isDoubleWidth: true,backgroundColor: '#343434',customContent:
         `<style> p,h2{color: white};p{margin-top: 20px}</style>
         <div style="width: 100%; text-align: left; margin-bottom: 20px">
@@ -74,7 +74,7 @@ const effects: { name: string, isDoubleWidth: boolean, customContent: string, an
   { name: 'height', isDoubleWidth: false,animated: true },
   { name: 'Border', isDoubleWidth: true,animated: true },
   { name: 'Background', isDoubleWidth: false,animated: true },
-]);
+];
 </script>
 
 <style scoped lang="scss">

@@ -16,9 +16,7 @@ import Flamenco from 'flamencojs';
 const props = defineProps<{
   effect:  { name: string, isDoubleWidth: boolean, customContent: string, animated: boolean, backgroundColor: string | undefined, isFirstTile: boolean
   },
-  flamenco: {
-    type: Flamenco,
-  },
+  flamenco: Flamenco
 
 }>()
 
