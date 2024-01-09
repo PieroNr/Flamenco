@@ -1,10 +1,12 @@
 import SoundAnalyser from './SoundAnalyser';
 import Height from './setEffect/Height';
+import Width from './setEffect/Width';
 
 class Player {
     private analyser: SoundAnalyser;
     private audioBuffer: AudioBuffer | null;
     private height: Height;
+    private width: Width;
 
     private browserAudioCtx: typeof window.AudioContext
     private audioCtx: AudioContext;
@@ -25,6 +27,7 @@ class Player {
         this.audioBuffer = null;
 
         this.height = new Height();
+        this.width = new Width();
 
         this.browserAudioCtx = window.AudioContext
         this.audioCtx = forceAudioContext || new this.browserAudioCtx();
@@ -102,6 +105,7 @@ class Player {
 
                 const functionsMap: Record<string, () => void> = {
                     'height': () => this.height.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'height')),
+                    'Width': () => this.width.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'Width')),
                     // Ajoutez d'autres associations au besoin
                 };
 

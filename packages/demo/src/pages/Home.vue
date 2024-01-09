@@ -14,27 +14,19 @@
       </div>
     </header>
     <div class="grid-container">
-      <TileEffect
-          v-for="effect in effects"
-          :key="effect.name"
-          :effectName="effect.name"
-          :isDoubleWidth="effect.isDoubleWidth"
-          :customContent="effect.customContent"
-          :animated="effect.animated"
-          :backgroundColor="effect.backgroundColor"
-          :isFirstTile="effect.isFirstTile"
-          :flamenco="flamenco"
-      />
+      <TileEffect v-for="effect in effects" :key="effect.name" :effectName="effect.name"
+        :isDoubleWidth="effect.isDoubleWidth" :customContent="effect.customContent" :animated="effect.animated"
+        :backgroundColor="effect.backgroundColor" :isFirstTile="effect.isFirstTile" :flamenco="flamenco" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import TileEffect from "../components/TileEffect.vue";
-import {ref} from "vue";
+import { ref } from "vue";
 import github from '../assets/img/logo_github.png';
 import npm from '../assets/img/logo_npm.png';
-import Flamenco from 'flamencojs';
+import Flamenco from '@flamencojs/flamencojs';
 
 
 const flamenco = new Flamenco();
@@ -52,8 +44,9 @@ const start = () => {
 };
 
 const effects = ref([
-  { name: 'Introduction', isDoubleWidth: true,backgroundColor: '#343434',customContent:
-        `<style> p,h2{color: white};p{margin-top: 20px}</style>
+  {
+    name: 'Introduction', isDoubleWidth: true, backgroundColor: '#343434', customContent:
+      `<style> p,h2{color: white};p{margin-top: 20px}</style>
         <div style="width: 100%; text-align: left; margin-bottom: 20px">
             <h2>Setup</h2>
             <p>Install the package with npm or yarn</p>
@@ -69,15 +62,16 @@ const effects = ref([
             <p>Stop the music</p>
             <code>flamenco.stop();</code>
         </div>`
-    , isFirstTile: true },
+    , isFirstTile: true
+  },
   { name: 'Github', isDoubleWidth: false, backgroundColor: '#6bb0dc', customContent: `<a href="https://github.com/PieroNr/Flamenco" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${github}" alt="github" /></a>` },
   { name: 'NPM', isDoubleWidth: false, backgroundColor: '#ce6462', customContent: `<a href="https://www.npmjs.com/package/@flamencojs/flamencojs" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${npm}" alt="npm" /></a>` },
   { name: 'Color', isDoubleWidth: false, animated: true },
-  { name: 'Width', isDoubleWidth: true,animated: true },
-  { name: 'height', isDoubleWidth: false,animated: true },
-  { name: 'Border', isDoubleWidth: true,animated: true },
-  { name: 'Background', isDoubleWidth: false,animated: true },
-  { name: 'height', isDoubleWidth: true,backgroundColor: 'black',animated: true },
+  { name: 'Width', isDoubleWidth: true, animated: true },
+  { name: 'height', isDoubleWidth: false, animated: true },
+  { name: 'Border', isDoubleWidth: true, animated: true },
+  { name: 'Background', isDoubleWidth: false, animated: true },
+  { name: 'height', isDoubleWidth: true, backgroundColor: 'black', animated: true },
 ]);
 </script>
 
@@ -90,17 +84,19 @@ const effects = ref([
 
 }
 
-header{
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+
   .menu {
     display: flex;
     border-radius: 25px;
     background-color: #ECE9E9;
     padding: 5px;
     gap: 15px;
+
     button {
       background-color: transparent;
       border: none;
@@ -109,12 +105,11 @@ header{
       color: black;
       font-weight: bold;
       cursor: pointer;
+
       &.--active {
         background-color: #ffffff;
       }
     }
   }
 }
-
-
 </style>
