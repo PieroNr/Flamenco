@@ -2,7 +2,6 @@ class Width {
 
     set(dataArray: number[], classEffect: { class: string }[]): void {
         const flamencoElements = document.querySelectorAll(classEffect[0].class);
-        console.log(flamencoElements);
 
         flamencoElements.forEach((element, i) => {
             // Assurer que l'élément est de type HTMLElement pour accéder aux styles

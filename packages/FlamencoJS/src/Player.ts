@@ -1,12 +1,15 @@
 import SoundAnalyser from './SoundAnalyser';
 import Height from './setEffect/Height';
 import Width from './setEffect/Width';
+import Color from './setEffect/FontColor';
 
 class Player {
     private analyser: SoundAnalyser;
     private audioBuffer: AudioBuffer | null;
+
     private height: Height;
     private width: Width;
+    private color: Color;
 
     private browserAudioCtx: typeof window.AudioContext
     private audioCtx: AudioContext;
@@ -28,6 +31,7 @@ class Player {
 
         this.height = new Height();
         this.width = new Width();
+        this.color = new Color();
 
         this.browserAudioCtx = window.AudioContext
         this.audioCtx = forceAudioContext || new this.browserAudioCtx();
@@ -106,6 +110,7 @@ class Player {
                 const functionsMap: Record<string, () => void> = {
                     'height': () => this.height.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'height')),
                     'Width': () => this.width.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'Width')),
+                    'Color': () => this.color.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'Color')),
                     // Ajoutez d'autres associations au besoin
                 };
 
