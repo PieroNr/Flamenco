@@ -1,18 +1,9 @@
-<script setup lang="ts">
-
-import Home from './pages/Home.vue';
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="container">
-    <Home />
-  </div>
+  <div class="container"><router-view /></div>
 </template>
 
-
 <style scoped lang="scss">
-  .container{
-    margin: 48px 128px;
-  }
+
 </style>

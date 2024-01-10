@@ -7,18 +7,16 @@
         <button @click="flamenco.stop()">Stop</button>
       </div>
       <div class="menu">
-
-        <button class="--active">Effects</button>
-        <button>About</button>
-
+        <router-link to="/" class="--active">Effects</router-link>
+        <router-link to="/about">About</router-link>
       </div>
     </header>
     <div class="grid-container">
       <TileEffect
-          v-for="effect in effects"
-          :key="effect.name"
-          :effect="effect"
-          :flamenco="flamenco"
+        v-for="effect in effects"
+        :key="effect.name"
+        :effect="effect"
+        :flamenco="flamenco"
       />
     </div>
   </div>
@@ -26,14 +24,13 @@
 
 <script setup lang="ts">
 import TileEffect from "../components/TileEffect.vue";
-import github from '../assets/img/logo_github.png';
-import npm from '../assets/img/logo_npm.png';
-import Flamenco from '@flamencojs/flamencojs';
-
+import github from "../assets/img/logo_github.png";
+import npm from "../assets/img/logo_npm.png";
+import Flamenco from "@flamencojs/flamencojs";
 
 const flamenco = new Flamenco();
 var isPlaying = false;
-flamenco.setMusic('sound/freeze.mp3');
+flamenco.setMusic("sound/freeze.mp3");
 
 const start = () => {
   if (isPlaying) {
@@ -45,11 +42,19 @@ const start = () => {
   }
 };
 
-const effects: { name: string, isDoubleWidth?: boolean, customContent?: string, animated?: boolean , backgroundColor?: string | undefined, isFirstTile?: boolean
-}[]
-    = [
-  { name: 'Introduction', isDoubleWidth: true,backgroundColor: '#343434',customContent:
-        `<style> p,h2{color: white};p{margin-top: 20px}</style>
+const effects: {
+  name: string;
+  isDoubleWidth?: boolean;
+  customContent?: string;
+  animated?: boolean;
+  backgroundColor?: string | undefined;
+  isFirstTile?: boolean;
+}[] = [
+  {
+    name: "Introduction",
+    isDoubleWidth: true,
+    backgroundColor: "#343434",
+    customContent: `<style> p,h2{color: white};p{margin-top: 20px}</style>
         <div style="width: 100%; text-align: left; margin-bottom: 20px">
             <h2>Setup</h2>
             <p>Install the package with npm or yarn</p>
@@ -64,23 +69,31 @@ const effects: { name: string, isDoubleWidth?: boolean, customContent?: string, 
             <code>flamenco.play();</code>
             <p>Stop the music</p>
             <code>flamenco.stop();</code>
-        </div>`
-    , isFirstTile: true
+        </div>`,
+    isFirstTile: true,
   },
-  { name: 'Github', isDoubleWidth: false, backgroundColor: '#6bb0dc', customContent: `<a href="https://github.com/PieroNr/Flamenco" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${github}" alt="github" /></a>` },
-  { name: 'NPM', isDoubleWidth: false, backgroundColor: '#ce6462', customContent: `<a href="https://www.npmjs.com/package/@flamencojs/flamencojs" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${npm}" alt="npm" /></a>` },
-  { name: 'Color', isDoubleWidth: false, animated: true },
-  { name: 'Width', isDoubleWidth: true,animated: true },
-  { name: 'height', isDoubleWidth: false,animated: true },
-  { name: 'Border', isDoubleWidth: true,animated: false },
-  { name: 'Background', isDoubleWidth: false,animated: true },
+  {
+    name: "Github",
+    isDoubleWidth: false,
+    backgroundColor: "#6bb0dc",
+    customContent: `<a href="https://github.com/PieroNr/Flamenco" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${github}" alt="github" /></a>`,
+  },
+  {
+    name: "NPM",
+    isDoubleWidth: false,
+    backgroundColor: "#ce6462",
+    customContent: `<a href="https://www.npmjs.com/package/@flamencojs/flamencojs" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${npm}" alt="npm" /></a>`,
+  },
+  { name: "Color", isDoubleWidth: false, animated: true },
+  { name: "Width", isDoubleWidth: true, animated: true },
+  { name: "height", isDoubleWidth: false, animated: true },
+  { name: "Border", isDoubleWidth: true, animated: false },
+  { name: "Background", isDoubleWidth: false, animated: true },
 ];
 </script>
 
 <style scoped lang="scss">
-
-.home-container{
-
+.home-container {
   margin: 48px;
   display: flex;
   flex-direction: column;
@@ -96,7 +109,6 @@ const effects: { name: string, isDoubleWidth?: boolean, customContent?: string, 
   gap: 15px;
   width: 100%;
   max-width: 1920px;
-
 }
 
 header {
@@ -108,11 +120,13 @@ header {
   .menu {
     display: flex;
     border-radius: 25px;
-    background-color: #ECE9E9;
+    background-color: #ece9e9;
     padding: 5px;
     gap: 15px;
 
-    button {
+    a {
+      text-decoration: none;
+      font-size: 13px;
       background-color: transparent;
       border: none;
       border-radius: 25px;
