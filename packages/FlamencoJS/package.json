@@ -27,11 +27,15 @@
     "@typescript-eslint/parser": "^5.42.1",
     "chai": "^4.3.7",
     "eslint": "^8.27.0",
+    "jsdom": "^23.2.0",
     "mocha": "^10.1.0",
     "rimraf": "^3.0.2",
     "sinon": "^14.0.2",
     "ts-mocha": "^10.0.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "web-audio-api": "^0.2.2"
   }
 }
