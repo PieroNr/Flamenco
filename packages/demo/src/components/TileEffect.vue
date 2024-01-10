@@ -53,7 +53,7 @@ onMounted(() => {
       font-size: 24px;
       font-weight: bold;
       z-index: 1;
-      
+
     }
   }
 
