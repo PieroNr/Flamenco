@@ -116,7 +116,7 @@ class Player {
                     'height': () => this.height.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'height')),
                     'Width': () => this.width.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'Width')),
                     'Color': () => this.color.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'Color')),
-                    // 'Background': () => this.backgroundColor.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'BackgroundColor')),
+                    'Background': () => this.backgroundColor.set(dataArray, name.filter(item => typeof item !== 'string' && item.name === 'Background')),
                     // Ajoutez d'autres associations au besoin
                 };
 

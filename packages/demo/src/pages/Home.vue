@@ -72,7 +72,7 @@ const effects: { name: string, isDoubleWidth?: boolean, customContent?: string, 
   { name: 'Color', isDoubleWidth: false, animated: true },
   { name: 'Width', isDoubleWidth: true,animated: true },
   { name: 'height', isDoubleWidth: false,animated: true },
-  { name: 'Border', isDoubleWidth: true,animated: true },
+  { name: 'Border', isDoubleWidth: true,animated: false },
   { name: 'Background', isDoubleWidth: false,animated: true },
 ];
 </script>

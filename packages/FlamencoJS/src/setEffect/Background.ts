@@ -1,6 +1,6 @@
 class BackgroundColor {
 
-    set(dataArray: number[], classEffect: { class: string }[]): void {
+    set(dataArray: Uint8Array, classEffect: { class: string }[]): void {
 
         const flamencoElements = document.querySelectorAll(classEffect[0].class);
 

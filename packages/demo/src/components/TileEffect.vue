@@ -3,7 +3,7 @@
     <div class="content">
       <b v-if="!effect.customContent">{{ effect.name }}</b>
       <div v-if="effect.customContent" class="custom-content" v-html="effect.customContent"></div>
-      <div :class="['--'+effect.name]" :style="{ width: '50%', aspectRatio: 1, position: 'absolute', zIndex: 0, borderRadius: '20px'}"></div>
+      <div v-if="effect.animated" :class="['--'+effect.name]" :style="{ width: effect.isDoubleWidth ? 'calc(50% / 2)' : '50%', aspectRatio: 1, position: 'absolute', top: '50%', zIndex: 0, borderRadius: '20px', backgroundColor: '#a5a5a5'}">effect </div>
     </div>
   </div>
 </template>
@@ -53,6 +53,7 @@ onMounted(() => {
       font-size: 24px;
       font-weight: bold;
       z-index: 1;
+      
     }
   }
 
