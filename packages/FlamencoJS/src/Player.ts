@@ -19,7 +19,7 @@ class Player {
     private gain: GainNode;
     private source: MediaElementAudioSourceNode | MediaStreamAudioSourceNode;
     private audio: HTMLAudioElement | MediaStream;
-    private hzHistory: any[];
+    //private hzHistory: any[];
     private currentInputType: number;
     private inputTypeList: {
         TRACK: number;
@@ -43,12 +43,13 @@ class Player {
         this.gain = this.audioCtx.createGain();
         this.source = {} as MediaElementAudioSourceNode;
         this.audio = {} as HTMLAudioElement | MediaStream;
-        this.hzHistory = [];
+        //this.hzHistory = [];
         this.inputTypeList = {
             TRACK: 0,
             STREAM: 1,
             EXTERNAL: 2,
         };
+        this.currentInputType = this.inputTypeList.TRACK;
     }
 
     createSourceFromAudioElement = (audioElement: HTMLAudioElement): MediaElementAudioSourceNode => {
@@ -106,7 +107,8 @@ class Player {
         this.gain.gain.value = value;
     };
 
-    start = (name: string[]): void => {
+    start = (name: Array<{ name: string; class: string }> = []
+    ): void => {
         if (this.audioBuffer) {
             this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
 
