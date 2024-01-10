@@ -28,7 +28,7 @@
 import TileEffect from "../components/TileEffect.vue";
 import github from '../assets/img/logo_github.png';
 import npm from '../assets/img/logo_npm.png';
-import Flamenco from 'flamencojs';
+import Flamenco from '@flamencojs/flamencojs';
 
 
 const flamenco = new Flamenco();
@@ -65,13 +65,14 @@ const effects: { name: string, isDoubleWidth?: boolean, customContent?: string, 
             <p>Stop the music</p>
             <code>flamenco.stop();</code>
         </div>`
-    , isFirstTile: true },
+    , isFirstTile: true
+  },
   { name: 'Github', isDoubleWidth: false, backgroundColor: '#6bb0dc', customContent: `<a href="https://github.com/PieroNr/Flamenco" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${github}" alt="github" /></a>` },
   { name: 'NPM', isDoubleWidth: false, backgroundColor: '#ce6462', customContent: `<a href="https://www.npmjs.com/package/@flamencojs/flamencojs" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${npm}" alt="npm" /></a>` },
   { name: 'Color', isDoubleWidth: false, animated: true },
   { name: 'Width', isDoubleWidth: true,animated: true },
   { name: 'height', isDoubleWidth: false,animated: true },
-  { name: 'Border', isDoubleWidth: true,animated: true },
+  { name: 'Border', isDoubleWidth: true,animated: false },
   { name: 'Background', isDoubleWidth: false,animated: true },
 ];
 </script>
@@ -98,7 +99,7 @@ const effects: { name: string, isDoubleWidth?: boolean, customContent?: string, 
 
 }
 
-header{
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -110,6 +111,7 @@ header{
     background-color: #ECE9E9;
     padding: 5px;
     gap: 15px;
+
     button {
       background-color: transparent;
       border: none;
@@ -118,12 +120,11 @@ header{
       color: black;
       font-weight: bold;
       cursor: pointer;
+
       &.--active {
         background-color: #ffffff;
       }
     }
   }
 }
-
-
 </style>

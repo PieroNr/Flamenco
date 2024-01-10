@@ -3,14 +3,14 @@
     <div class="content">
       <b v-if="!effect.customContent">{{ effect.name }}</b>
       <div v-if="effect.customContent" class="custom-content" v-html="effect.customContent"></div>
-      <div :class="['--'+effect.name]" :style="{ width: '50%', aspectRatio: 1, position: 'absolute', zIndex: 0, borderRadius: '20px'}"></div>
+      <div v-if="effect.animated" :class="['--'+effect.name]" :style="{ width: effect.isDoubleWidth ? 'calc(50% / 2)' : '50%', aspectRatio: 1, position: 'absolute', top: '50%', zIndex: 0, borderRadius: '20px', backgroundColor: '#a5a5a5'}">effect </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {onMounted} from "vue";
-import Flamenco from 'flamencojs';
+import { onMounted } from "vue";
+import Flamenco from '@flamencojs/flamencojs';
 
 
 const props = defineProps<{
@@ -53,6 +53,7 @@ onMounted(() => {
       font-size: 24px;
       font-weight: bold;
       z-index: 1;
+      
     }
   }
 
@@ -71,7 +72,7 @@ onMounted(() => {
 .first-tile {
   overflow-y: scroll;
 
-  .content{
+  .content {
     justify-content: start;
     margin: 10px 10px 20px 10px;
     align-items: start;
@@ -82,6 +83,6 @@ onMounted(() => {
 
 .double-width {
   grid-column: span 2;
-  aspect-ratio: 2!important;
+  aspect-ratio: 2 !important;
 }
 </style>
