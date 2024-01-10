@@ -8,7 +8,7 @@ import {
   watch
 } from "./chunk-5M6NTZJM.js";
 
-// ../../node_modules/.pnpm/vitepress@1.0.0-rc.36_@algolia+client-search@4.22.1_sass@1.69.5_search-insights@2.13.0_typescript@5.2.2/node_modules/vitepress/dist/client/theme-default/index.js
+// ../../node_modules/.pnpm/vitepress@1.0.0-rc.36_@algolia+client-search@4.22.1_sass@1.69.5_search-insights@2.13.0_typescript@5.2.2/node_modules/vitepress/dist/client/theme-default/router.ts
 import "C:/Users/adrie/IIM/Flamenco/node_modules/.pnpm/vitepress@1.0.0-rc.36_@algolia+client-search@4.22.1_sass@1.69.5_search-insights@2.13.0_typescript@5.2.2/node_modules/vitepress/dist/client/theme-default/styles/fonts.css";
 
 // ../../node_modules/.pnpm/vitepress@1.0.0-rc.36_@algolia+client-search@4.22.1_sass@1.69.5_search-insights@2.13.0_typescript@5.2.2/node_modules/vitepress/dist/client/theme-default/without-fonts.js

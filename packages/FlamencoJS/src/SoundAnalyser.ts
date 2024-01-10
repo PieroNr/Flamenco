@@ -4,14 +4,7 @@ class SoundAnalyzer {
     private dataArray: Uint8Array;
 
     constructor() {
-        if (typeof window !== 'undefined' && typeof window.AudioContext === 'function') {
-            this.audioContext = new window.AudioContext();
-        } else {
-            const WebAudioAPI = require('web-audio-api');
-            this.audioContext = new WebAudioAPI.AudioContext();
-            console.warn('Web Audio API is not supported in this browser, using a polyfill');
-        }
-
+        this.audioContext = new window.AudioContext();
         this.analyser = this.audioContext.createAnalyser();
         this.analyser.fftSize = 256; // Vous pouvez ajuster la taille en fonction de vos besoins
         this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
