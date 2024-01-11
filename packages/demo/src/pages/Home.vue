@@ -3,8 +3,8 @@
     <header>
       <h1>FlamencoJs</h1>
       <div>
-        <button @click="start">Play</button>
-        <button @click="flamenco.stop()">Stop</button>
+        <Play v-if="!isPlaying" @click="start" class="musicPlay" />
+        <Stop v-if="isPlaying" @click="start" class="musicPlay" />
       </div>
       <div class="menu">
         <router-link to="/" class="--active">Effects</router-link>
@@ -23,23 +23,25 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import TileEffect from "../components/TileEffect.vue";
 import github from "../assets/img/logo_github.png";
 import npm from "../assets/img/logo_npm.png";
 import Flamenco from "@flamencojs/flamencojs";
+import Play from "../assets/img/play.vue";
+import Stop from "../assets/img/stop.vue";
 
 const flamenco = new Flamenco();
-var isPlaying = false;
+var isPlaying = ref(false);
 flamenco.setMusic("sound/freeze.mp3");
 
 const start = () => {
-  if (isPlaying) {
+  if (isPlaying.value) {
     flamenco.stop();
-    isPlaying = false;
   } else {
     flamenco.play();
-    isPlaying = true;
   }
+  isPlaying.value = !isPlaying.value;
 };
 
 const effects: {
@@ -49,6 +51,7 @@ const effects: {
   animated?: boolean;
   backgroundColor?: string | undefined;
   isFirstTile?: boolean;
+  effectCode?: string;
 }[] = [
   {
     name: "Introduction",
@@ -84,11 +87,36 @@ const effects: {
     backgroundColor: "#ce6462",
     customContent: `<a href="https://www.npmjs.com/package/@flamencojs/flamencojs" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${npm}" alt="npm" /></a>`,
   },
-  { name: "Color", isDoubleWidth: false, animated: true },
-  { name: "Width", isDoubleWidth: true, animated: true },
-  { name: "height", isDoubleWidth: false, animated: true },
-  { name: "Border", isDoubleWidth: true, animated: false },
-  { name: "Background", isDoubleWidth: false, animated: true },
+  {
+    name: "Color",
+    isDoubleWidth: false,
+    animated: true,
+    effectCode: "flamenco.setEffect(Color, nameOfClass);",
+  },
+  {
+    name: "Width",
+    isDoubleWidth: true,
+    animated: true,
+    effectCode: "flamenco.setEffect(Width, nameOfClass);",
+  },
+  {
+    name: "height",
+    isDoubleWidth: false,
+    animated: true,
+    effectCode: "flamenco.setEffect(height, nameOfClass);",
+  },
+  {
+    name: "Border",
+    isDoubleWidth: true,
+    animated: false,
+    effectCode: "flamenco.setEffect(Border, nameOfClass);",
+  },
+  {
+    name: "Background",
+    isDoubleWidth: false,
+    animated: true,
+    effectCode: "flamenco.setEffect(Background, nameOfClass);",
+  },
 ];
 </script>
 
@@ -117,6 +145,12 @@ header {
   align-items: center;
   margin-bottom: 20px;
   width: 100%;
+
+  .musicPlay {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
   .menu {
     display: flex;
     border-radius: 25px;
