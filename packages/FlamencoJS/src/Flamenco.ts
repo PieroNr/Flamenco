@@ -2,31 +2,31 @@
 import player from './Player';
 
 class Flamenco {
-    private player: player;
-    private nameEffect: Array<{ name: string, class: string }>;
+  private player: player;
+  private nameEffect: Array<{ name: string, class: string }>;
 
-    constructor() {
-        this.player = new player();
-        this.nameEffect = [];
-    }
+  constructor() {
+    this.player = new player();
+    this.nameEffect = [];
+  }
 
-    setEffect(effectName: string, className: string): void {
-        this.nameEffect.push({ name: effectName, class: className });
-    }
+  setEffect(effectName: string, className: string): void {
+    this.nameEffect.push({ name: effectName, class: className });
+  }
 
 
 
-    setMusic(musicPath: string): void {
-        this.player.setMusic(musicPath);
-    }
+  setMusic(musicPath: string): void {
+    this.player.setMusic(musicPath);
+  }
 
-    play(): void {
-        this.player.start(this.nameEffect)
-    }
+  play(): void {
+    this.player.start(this.nameEffect);
+  }
 
-    stop(): void {
-        this.player.stop();
-    }
+  stop(): void {
+    this.player.stop();
+  }
 }
 
 
