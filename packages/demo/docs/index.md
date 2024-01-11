@@ -1,37 +1,28 @@
-## Getting Started
+# FlamencoJS
 
-**_Requirements_**
+FlamencoJS is a TypeScript library for creating dynamic web element animations that synchronize with music. It's designed to make your web projects come alive with rhythm, movement, and color in response to your selected music.
 
-Ensure you have the following dependencies installed on your system:
+![GitHub](https://img.shields.io/github/license/PieroNr/Flamenco)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/PieroNr/Flamenco/main/packages/FlamencoJS)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PieroNr/Flamenco)
 
-- **TypeScript**: `version x.y.z`
+![GitHub](https://img.shields.io/badge/GitHub-FlamencoJS-blue)
+![npm](https://img.shields.io/badge/npm-FlamencoJS-red)
 
-### Installation
+## Features
 
-1. Clone the Flamenco repository:
+- Beat and rhythm sensing for precise synchronization.
+- Customizable animations to suit your project's style.
+- Color synchronization for a holistic sensory experience.
+- Simple integration into your web projects.
+- Compatibility with major web platforms and browsers.
 
-```sh
-git clone https://github.com/PieroNr/Flamenco.git
-```
+## Installation
 
-2. Change to the project directory:
+You can install FlamencoJS via npm:
 
-```sh
-cd Flamenco
-```
-
-3. Install the dependencies:
-
-```sh
-npm install
-```
-
-### Running Flamenco
-
-Use the following command to run Flamenco:
-
-```sh
-npm run build && node dist/main.js
+```bash
+npm i @flamencojs/flamencojs
 ```
 
 ## Overview
@@ -44,13 +35,18 @@ import Flamenco from "@flamencojs/flamencojs";
 const flamenco = new Flamenco();
 
 //Set your music file
-flamenco.setMusic("sound/freeze.mp3");
+flamenco.setMusic("your/sound.mp3");
+//or 
+//flamenco.setMusic("https://your/sound.mp3");
 
 // function to start the music
 flamenco.start();
 
 //function to stop the music
 flamenco.stop();
+
+//activate effects
+flamenco.setEffect("Color", ".className");
 ```
 
 ## Features
@@ -59,66 +55,36 @@ In this implementation, the classes "Color", "Width", "Height", and "Background"
 
 - Color: This class is used to change the color of an element's text. The color change is responsive to certain triggers, such as the bass of the music. This creates a visual effect where the text color shifts in sync with the musical elements, providing an interactive and engaging user experience.
 
-```html
-<h1 class="Color"></h1>
+```ts
+flamenco.setEffect("Color", ".className");
 ```
 
 - Width: Similar in concept to the "Color" class, the "Width" class modifies the width of an element. This means that the element’s width will change in response to the specified triggers, such as the rhythm or intensity of the music. This can create a dynamic visual effect where the element expands or contracts in accordance with the audio stimuli.
 
-```html
-<div class="Width"></div>
+```ts
+flamenco.setEffect("Width", ".className");
 ```
 
 - Height: This class functions similarly to the "Width" class but targets the height of the element instead. By altering the height in response to certain triggers, it adds another dimension of interactivity. For instance, an element might grow taller or shorter in alignment with specific aspects of the music, such as volume or pitch.
 
-```html
-<div class="Height"></div>
+```ts
+flamenco.setEffect("Height", ".className");
 ```
 
 - Background: The "Background" class is used to change the background properties of an element. This could involve altering the background color, adding a background image, or even animating the background in response to the music. The idea is to enhance the visual appeal of the element by making its background dynamic and responsive to external inputs.
 
-```html
-<div class="Background"></div>
+```ts
+flamenco.setEffect("Background", ".className");
 ```
 
 Each of these classes is designed to provide a unique and interactive way to visually represent changes in response to music or other triggers, enhancing the user experience by making the webpage more lively and responsive to auditory cues.
-
-## Repository Structure
-
-```sh
-└── Flamenco/
-    ├── .github
-    │   └── workflows
-    │       └── main.yml
-    ├── package-lock.json
-    ├── package.json
-    ├── packages
-    │   ├── demo
-    │   │   ├── index.html
-    │   │   ├── package.json
-    │   │   ├── public
-    │   │   ├── src
-    │   │   ├── tsconfig.json
-    │   │   ├── tsconfig.node.json
-    │   │   └── vite.config.ts
-    │   └── FlamencoJS
-    │       ├── .eslintrc.json
-    │       ├── package-lock.json
-    │       ├── package.json
-    │       ├── src
-    │       ├── test
-    │       └── tsconfig.json
-    ├── pnpm-lock.yaml
-    └── pnpm-workspace.yaml
-```
 
 ## Contributing
 
 Contributions are welcome! Here are several ways you can contribute:
 
-- **[Submit Pull Requests](https://github/PieroNr/Flamenco.git/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
-- **[Join the Discussions](https://github/PieroNr/Flamenco.git/discussions)**: Share your insights, provide feedback, or ask questions.
-- **[Report Issues](https://github/PieroNr/Flamenco.git/issues)**: Submit bugs found or log feature requests for Flamenco.
+- **[Submit Pull Requests](https://github.com/PieroNr/Flamenco/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+- **[Report Issues](https://github.com/PieroNr/Flamenco/issues)**: Submit bugs found or log feature requests for Flamenco.
 
 <details closed>
     <summary>Contributing Guidelines</summary>
@@ -151,13 +117,16 @@ Once your PR is reviewed and approved, it will be merged into the main branch.
 
 ## License
 
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
+This project is protected under the Apache-2.0 License. For more details, refer to the [LICENSE](https://github.com/PieroNr/Flamenco/blob/main/LICENSE) file.
 
 ---
 
 ## Acknowledgments
 
-- List any resources, contributors, inspiration, etc. here.
+This project was developed as part of the IIM Digital School's 2023 class project.
+Developers:
+- [PieroNr](https://github.com/PieroNr)
+- [Adrien24](https://github.com/Adrien24)
 
 [**Return**](#-quick-links)
 

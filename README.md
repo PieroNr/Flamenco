@@ -2,6 +2,13 @@
 
 FlamencoJS is a TypeScript library for creating dynamic web element animations that synchronize with music. It's designed to make your web projects come alive with rhythm, movement, and color in response to your selected music.
 
+![GitHub](https://img.shields.io/github/license/PieroNr/Flamenco)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/PieroNr/Flamenco/main/packages/FlamencoJS)
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PieroNr/Flamenco)
+
+![GitHub](https://img.shields.io/badge/GitHub-FlamencoJS-blue)
+![npm](https://img.shields.io/badge/npm-FlamencoJS-red)
+
 ## Features
 
 - Beat and rhythm sensing for precise synchronization.
@@ -110,7 +117,7 @@ Once your PR is reviewed and approved, it will be merged into the main branch.
 
 ## License
 
-This project is protected under the Apache-2.0 License. For more details, refer to the [LICENSE](LICENSE) file.
+This project is protected under the Apache-2.0 License. For more details, refer to the [LICENSE](https://github.com/PieroNr/Flamenco/blob/main/LICENSE) file.
 
 ---
 

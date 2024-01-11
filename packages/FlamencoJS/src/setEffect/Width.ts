@@ -16,7 +16,7 @@ class Width {
           (max - min) +
         min;
       element.style.width = `${scaledWidth}px`;
-      element.style.height = `calc(100% - 20px)`;
+      element.style.height = 'calc(100% - 20px)';
     });
   }
 }
