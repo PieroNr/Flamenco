@@ -9,6 +9,8 @@ FlamencoJS is a TypeScript library for creating dynamic web element animations t
 ![GitHub](https://img.shields.io/badge/GitHub-FlamencoJS-blue)
 ![npm](https://img.shields.io/badge/npm-FlamencoJS-red)
 
+Démo : https://flamenco-demo.vercel.app/
+
 ## Features
 
 - Beat and rhythm sensing for precise synchronization.
@@ -124,7 +126,7 @@ This project is protected under the Apache-2.0 License. For more details, refer 
 ## Acknowledgments
 
 This project was developed as part of the IIM Digital School's 2023 class project.
-Developers: 
+Developers:
 - [PieroNr](https://github.com/PieroNr)
 - [Adrien24](https://github.com/Adrien24)
 
