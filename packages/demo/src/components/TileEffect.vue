@@ -40,7 +40,7 @@ const props = defineProps<{
     animated?: boolean;
     backgroundColor?: string | undefined;
     isFirstTile?: boolean;
-    effectCode: string;
+    effectCode?: string;
   };
   flamenco: Flamenco;
 }>();
