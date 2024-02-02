@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <header>
-      <h1>FlamencoJs</h1>
+      <h1 ref="title" class="title">FlamencoJs</h1>
       <div>
         <Play v-if="!isPlaying" @click="start" class="musicPlay" />
         <Stop v-if="isPlaying" @click="start" class="musicPlay" />
@@ -30,15 +30,34 @@ import npm from "../assets/img/logo_npm.png";
 import Flamenco from "@flamencojs/flamencojs";
 import Play from "../assets/img/play.vue";
 import Stop from "../assets/img/stop.vue";
+import { gsap } from "gsap";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+
+
+
+
+const title = ref(null);
+
 
 const flamenco = new Flamenco();
 var isPlaying = ref(false);
-flamenco.setMusic("sound/freeze.mp3");
+flamenco.setMusic("sound/pokemon.mp3");
 
 const start = () => {
+  gsap.registerPlugin(ScrambleTextPlugin);
+  ;
+
   if (isPlaying.value) {
+    gsap.to(title.value, {
+      duration: 1,
+      scrambleText: { text: "FlamencoJs", chars: "0X", speed: 0.1 },
+    })
     flamenco.stop();
   } else {
+    gsap.to(title.value, {
+      duration: 1,
+      scrambleText: { text: "Brutalism", chars: "0X", speed: 0.1 },
+    })
     flamenco.play();
   }
   isPlaying.value = !isPlaying.value;
