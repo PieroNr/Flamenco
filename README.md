@@ -128,6 +128,7 @@ This project was developed as part of the IIM Digital School's 2023 class projec
 Developers:
 - [PieroNr](https://github.com/PieroNr)
 - [Adrien24](https://github.com/Adrien24)
+- [Cécile Denoncin](https://github.com/cdenoncin)
 
 [**Return**](#-quick-links)
 
