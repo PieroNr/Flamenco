@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { JSDOM } from 'jsdom';
-import BackgroundColor from '../../src/setEffect/Background';
+import BackgroundColor from '../../src/effects/Background';
 
 describe('BackgroundColor', function() {
   let backgroundColor: BackgroundColor;

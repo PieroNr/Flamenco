@@ -1,3 +1,2 @@
-import Flamenco from './Flamenco';
-export const main = (): string => 'Hello World';
+import {Flamenco} from './Flamenco';
 export default Flamenco;

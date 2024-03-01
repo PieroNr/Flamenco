@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Width from '../../src/setEffect/Width';
+import Width from '../../src/effects/Width';
 
 describe('Width', function() {
   let width: Width;

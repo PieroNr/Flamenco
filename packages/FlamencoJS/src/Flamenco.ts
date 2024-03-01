@@ -1,27 +1,27 @@
 // Flamenco.ts
-import player from './Player';
+import {Player} from './Player';
+import {Effect} from './types';
 
-class Flamenco {
-  private player: player;
-  private nameEffect: Array<{ name: string, class: string }>;
+
+export class Flamenco {
+  private player: Player;
+  private effects: Effect[];
 
   constructor() {
-    this.player = new player();
-    this.nameEffect = [];
+    this.player = new Player();
+    this.effects = [];
   }
 
-  setEffect(effectName: string, className: string): void {
-    this.nameEffect.push({ name: effectName, class: className });
+  addEffect(effect:Effect): void {
+    this.effects.push(effect);
   }
-
-
 
   setMusic(musicPath: string): void {
     this.player.setMusic(musicPath);
   }
 
   play(): void {
-    this.player.start(this.nameEffect);
+    this.player.start(this.effects);
   }
 
   stop(): void {
@@ -29,9 +29,3 @@ class Flamenco {
   }
 }
 
-
-
-
-
-
-export default Flamenco;

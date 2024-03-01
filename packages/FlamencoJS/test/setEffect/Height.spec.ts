@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Height from '../../src/setEffect/Height';
+import Height from '../../src/effects/Height';
 
 describe('Height', function() {
   let height: Height;

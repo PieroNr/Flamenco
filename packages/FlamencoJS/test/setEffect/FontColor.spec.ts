@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import FontColor from '../../src/setEffect/FontColor';
+import FontColor from '../../src/effects/FontColor';
 
 describe('FontColor', function() {
   let fontColor: FontColor;
