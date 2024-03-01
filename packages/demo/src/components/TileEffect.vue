@@ -47,8 +47,7 @@ const props = defineProps<{
 
 onMounted(() => {
   if (props.effect.animated) {
-    console.log(props.effect.name, ".--" + props.effect.name);
-    props.flamenco.setEffect(props.effect.name, ".--" + props.effect.name);
+    props.flamenco.addEffect({kind: props.effect.name, selector: '.--' +props.effect.name});
   }
 });
 </script>
