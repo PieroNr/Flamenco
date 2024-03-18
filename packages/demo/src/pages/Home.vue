@@ -9,6 +9,7 @@
       <div class="menu">
         <router-link to="/" class="--active">Effects</router-link>
         <router-link to="/about">About</router-link>
+        <router-link to="/three">three</router-link>
       </div>
     </header>
     <div class="grid-container">
@@ -43,10 +44,15 @@ const flamenco = new Flamenco();
 var isPlaying = ref(false);
 flamenco.setMusic("sound/pokemon.mp3");
 
+flamenco.addEffect({
+  kind: 'custom',
+  onUpdate: ({dataArray, indexValue}) => {
+    console.log(dataArray, indexValue);
+  }
+})
+
 const start = () => {
   gsap.registerPlugin(ScrambleTextPlugin);
-  ;
-
   if (isPlaying.value) {
     gsap.to(title.value, {
       duration: 1,
@@ -107,34 +113,40 @@ const effects: {
     customContent: `<a href="https://www.npmjs.com/package/@flamencojs/flamencojs" target="_blank"><img style="width: calc(100% - 20px); max-width: 175px" src="${npm}" alt="npm" /></a>`,
   },
   {
-    name: "Color",
+    name: "color",
     isDoubleWidth: false,
     animated: true,
-    effectCode: "flamenco.setEffect(Color, nameOfClass);",
+    effectCode: "flamenco.effects(Color, nameOfClass);",
   },
   {
-    name: "Width",
+    name: "width",
     isDoubleWidth: true,
     animated: true,
-    effectCode: "flamenco.setEffect(Width, nameOfClass);",
+    effectCode: "flamenco.effects(Width, nameOfClass);",
   },
   {
     name: "height",
     isDoubleWidth: false,
     animated: true,
-    effectCode: "flamenco.setEffect(height, nameOfClass);",
+    effectCode: "flamenco.effects(height, nameOfClass);",
   },
   {
-    name: "Border",
-    isDoubleWidth: true,
-    animated: false,
-    effectCode: "flamenco.setEffect(Border, nameOfClass);",
-  },
-  {
-    name: "Background",
+    name: "height",
     isDoubleWidth: false,
     animated: true,
-    effectCode: "flamenco.setEffect(Background, nameOfClass);",
+    effectCode: "flamenco.effects(height, nameOfClass);",
+  },
+  {
+    name: "border",
+    isDoubleWidth: true,
+    animated: false,
+    effectCode: "flamenco.effects(Border, nameOfClass);",
+  },
+  {
+    name: "background",
+    isDoubleWidth: false,
+    animated: true,
+    effectCode: "flamenco.effects(Background, nameOfClass);",
   },
 ];
 </script>
