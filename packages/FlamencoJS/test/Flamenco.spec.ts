@@ -1,6 +1,6 @@
 // Flamenco.spec.ts
 import { expect } from 'chai';
-import Flamenco from '../src/Flamenco';
+import {Flamenco} from '../src/Flamenco';
 
 describe('Flamenco', function() {
   let flamenco: Flamenco;
@@ -14,7 +14,10 @@ describe('Flamenco', function() {
   });
 
   it('should set effect correctly', function() {
-    flamenco.setEffect('someEffect', '.someClass');
+    flamenco.addEffect({
+      kind: 'color',
+      selector: '.someClass',
+    });
     expect(flamenco['nameEffect']).to.deep.equal([{ name: 'someEffect', class: '.someClass' }]);
   });
 

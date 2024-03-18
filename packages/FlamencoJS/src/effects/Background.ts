@@ -7,7 +7,7 @@ export class BackgroundColor extends AbstractSetEffect<BackgroundColorEffect> {
     this.effects.forEach(({elements}) => {
       elements.forEach((element, i) => {
         const red = extractIndexValue({index: i, data: dataArray, elementNumber: this.effects.length});
-        const blue = 255 - red; // Type inferred as number
+        const blue = 255 - red;
         element.style.backgroundColor = `rgb(${red}, 0, ${blue})`;
       });
     });
