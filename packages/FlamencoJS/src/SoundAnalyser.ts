@@ -1,4 +1,4 @@
-class SoundAnalyzer {
+export class SoundAnalyzer {
   audioContext: AudioContext;
   private analyser: AnalyserNode;
   private dataArray: Uint8Array;
@@ -10,7 +10,7 @@ class SoundAnalyzer {
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
   }
 
-  async analyzeSound(audioBuffer: AudioBuffer, animationCallback: (dataArray: Uint8Array) => void): Promise<void> {
+  analyzeSound(audioBuffer: AudioBuffer, animationCallback: (dataArray: Uint8Array) => void): void {
     // Connectez l'analyseur au buffer audio
     const source = this.audioContext.createBufferSource();
     source.buffer = audioBuffer;
@@ -54,4 +54,3 @@ class SoundAnalyzer {
   }
 }
 
-export default SoundAnalyzer;

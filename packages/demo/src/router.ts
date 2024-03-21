@@ -14,7 +14,6 @@ const routes = [
     name: "About",
     component: About,
   },
-  // ajoutez d'autres routes ici
 ];
 
 const router = createRouter({

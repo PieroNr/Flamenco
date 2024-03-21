@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import SoundAnalyzer from '../src/SoundAnalyser';
+import {SoundAnalyzer} from '../src/SoundAnalyser';
 
 describe('SoundAnalyzer', function() {
   let soundAnalyzer: SoundAnalyzer;

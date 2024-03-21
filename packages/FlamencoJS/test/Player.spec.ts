@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Player from '../src/Player';
+import {Player} from '../src/Player';
 
 describe('Player', function() {
   let player: Player;

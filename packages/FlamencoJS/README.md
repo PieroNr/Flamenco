@@ -48,7 +48,10 @@ flamenco.start();
 flamenco.stop();
 
 //activate effects
-flamenco.setEffect("Color", ".className");
+flamenco.setEffect({
+    effect: "Color",
+    selector: ".className",
+});
 ```
 
 ## Features

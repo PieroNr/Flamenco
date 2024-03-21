@@ -126,8 +126,9 @@ This project is protected under the Apache-2.0 License. For more details, refer 
 
 This project was developed as part of the IIM Digital School's 2023 class project.
 Developers:
-- [PieroNr](https://github.com/PieroNr)
-- [Adrien24](https://github.com/Adrien24)
+- [Piero Neri](https://github.com/PieroNr)
+- [Adrien Bouteiller](https://github.com/Adrien24)
+- [Cécile Denoncin](https://github.com/cdenoncin)
 
 [**Return**](#-quick-links)
 
