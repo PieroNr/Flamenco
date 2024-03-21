@@ -1,0 +1,52 @@
+name: checks on pr
+
+on:
+  pull_request:
+
+env:
+  GSAP_TOKEN: ${{ secrets.GSAP_TOKEN }}
+
+jobs:
+  check-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: '18.16.0'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install Dependencies
+        working-directory: ./packages/demo
+        run: pnpm i --frozen-lockfile
+      - name: Check lint
+        working-directory: ./packages/demo
+        run: pnpm lint
+      - name: Build
+        working-directory: ./packages/demo
+        run: pnpm build
+  check-flamenco:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: '18.16.0'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install Dependencies
+        working-directory: ./packages/FlamencoJS
+        run: pnpm i --frozen-lockfile
+      - name: Check lint
+        working-directory: ./packages/FlamencoJS
+        run: pnpm lint
+# TODO : Add tests for the FlamencoJS package
+      - name: Build
+        working-directory: ./packages/FlamencoJS
+        run: pnpm build
