@@ -6,6 +6,7 @@
         <!--            alt="Image"-->
         <!--        />-->
         <!--        <span v-if="cellData.contentText">{{ cellData.contentText }}</span>-->
+        <slot></slot>
     </div>
 </template>
 
@@ -16,12 +17,15 @@ import { computed } from 'vue'
 const props = defineProps<{ cellData: Cell }>()
 const cellStyles = computed(() => {
     return {
-        width: props.cellData.width,
+        width: props.cellData.larger ? '100%' : props.cellData.width,
         height: props.cellData.height,
         backgroundColor: props.cellData.backgroundColor,
         noise: props.cellData.backgroundImage,
         backgroundImage: props.cellData.backgroundImage,
         contentSlot: props.cellData.contentSlot,
+        gridColumn: props.cellData.larger
+            ? 'span ' + props.cellData.larger
+            : '',
     }
 })
 </script>
@@ -32,5 +36,10 @@ const cellStyles = computed(() => {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+}
+
+.large-column {
+    grid-column: span 3;
+    width: 100% !important;
 }
 </style>

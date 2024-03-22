@@ -7,4 +7,5 @@ export type Cell = {
     backgroundImage: string
     contentSlot: string
     radius: string
+    larger: number
 }
