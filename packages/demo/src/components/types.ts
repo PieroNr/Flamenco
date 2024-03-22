@@ -11,5 +11,6 @@ export type Cell = {
     contentSVG: string
     contentText: string
     radius: string
+    larger: number
     taller: number
 }

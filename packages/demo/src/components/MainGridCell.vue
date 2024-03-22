@@ -26,12 +26,15 @@ import { computed } from 'vue'
 const props = defineProps<{ cellData: Cell }>()
 const cellStyles = computed(() => {
     return {
-        width: props.cellData.width,
+        width: props.cellData.larger ? '100%' : props.cellData.width,
         height: props.cellData.height,
         backgroundColor: props.cellData.backgroundColor,
         noise: props.cellData.backgroundImage,
         backgroundPosition: props.cellData.backgroundPosition,
         contentSlot: props.cellData.contentSlot,
+        gridColumn: props.cellData.larger
+            ? 'span ' + props.cellData.larger
+            : '',
         borderRadius: props.cellData.radius,
         gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : null,
     }
@@ -67,5 +70,10 @@ const imgStyles = computed(() => {
       height: 100%;
       object-fit: cover;
     }
+}
+
+.large-column {
+    grid-column: span 3;
+    width: 100% !important;
 }
 </style>
