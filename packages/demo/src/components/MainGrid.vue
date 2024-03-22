@@ -15,6 +15,17 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import MainGridCell from './MainGridCell.vue'
 import { Cell } from './types'
+import F_letter from '../assets/svg/f_letter.svg'
+import LA_letter from '../assets/svg/la-letter.svg'
+import M_letter from '../assets/svg/m_letter.svg'
+import E_letter from '../assets/svg/e_letter.svg'
+import N_letter from '../assets/svg/n_letter.svg'
+import C_letter from '../assets/svg/c_letter.svg'
+import O_letter from '../assets/svg/o_letter.svg'
+import CONCERT1 from '../assets/img/concert-1.jpeg'
+import CONCERT2 from '../assets/img/concert-2.jpeg'
+import CONCERT3 from '../assets/img/concert-3.jpeg'
+import CONCERT4 from '../assets/img/concert-4.jpeg'
 
 const cells = ref<Cell[]>([])
 const screenWidth = ref(window.innerWidth)
@@ -24,7 +35,7 @@ const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
     const fixedCellsIndices = [
         0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23,
-        25, 27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39,
+        25, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38,
     ]
 
     const fixedCellParams = [
@@ -36,55 +47,56 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[0], contentSlot: 'about' },
         { backgroundColor: themeColor.value[1] },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
-            contentSVG: './img/f_letter.svg',
-            blur: 50,
+            backgroundColor: themeColor.value[0],
+            contentSVG: F_letter,
         },
-        { backgroundColor: themeColor.value[2], contentSlot: 'LA' },
-        { backgroundColor: themeColor.value[0], contentSlot: 'M' },
-        { backgroundColor: themeColor.value[1], contentSlot: 'E' },
+        { backgroundColor: themeColor.value[2], contentSVG: LA_letter },
+        { backgroundColor: themeColor.value[0], contentSVG: M_letter },
+        { backgroundColor: themeColor.value[2], contentSVG: E_letter },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
+            backgroundImage: 'https://picsum.photos/200/300',
             blur: 50,
         },
         { backgroundColor: themeColor.value[2], radius: '0 0 50% 0' },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
+            backgroundImage: 'https://picsum.photos/200/300',
             noise: 50,
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
+            backgroundImage: CONCERT1,
+            taller: 3,
+            backgroundPosition: 'center',
             noise: 50,
         },
-        { backgroundColor: themeColor.value[1], contentSlot: 'N' },
-        { backgroundColor: themeColor.value[0], contentSlot: 'C' },
+        { backgroundColor: themeColor.value[2], contentSVG: N_letter },
+        { backgroundColor: themeColor.value[0], contentSVG: C_letter },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
+            backgroundImage: 'https://picsum.photos/200/300',
             blur: 50,
         },
         { backgroundColor: themeColor.value[0] },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
+            backgroundImage: 'https://picsum.photos/200/300',
             noise: 50,
         },
         { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0], contentSlot: 'C' },
+        { backgroundColor: themeColor.value[0], contentSVG: O_letter },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[2], radius: '0 50% 0 0' },
+        { backgroundColor: themeColor.value[2], CornerRadius: '0 50% 0 0' },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
+            backgroundImage: 'https://picsum.photos/200/300',
             blur: 50,
         },
         { backgroundColor: themeColor.value[0] },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
+            backgroundImage: 'https://picsum.photos/200/300',
             noise: 50,
         },
         {
-            backgroundImage: 'url("https://picsum.photos/200/300")',
+            backgroundImage: 'https://picsum.photos/200/300',
             blur: 50,
         },
         { backgroundColor: themeColor.value[0] },
@@ -94,9 +106,7 @@ const updateCellSizes = () => {
 
     cells.value = Array.from({ length: 40 }, (_, index) => {
         if (fixedCellsIndices.includes(index)) {
-            // Trouver l'index de l'indice fixe dans fixedCellsIndices
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
-            // Utiliser cet index pour obtenir les paramètres correspondants dans fixedCellParams
             const fixedCellParam = fixedCellParams[fixedCellIndex]
             return {
                 width: cellSize + 'px',
@@ -108,12 +118,16 @@ const updateCellSizes = () => {
                 noiseEffect: fixedCellParam.noise
                     ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
                     : 'none',
-                backgroundImage: fixedCellParam.backgroundImage || 'none',
+                backgroundImage: fixedCellParam.backgroundImage,
+                transform: fixedCellParam.transform,
+                taller: fixedCellParam.taller,
+                backgroundPosition: fixedCellParam.backgroundPosition || 'center',
                 contentSlot: fixedCellParam.contentSlot || '',
+                contentSVG: fixedCellParam.contentSVG || '',
+                contentText: fixedCellParam.contentText || '',
                 radius: fixedCellParam.radius || '0',
             }
         } else {
-            // Assigner des valeurs aléatoires pour les autres cellules
             return {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
@@ -123,9 +137,11 @@ const updateCellSizes = () => {
                     Math.random() > 0.5
                         ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
                         : 'none',
-                backgroundImage: 'none',
+                backgroundImage: null,
                 contentSlot: Math.random() > 0.5 ? 'Random Content' : '',
-                radius: Math.random() > 0.5 ? '50%' : '0',
+
+                contentSVG: '',
+                contentText: '',
             }
         }
     })

@@ -4,7 +4,12 @@ export type Cell = {
     backgroundColor: string
     blurEffect: string
     noiseEffect: string
-    backgroundImage: string
+    backgroundImage?: string
+    transform: string
+    backgroundPosition: string
     contentSlot: string
+    contentSVG: string
+    contentText: string
     radius: string
+    taller: number
 }

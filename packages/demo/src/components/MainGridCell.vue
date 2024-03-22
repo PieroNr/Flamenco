@@ -1,11 +1,21 @@
 <template>
     <div :style="cellStyles" class="grid-cell">
-        <!--        <img-->
-        <!--            v-if="cellData.contentSVG"-->
-        <!--            :src="cellData.contentSVG"-->
-        <!--            alt="Image"-->
-        <!--        />-->
-        <!--        <span v-if="cellData.contentText">{{ cellData.contentText }}</span>-->
+        <img
+            v-if="props.cellData.contentSVG"
+            class="grid-cell__svg"
+            :src="props.cellData.contentSVG"
+            alt="Image"
+        />
+        <img
+            v-if="props.cellData.backgroundImage"
+            :style="imgStyles"
+            class="grid-cell__background"
+            :src="props.cellData.backgroundImage"
+            alt="Image"
+        />
+        <span v-if="props.cellData.contentText">{{
+            props.cellData.contentText
+        }}</span>
     </div>
 </template>
 
@@ -20,17 +30,42 @@ const cellStyles = computed(() => {
         height: props.cellData.height,
         backgroundColor: props.cellData.backgroundColor,
         noise: props.cellData.backgroundImage,
-        backgroundImage: props.cellData.backgroundImage,
+        backgroundPosition: props.cellData.backgroundPosition,
         contentSlot: props.cellData.contentSlot,
+        borderRadius: props.cellData.radius,
+        gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : null,
+    }
+})
+if(props.cellData.taller){
+    console.log(props.cellData)
+}
+const imgStyles = computed(() => {
+    return {
+        filter: `blur(${props.cellData.blurEffect}px)`,
+        transform: props.cellData.transform,
     }
 })
 </script>
 
-<style>
+<style lang="scss">
 .grid-cell {
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+
+    &__svg {
+        max-width: 100%;
+        max-height: 100%;
+        width: 100%;
+    }
+
+    &__background {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 }
 </style>
