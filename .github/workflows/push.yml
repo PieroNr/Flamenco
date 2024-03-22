@@ -19,6 +19,10 @@ jobs:
           cache: 'pnpm'
           node-version: '18.16.0'
           registry-url: 'https://registry.npmjs.org'
+      - name: Create NPMRC
+        run: |
+          echo "//npm.greensock.com/:_authToken=${{ secrets.GSAP_TOKEN }}" >> ~/.npmrc
+          echo "@gsap:registry=https://npm.greensock.com" >> ~/.npmrc
       - name: Install Dependencies
         working-directory: ./packages/demo
         run: |
@@ -42,6 +46,10 @@ jobs:
           cache: 'pnpm'
           node-version: '18.16.0'
           registry-url: 'https://registry.npmjs.org'
+      - name: Create NPMRC
+        run: |
+          echo "//npm.greensock.com/:_authToken=${{ secrets.GSAP_TOKEN }}" >> ~/.npmrc
+          echo "@gsap:registry=https://npm.greensock.com" >> ~/.npmrc
       - name: Install Dependencies
         working-directory: ./packages/FlamencoJS
         run: pnpm i --frozen-lockfile
