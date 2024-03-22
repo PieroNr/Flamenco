@@ -16,11 +16,14 @@ jobs:
           version: 8
       - uses: actions/setup-node@v4
         with:
+          cache: 'pnpm'
           node-version: '18.16.0'
           registry-url: 'https://registry.npmjs.org'
       - name: Install Dependencies
         working-directory: ./packages/demo
-        run: pnpm i --frozen-lockfile
+        run: |
+          pnpm store prune
+          pnpm i --frozen-lockfile
       - name: Check lint
         working-directory: ./packages/demo
         run: pnpm lint
@@ -36,6 +39,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@v4
         with:
+          cache: 'pnpm'
           node-version: '18.16.0'
           registry-url: 'https://registry.npmjs.org'
       - name: Install Dependencies
