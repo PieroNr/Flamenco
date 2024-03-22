@@ -8,7 +8,6 @@
 
     /* Bundler mode */
     "moduleResolution": "node",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -23,6 +22,5 @@
   },
   "include": [
     "src/**/*",
-    "test/**/*",
   ]
 }
