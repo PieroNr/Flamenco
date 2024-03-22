@@ -21,8 +21,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Create NPMRC
         run: |
-          echo "//npm.greensock.com/:_authToken=${{ secrets.GSAP_TOKEN }}" >> ~/.npmrc
-          echo "@gsap:registry=https://npm.greensock.com" >> ~/.npmrc
+          echo "//npm.greensock.com/:_authToken=${{ secrets.GSAP_TOKEN }}" >> .npmrc
+          echo "@gsap:registry=https://npm.greensock.com" >> .npmrc
       - name: Install Dependencies
         working-directory: ./packages/demo
         run: |
@@ -47,9 +47,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Create NPMRC
         run: |
-          echo $HOME
-          echo "//npm.greensock.com/:_authToken=${{ secrets.GSAP_TOKEN }}" >> ~/.npmrc
-          echo "@gsap:registry=https://npm.greensock.com" >> ~/.npmrc
+          echo "//npm.greensock.com/:_authToken=${{ secrets.GSAP_TOKEN }}" >> .npmrc
+          echo "@gsap:registry=https://npm.greensock.com" >> .npmrc
       - name: Install Dependencies
         working-directory: ./packages/FlamencoJS
         run: pnpm i --frozen-lockfile
