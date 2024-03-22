@@ -7,6 +7,7 @@ export type Cell = {
     backgroundImage?: string
     transform: string
     backgroundPosition: string
+    backgroundSize: string
     contentSlot: string
     contentSVG: string
     contentText: string

@@ -6,13 +6,13 @@
             :src="props.cellData.contentSVG"
             alt="Image"
         />
-        <img
+<!--        <img
             v-if="props.cellData.backgroundImage"
             :style="imgStyles"
             class="grid-cell__background"
             :src="props.cellData.backgroundImage"
             alt="Image"
-        />
+        />-->
         <span v-if="props.cellData.contentText">{{
             props.cellData.contentText
         }}</span>
@@ -28,10 +28,11 @@ const props = defineProps<{ cellData: Cell }>()
 const cellStyles = computed(() => {
     return {
         width: props.cellData.larger ? '100%' : props.cellData.width,
-        height: props.cellData.height ? '100%' : props.cellData.height,
+        height: props.cellData.taller ? '100%' : props.cellData.height,
         backgroundColor: props.cellData.backgroundColor,
-        noise: props.cellData.backgroundImage,
+        backgroundImage: 'url('+props.cellData.backgroundImage+')',
         backgroundPosition: props.cellData.backgroundPosition,
+        backgroundSize: props.cellData.backgroundSize,
         contentSlot: props.cellData.contentSlot,
         gridColumn: props.cellData.larger
             ? `span ${props.cellData.larger}`
@@ -40,9 +41,7 @@ const cellStyles = computed(() => {
         gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : null,
     }
 })
-if (props.cellData.taller) {
-    console.log(props.cellData)
-}
+
 const imgStyles = computed(() => {
     return {
         filter: `blur(${props.cellData.blurEffect}px)`,
@@ -59,6 +58,8 @@ const imgStyles = computed(() => {
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
+    background-repeat: no-repeat;
+  filter: grayscale(1);
 
     &__svg {
         max-width: 100%;
@@ -67,9 +68,10 @@ const imgStyles = computed(() => {
     }
 
     &__background {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: none;
+      position: absolute;
     }
 }
 

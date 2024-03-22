@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import MainGrid from '../components/SlideGrid.vue'
+import MainGrid from '../components/MainGrid.vue'
 </script>
 
 <style scoped lang="scss">
