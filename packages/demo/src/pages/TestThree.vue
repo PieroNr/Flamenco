@@ -104,6 +104,7 @@ function initThree() {
     const tick = () => {
         const elapsedTime = clock.getElapsedTime()
         const deltaTime = elapsedTime - lastElapsedTime
+        console.log(deltaTime)
         lastElapsedTime = elapsedTime
 
         // Update controls

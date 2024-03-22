@@ -10,14 +10,8 @@
     <iframe :src="urlFlamenco" />
 </template>
 
-<script lang="ts">
-export default {
-    data() {
-        return {
-            urlFlamenco: 'https://adrienbouteiller.com/flamenco/',
-        }
-    },
-}
+<script lang="ts" setup>
+const urlFlamenco = 'https://adrienbouteiller.com/flamenco/'
 </script>
 
 <style scoped>
