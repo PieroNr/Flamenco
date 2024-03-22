@@ -12,8 +12,11 @@ import {
     Points,
     PointsMaterial,
     Scene,
+    ShaderMaterial,
     Vector3,
     WebGLRenderer,
+    UniformsLib,
+    DirectionalLight,
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Flamenco from '@flamencojs/flamencojs'
@@ -22,6 +25,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import Model from '../assets/models/devil-horn.gltf'
 import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler'
 import { Pane } from 'tweakpane'
+import { VertexNormalsHelper } from 'three/examples/jsm/helpers/VertexNormalsHelper'
 
 const canvas = ref<HTMLCanvasElement>()
 
@@ -29,6 +33,7 @@ const pane = new Pane()
 const PARAMS = {
     scale: 1,
 }
+const clock = new Clock()
 
 pane.addBinding(PARAMS, 'scale', {
     min: 0,
@@ -68,98 +73,93 @@ const gltfLoader = new GLTFLoader()
 async function loadModel(renderer: WebGLRenderer) {
     const result = await gltfLoader.loadAsync(Model)
     const mesh = result.scene.children[0] as Mesh
-    mesh.material = new MeshStandardMaterial({
-        color: 'grey',
+    const shaderMaterial = new ShaderMaterial({
+        uniforms: {
+            ...UniformsLib['lights'],
+            time: { value: 0 },
+            displacement: { value: 0.02 },
+            dataArray: { value: new Float32Array(128) },
+            minZ: { value: 0 },
+            maxZ: { value: 0 },
+        },
+        lights: true,
+        vertexShader: `
+        uniform float displacement;
+        uniform float dataArray[128];
+        uniform float minZ;
+        uniform float maxZ;
+        varying vec3 vNormal;
+
+        void main() {
+            vNormal = normal;
+            // Calculate the index based on the z position
+            int index = int((position.z - minZ) / (maxZ - minZ) * 128.0);
+            // Clamp the index to the array bounds
+            index = clamp(index, 1, 127);
+            // Get the data value
+            float dataValue = dataArray[index];
+            // Use the data value to displace the position
+            vec3 newPosition = position + normal * dataValue * displacement;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+        }
+
+    `,
+        fragmentShader: `
+        varying vec3 vNormal;
+        uniform vec3 directionalLightColor[1];
+        uniform vec3 directionalLightDirection[1];
+
+        void main() {
+            vec3 light = vec3(0.0);
+            for(int i = 0; i < 1; i++) {
+                // Calculate the diffuse lighting
+                float diffuse = max(dot(vNormal, directionalLightDirection[i]), 0.0);
+                // Add the contribution of this light to the total light
+                light += directionalLightColor[i] * diffuse;
+            }
+            // Use the light to calculate the final color
+            gl_FragColor = vec4(light, 1.0);
+        }
+    `,
     })
+    mesh.material = shaderMaterial
+    let minZ = Infinity
+    let maxZ = -Infinity
+
+    const geometry = mesh.geometry
+    geometry.computeVertexNormals()
+    geometry.computeBoundingBox()
+    minZ = Math.min(minZ, geometry.boundingBox?.min.z || 0)
+    maxZ = Math.max(maxZ, geometry.boundingBox?.max.z || 0)
     scene.add(mesh)
     mesh.scale.set(0.01, 0.01, 0.01)
     mesh.rotation.set(-1.57, 0, -1.02)
     mesh.position.y = -0.5
-    const vertices: number[] = []
-    const colors: number[] = []
-    console.log(mesh)
-    const meshGeometry = new BufferGeometry()
-    const material = new PointsMaterial({
-        size: 0.003,
-        vertexColors: true,
-    })
-    const sampler = new MeshSurfaceSampler(mesh).build()
-    const points = new Points(meshGeometry, material)
-    const position = new Vector3()
-    const color = new Color('black')
+    const helper = new VertexNormalsHelper(mesh, 1, 0xff0000)
+    // scene.add(helper)
 
-    const particlesNumber = 10000
-    let minY = 0
-    let maxY = 0
-    for (let i = 0; i < particlesNumber; i++) {
-        sampler.sample(position)
-        vertices.push(position.x, position.y, position.z)
-        colors.push(color.r, color.g, color.b)
-        minY = Math.min(minY, position.z)
-        maxY = Math.max(maxY, position.z)
-    }
-    meshGeometry.setAttribute(
-        'position',
-        new Float32BufferAttribute(vertices, 3)
-    )
-    meshGeometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
-    meshGeometry.computeVertexNormals()
-    const normals = meshGeometry.getAttribute('normal').array
-    console.log('normals', normals)
-    points.scale.set(0.01, 0.01, 0.01)
-    points.rotation.set(-1.57, 0, -1.02)
-    points.position.y = -0.5
-    scene.add(points)
-    console.log(scene)
-    console.log(vertices)
-    const step = (maxY - minY) / 128
-    console.log(minY, maxY, step)
-    const ranges: { min: number; max: number }[] = Array.from({
-        length: 128,
-    }).map((value, i) => {
-        const min = minY + i * step
-        return {
-            min: min,
-            max: min + step,
-        }
-    })
-    const newVertices: number[] = [...vertices]
+    shaderMaterial.uniforms.minZ.value = minZ
+    shaderMaterial.uniforms.maxZ.value = maxZ
     flamenco.addEffect({
         kind: 'custom',
         onUpdate: ({ indexValue, dataArray }) => {
-            for (let i = 2; i < newVertices.length; i += 3) {
-                const z = newVertices[i]
-                for (let j = 0; j < ranges.length; j++) {
-                    if (z >= ranges[j].min && z <= ranges[j].max) {
-                        const factor = dataArray[j] * 0.05
-                        newVertices[i] = vertices[i] + normals[i] * factor
-                        newVertices[i + 1] =
-                            vertices[i + 1] + normals[i + 1] * factor
-                        newVertices[i + 2] =
-                            vertices[i + 2] + normals[i + 2] * factor
-                        break
-                    }
-                }
-            }
-
-            meshGeometry.setAttribute(
-                'position',
-                new Float32BufferAttribute(newVertices, 3)
+            shaderMaterial.uniforms.dataArray.value = new Float32Array(
+                dataArray
             )
+            shaderMaterial.needsUpdate = true
+
+            console.log(dataArray)
             // meshGeometry.setAttribute(
             //     'color',
             //     new Float32BufferAttribute(newColors, 3)
             // )
         },
     })
-
-    pane.on('change', (e) => {
-        points.scale.set(PARAMS.scale, PARAMS.scale, PARAMS.scale)
-    })
 }
 
 function addLight() {
-    const light = new AmbientLight(0xffffff, 1)
+    const light = new DirectionalLight(0xffffff, 1)
+    light.position.set(0, 1, 0)
     scene.add(light)
     console.log(light)
 }
@@ -216,7 +216,6 @@ function initThree() {
     loadModel(renderer)
     addLight()
 
-    const clock = new Clock()
     let lastElapsedTime = 0
 
     const tick = () => {

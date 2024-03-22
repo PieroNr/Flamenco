@@ -21,6 +21,7 @@
     "eslint-plugin-vue": "^9.23.0",
     "gsap": "npm:@gsap/shockingly@^3.12.5",
     "redaxios": "^0.5.1",
+    "shader-park-core": "^0.2.6",
     "three": "^0.162.0",
     "tweakpane": "^4.0.3",
     "vue": "^3.3.4",
