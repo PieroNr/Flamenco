@@ -20,7 +20,6 @@ jobs:
           node-version: '18.16.0'
           registry-url: 'https://registry.npmjs.org'
       - name: Create NPMRC
-        working-directory: ./packages/demo
         run: |
           echo "//npm.greensock.com/:_authToken=${{ secrets.GSAP_TOKEN }}" >> ~/.npmrc
           echo "@gsap:registry=https://npm.greensock.com" >> ~/.npmrc
@@ -47,7 +46,6 @@ jobs:
           node-version: '18.16.0'
           registry-url: 'https://registry.npmjs.org'
       - name: Create NPMRC
-        working-directory: ./packages/demo
         run: |
           echo "//npm.greensock.com/:_authToken=${{ secrets.GSAP_TOKEN }}" >> ~/.npmrc
           echo "@gsap:registry=https://npm.greensock.com" >> ~/.npmrc
