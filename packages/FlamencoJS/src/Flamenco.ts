@@ -21,6 +21,7 @@ export class Flamenco {
   }
 
   play(): void {
+    console.log(this.effects);
     this.player.start(this.effects);
   }
 
