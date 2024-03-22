@@ -1,8 +1,0 @@
-{
-	"dependencies": {
-		"@gsap/shockingly": "^3.12.5",
-		"gsap": "npm:@gsap/shockingly@^3.12.5",
-		"sass": "^1.69.5",
-		"sass-loader": "^13.3.2"
-	}
-}
