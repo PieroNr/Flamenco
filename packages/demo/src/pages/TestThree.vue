@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import {
-    AdditiveBlending,
     AmbientLight,
     BufferGeometry,
     Clock,
     Color,
     Float32BufferAttribute,
-    InstancedMesh,
-    Matrix4,
     Mesh,
-    MeshPhongMaterial,
     MeshStandardMaterial,
-    MeshToonMaterial,
-    Object3D,
     PerspectiveCamera,
     Points,
     PointsMaterial,
     Scene,
-    SphereGeometry,
     Vector3,
     WebGLRenderer,
 } from 'three'
@@ -72,15 +65,22 @@ window.addEventListener('keydown', (e) => {
 
 const gltfLoader = new GLTFLoader()
 
-async function loadModel() {
+async function loadModel(renderer: WebGLRenderer) {
     const result = await gltfLoader.loadAsync(Model)
     const mesh = result.scene.children[0] as Mesh
+    mesh.material = new MeshStandardMaterial({
+        color: 'grey',
+    })
+    scene.add(mesh)
+    mesh.scale.set(0.01, 0.01, 0.01)
+    mesh.rotation.set(-1.57, 0, -1.02)
+    mesh.position.y = -0.5
     const vertices: number[] = []
     const colors: number[] = []
     console.log(mesh)
     const meshGeometry = new BufferGeometry()
     const material = new PointsMaterial({
-        size: 0.005,
+        size: 0.003,
         vertexColors: true,
     })
     const sampler = new MeshSurfaceSampler(mesh).build()
@@ -88,7 +88,7 @@ async function loadModel() {
     const position = new Vector3()
     const color = new Color('black')
 
-    const particlesNumber = 5000
+    const particlesNumber = 10000
     let minY = 0
     let maxY = 0
     for (let i = 0; i < particlesNumber; i++) {
@@ -104,6 +104,8 @@ async function loadModel() {
     )
     meshGeometry.setAttribute('color', new Float32BufferAttribute(colors, 3))
     meshGeometry.computeVertexNormals()
+    const normals = meshGeometry.getAttribute('normal').array
+    console.log('normals', normals)
     points.scale.set(0.01, 0.01, 0.01)
     points.rotation.set(-1.57, 0, -1.02)
     points.position.y = -0.5
@@ -112,25 +114,33 @@ async function loadModel() {
     console.log(vertices)
     const step = (maxY - minY) / 128
     console.log(minY, maxY, step)
-    const steps = Array.from({ length: 128 }, (_, i) => minY + i * step)
+    const ranges: { min: number; max: number }[] = Array.from({
+        length: 128,
+    }).map((value, i) => {
+        const min = minY + i * step
+        return {
+            min: min,
+            max: min + step,
+        }
+    })
+    const newVertices: number[] = [...vertices]
     flamenco.addEffect({
         kind: 'custom',
         onUpdate: ({ indexValue, dataArray }) => {
-            console.log(indexValue, dataArray)
-            const newVertices: number[] = [...vertices]
-            steps.forEach((value, index) => {
-                const localMinY = value
-                const localMaxY = localMinY + step
-                for (let i = 0; i < newVertices.length; i += 3) {
-                    if (
-                        newVertices[i + 2] >= localMinY &&
-                        newVertices[i + 2] <= localMaxY
-                    ) {
-                        newVertices[i + 1] += dataArray[index] * 0.08
+            for (let i = 2; i < newVertices.length; i += 3) {
+                const z = newVertices[i]
+                for (let j = 0; j < ranges.length; j++) {
+                    if (z >= ranges[j].min && z <= ranges[j].max) {
+                        const factor = dataArray[j] * 0.05
+                        newVertices[i] = vertices[i] + normals[i] * factor
+                        newVertices[i + 1] =
+                            vertices[i + 1] + normals[i + 1] * factor
+                        newVertices[i + 2] =
+                            vertices[i + 2] + normals[i + 2] * factor
+                        break
                     }
                 }
-            })
-            const newColors: number[] = []
+            }
 
             meshGeometry.setAttribute(
                 'position',
@@ -140,7 +150,6 @@ async function loadModel() {
             //     'color',
             //     new Float32BufferAttribute(newColors, 3)
             // )
-            console.log('new', newVertices)
         },
     })
 
@@ -204,7 +213,7 @@ function initThree() {
         renderer.setSize(sizes.value.width, sizes.value.height)
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     })
-    loadModel()
+    loadModel(renderer)
     addLight()
 
     const clock = new Clock()
@@ -224,7 +233,6 @@ function initThree() {
         // Call tick again on the next frame
         window.requestAnimationFrame(tick)
     }
-
     tick()
 }
 
