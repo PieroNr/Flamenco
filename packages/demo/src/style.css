@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'FM';
+    src: url('assets/fonts/Fira_Mono/FiraMono-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LSR';
+    src: url('assets/fonts/League_Spartan/LeagueSpartan-Regular.ttf')
+        format('truetype');
+}
+
+@font-face {
+    font-family: 'LSSB';
+    src: url('assets/fonts/League_Spartan/LeagueSpartan-SemiBold.ttf')
+        format('truetype');
+}
+
+@font-face {
+    font-family: 'LSM';
+    src: url('assets/fonts/League_Spartan/LeagueSpartan-Medium.ttf')
+        format('truetype');
+}
+
+p,
+span,
+a,
+input,
+button,
+select,
+option,
+li {
+    font-family: 'LSR', sans-serif;
+}
+
+h1 {
+    font-family: 'LSSB', sans-serif;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'LSM', sans-serif;
+}

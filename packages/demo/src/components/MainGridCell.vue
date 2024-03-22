@@ -16,6 +16,7 @@
         <span v-if="props.cellData.contentText">{{
             props.cellData.contentText
         }}</span>
+        <slot></slot>
     </div>
 </template>
 
@@ -27,19 +28,19 @@ const props = defineProps<{ cellData: Cell }>()
 const cellStyles = computed(() => {
     return {
         width: props.cellData.larger ? '100%' : props.cellData.width,
-        height: props.cellData.height,
+        height: props.cellData.height ? '100%' : props.cellData.height,
         backgroundColor: props.cellData.backgroundColor,
         noise: props.cellData.backgroundImage,
         backgroundPosition: props.cellData.backgroundPosition,
         contentSlot: props.cellData.contentSlot,
         gridColumn: props.cellData.larger
-            ? 'span ' + props.cellData.larger
-            : '',
+            ? `span ${props.cellData.larger}`
+            : null,
         borderRadius: props.cellData.radius,
         gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : null,
     }
 })
-if(props.cellData.taller){
+if (props.cellData.taller) {
     console.log(props.cellData)
 }
 const imgStyles = computed(() => {
@@ -66,9 +67,9 @@ const imgStyles = computed(() => {
     }
 
     &__background {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 }
 
