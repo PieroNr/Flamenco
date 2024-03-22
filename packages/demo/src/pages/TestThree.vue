@@ -10,11 +10,37 @@ import {
     WebGLRenderer,
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import Flamenco from '@flamencojs/flamencojs'
+import Audio from '../assets/serenade-string-e-major.mp3'
 
 const canvas = ref<HTMLCanvasElement>()
 
 // Scene
 const scene = new Scene()
+
+//Create a new instance of FlamencoJS
+const flamenco = new Flamenco()
+
+//Set your music file
+flamenco.setMusic(Audio).then(() => {
+    //Start the music
+    flamenco.play()
+})
+
+window.addEventListener('keydown', (e) => {
+    console.log(e.key)
+    if (e.key === ' ') {
+        flamenco.stop()
+    }
+})
+
+//activate effects
+flamenco.addEffect({
+    kind: 'custom',
+    onUpdate: ({ indexValue, dataArray }) => {
+        console.log(indexValue, dataArray)
+    },
+})
 
 /**
  * Sizes
