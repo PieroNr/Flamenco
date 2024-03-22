@@ -35,7 +35,7 @@ const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
     const fixedCellsIndices = [
         0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23,
-        25, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38,
+        25, 27, 28, 29, 30, 31, 32, 33, 35 ,36, 37, 38
     ]
 
     const fixedCellParams = [
@@ -67,8 +67,8 @@ const updateCellSizes = () => {
         {
             backgroundImage: CONCERT1,
             taller: 3,
-            backgroundPosition: 'center',
-            noise: 50,
+            backgroundPosition: '25% 26%',
+            backgroundSize: 'cover',
         },
         { backgroundColor: themeColor.value[2], contentSVG: N_letter },
         { backgroundColor: themeColor.value[0], contentSVG: C_letter },
@@ -77,15 +77,11 @@ const updateCellSizes = () => {
             blur: 50,
         },
         { backgroundColor: themeColor.value[0] },
-        {
-            backgroundImage: 'https://picsum.photos/200/300',
-            noise: 50,
-        },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0], contentSVG: O_letter },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[2], CornerRadius: '0 50% 0 0' },
+        { backgroundColor: themeColor.value[2], radius: '0 50% 0 0' },
         {
             backgroundImage: 'https://picsum.photos/200/300',
             blur: 50,
@@ -94,17 +90,13 @@ const updateCellSizes = () => {
         {
             backgroundImage: 'https://picsum.photos/200/300',
             noise: 50,
-        },
-        {
-            backgroundImage: 'https://picsum.photos/200/300',
-            blur: 50,
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
     ]
 
-    cells.value = Array.from({ length: 40 }, (_, index) => {
+    cells.value = Array.from({ length: 38 }, (_, index) => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
@@ -122,6 +114,7 @@ const updateCellSizes = () => {
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
                 backgroundPosition: fixedCellParam.backgroundPosition || 'center',
+                backgroundSize: fixedCellParam.backgroundSize,
                 contentSlot: fixedCellParam.contentSlot || '',
                 contentSVG: fixedCellParam.contentSVG || '',
                 contentText: fixedCellParam.contentText || '',
