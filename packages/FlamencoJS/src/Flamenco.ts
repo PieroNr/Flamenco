@@ -16,8 +16,8 @@ export class Flamenco {
     this.effects.push(effect);
   }
 
-  setMusic(musicPath: string): void {
-    this.player.setMusic(musicPath);
+  async setMusic(musicPath: string): Promise<void> {
+    await this.player.setMusic(musicPath);
   }
 
   play(): void {

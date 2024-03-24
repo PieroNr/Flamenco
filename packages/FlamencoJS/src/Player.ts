@@ -3,7 +3,7 @@ import {Height} from './effects/Height';
 import {Width} from './effects/Width';
 import {FontColor} from './effects/FontColor';
 import {BackgroundColor} from './effects/Background';
-import {DefaultEffect, DefaultEffectKind, Effect, EffectKind} from './types';
+import {Effect, EffectKind} from './types';
 import {Custom} from './effects/Custom';
 
 export class Player {
