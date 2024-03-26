@@ -17,6 +17,7 @@ import {
     WebGLRenderer,
     UniformsLib,
     DirectionalLight,
+    Vector2,
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Flamenco from '@flamencojs/flamencojs'
@@ -75,13 +76,18 @@ async function loadModel(renderer: WebGLRenderer) {
     const mesh = result.scene.children[0] as Mesh
     const shaderMaterial = new ShaderMaterial({
         uniforms: {
-            time: { value: 0 },
             displacement: { value: 0.02 },
             dataArray: { value: new Float32Array(128) },
             minZ: { value: 0 },
             maxZ: { value: 0 },
             iResolution: { value: new Vector3() },
-            iTime: { value: 0 },
+            uTime: { value: 0 },
+            uHue: { value: 0.5 },
+            uHueVariation: { value: 1 },
+            uGradient: { value: 1 },
+            uDensity: { value: 1 },
+            uDisplacement: { value: 1 },
+            uMousePosition: { value: new Vector2(0.5, 0.5) },
         },
         vertexShader: `
         uniform float displacement;
@@ -90,10 +96,12 @@ async function loadModel(renderer: WebGLRenderer) {
         uniform float maxZ;
         varying vec3 vNormal;
         varying vec3 vPosition;
+        varying vec2 vUv;
 
         void main() {
             vNormal = normal;
             vPosition = position;
+            vUv = uv;
             // Calculate the index based on the z position
             int index = int((position.z - minZ) / (maxZ - minZ) * 128.0);
             // Clamp the index to the array bounds
@@ -106,117 +114,48 @@ async function loadModel(renderer: WebGLRenderer) {
         }
 
     `,
-        fragmentShader: `
-        /* discontinuous pseudorandom uniformly distributed in [-0.5, +0.5]^3 */
-        uniform float iTime;
-        uniform vec3 iResolution;
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        uniform float dataArray[128];
-        uniform float minZ;
-        uniform float maxZ;
+        fragmentShader: `varying vec2 vUv;
 
+			uniform float uTime;
 
-        vec3 random3(vec3 c) {
-            float j = 4096.0*sin(dot(c,vec3(17.0, 59.4, 15.0)));
-            vec3 r;
-            r.z = fract(512.0*j);
-            j *= .125;
-            r.x = fract(512.0*j);
-            j *= .125;
-            r.y = fract(512.0*j);
-            return r-0.5;
-        }
+			void main()	{
 
-        /* skew constants for 3d simplex functions */
-        const float F3 =  0.3333333;
-        const float G3 =  0.1666667;
+				vec2 p = - 1.0 + 2.0 * vUv;
+				float a = uTime * 40.0;
+				float d, e, f, g = 1.0 / 40.0 ,h ,i ,r ,q;
 
-        /* 3d simplex noise */
-        float simplex3d(vec3 p) {
-             /* 1. find current tetrahedron T and it's four vertices */
-             /* s, s+i1, s+i2, s+1.0 - absolute skewed (integer) coordinates of T vertices */
-             /* x, x1, x2, x3 - unskewed coordinates of p relative to each of T vertices*/
+				e = 400.0 * ( p.x * 0.5 + 0.5 );
+				f = 400.0 * ( p.y * 0.5 + 0.5 );
+				i = 200.0 + sin( e * g + a / 150.0 ) * 20.0;
+				d = 200.0 + cos( f * g / 2.0 ) * 18.0 + cos( e * g ) * 7.0;
+				r = sqrt( pow( abs( i - e ), 2.0 ) + pow( abs( d - f ), 2.0 ) );
+				q = f / r;
+				e = ( r * cos( q ) ) - a / 2.0;
+				f = ( r * sin( q ) ) - a / 2.0;
+				d = sin( e * g ) * 176.0 + sin( e * g ) * 164.0 + r;
+				h = ( ( f + d ) + a / 2.0 ) * g;
+				i = cos( h + r * p.x / 1.3 ) * ( e + e + a ) + cos( q * g * 6.0 ) * ( r + h / 3.0 );
+				h = sin( f * g ) * 144.0 - sin( e * g ) * 212.0 * p.x;
+				h = ( h + ( f - e ) * q + sin( r - ( a + h ) / 7.0 ) * 10.0 + i / 4.0 ) * g;
+				i += cos( h * 2.3 * sin( a / 350.0 - q ) ) * 184.0 * sin( q - ( r * 4.3 + a / 12.0 ) * g ) + tan( r * g + h ) * 184.0 * cos( r * g + h );
+				i = mod( i / 5.6, 256.0 ) / 64.0;
+				if ( i < 0.0 ) i += 4.0;
+				if ( i >= 2.0 ) i = 4.0 - i;
+				d = r / 350.0;
+				d += sin( d * d * 8.0 ) * 0.52;
+				f = ( sin( a * g ) + 1.0 ) / 2.0;
+				gl_FragColor = vec4( vec3( f * i / 1.6, i / 2.0 + d / 13.0, i ) * d * p.x + vec3( i / 1.3 + d / 8.0, i / 2.0 + d / 18.0, i ) * d * ( 1.0 - p.x ), 1.0 );
 
-             /* calculate s and x */
-             vec3 s = floor(p + dot(p, vec3(F3)));
-             vec3 x = p - s + dot(s, vec3(G3));
-
-             /* calculate i1 and i2 */
-             vec3 e = step(vec3(0.0), x - x.yzx);
-             vec3 i1 = e*(1.0 - e.zxy);
-             vec3 i2 = 1.0 - e.zxy*(1.0 - e);
-
-             /* x1, x2, x3 */
-             vec3 x1 = x - i1 + G3;
-             vec3 x2 = x - i2 + 2.0*G3;
-             vec3 x3 = x - 1.0 + 3.0*G3;
-
-             /* 2. find four surflets and store them in d */
-             vec4 w, d;
-
-             /* calculate surflet weights */
-             w.x = dot(x, x);
-             w.y = dot(x1, x1);
-             w.z = dot(x2, x2);
-             w.w = dot(x3, x3);
-
-             /* w fades from 0.6 at the center of the surflet to 0.0 at the margin */
-             w = max(0.6 - w, 0.0);
-
-             /* calculate surflet components */
-             d.x = dot(random3(s), x);
-             d.y = dot(random3(s + i1), x1);
-             d.z = dot(random3(s + i2), x2);
-             d.w = dot(random3(s + 1.0), x3);
-
-             /* multiply d by w^4 */
-             w *= w;
-             w *= w;
-             d *= w;
-
-             /* 3. return the sum of the four surflets */
-             return dot(d, vec4(52.0));
-        }
-
-        /* const matrices for 3d rotation */
-        const mat3 rot1 = mat3(-0.37, 0.36, 0.85,-0.14,-0.93, 0.34,0.92, 0.01,0.4);
-        const mat3 rot2 = mat3(-0.55,-0.39, 0.74, 0.33,-0.91,-0.24,0.77, 0.12,0.63);
-        const mat3 rot3 = mat3(-0.71, 0.52,-0.47,-0.08,-0.72,-0.68,-0.7,-0.45,0.56);
-
-        /* directional artifacts can be reduced by rotating each octave */
-        float simplex3d_fractal(vec3 m) {
-            return   0.5333333*simplex3d(m*rot1)
-                    +0.2666667*simplex3d(2.0*m*rot2)
-                    +0.1333333*simplex3d(4.0*m*rot3)
-                    +0.0666667*simplex3d(8.0*m);
-        }
-
-        void main()
-        {
-            vec2 p = vPosition.xy/iResolution.x;
-            // Calculate the index based on the z position
-            int index = int((vPosition.z - minZ) / (maxZ - minZ) * 128.0);
-            // Clamp the index to the array bounds
-            index = clamp(index, 1, 127);
-            // Get the data value
-            float dataValue = dataArray[index];
-            vec3 p3 = vec3(p, dataValue);
-
-            float value = simplex3d(p3*8.0+8.0);
-
-
-
-            value = 0.5 + 0.5*value;
-            value *= smoothstep(0.0, 0.005, abs(0.6-p.x)); // hello, iq :)
-
-            gl_FragColor = vec4(
-                    vec3(value),
-                    1.0);
-        }
-    `,
+			}`,
     })
     mesh.material = shaderMaterial
+
+    window.addEventListener('mousemove', (event) => {
+        shaderMaterial.uniforms.uMousePosition.value = new Vector2(
+            event.clientX / window.innerWidth,
+            1 - event.clientY / window.innerHeight
+        )
+    })
     let minZ = Infinity
     let maxZ = -Infinity
 
@@ -246,7 +185,7 @@ async function loadModel(renderer: WebGLRenderer) {
                 dataArray
             )
             shaderMaterial.needsUpdate = true
-            shaderMaterial.uniforms.iTime.value = clock.getElapsedTime()
+            shaderMaterial.uniforms.uTime.value = clock.getElapsedTime()
 
             console.log(dataArray)
             // meshGeometry.setAttribute(
