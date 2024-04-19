@@ -66,19 +66,11 @@ export class Player {
     }
   };
 
-  setMusic = (trackUrl: string): Promise<void> => {
-
-    return new Promise((resolve, reject) => {
-      fetch(trackUrl)
-        .then(response => response.arrayBuffer())
-        .then(buffer => this.analyser.getAudioContext().decodeAudioData(buffer))
-        .then(audioBuffer => {
-          this.audioBuffer = audioBuffer;
-          resolve();
-        })
-        .catch(error => reject(error));
-    });
-  };
+  async setMusic (trackUrl: string): Promise<void> {
+    const arrayBuffer = await fetch(trackUrl).then(response => response.arrayBuffer());
+    const audioBuffer = await this.audioCtx.decodeAudioData(arrayBuffer);
+    this.audioBuffer = audioBuffer;
+  }
 
   setGain = (value: number): void => {
     this.gain.gain.value = value;
@@ -98,7 +90,6 @@ export class Player {
     const colorEffect = new FontColor(getEffectForKind('color'));
     const backgroundEffect = new BackgroundColor(getEffectForKind('background'));
     const customEffects = new Custom(getEffectForKind('custom'));
-
     this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
       name.forEach((item) => {
         switch (item.kind) {

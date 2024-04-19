@@ -21,11 +21,14 @@
     "eslint-plugin-vue": "^9.23.0",
     "gsap": "npm:@gsap/shockingly@^3.12.5",
     "redaxios": "^0.5.1",
+    "shader-park-core": "^0.2.6",
     "three": "^0.162.0",
+    "tweakpane": "^4.0.3",
     "vue": "^3.3.4",
     "vue-router": "4"
   },
   "devDependencies": {
+    "@tweakpane/core": "^2.0.3",
     "@types/three": "^0.162.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "eslint-config-prettier": "^9.1.0",
