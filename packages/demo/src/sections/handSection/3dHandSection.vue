@@ -6,31 +6,40 @@ import {
     Mesh,
     PerspectiveCamera,
     Scene,
-    Vector3,
     WebGLRenderer,
     DirectionalLight,
+    PlaneGeometry,
     TextureLoader,
-    MeshMatcapMaterial,
-    PMREMGenerator,
+    MeshBasicMaterial,
+    Vector3,
     MeshPhysicalMaterial,
-    MeshStandardMaterial,
+    EquirectangularReflectionMapping,
+    Vector2,
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Audio from '../../assets/serenade-string-e-major.mp3'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import Model from '../../assets/models/hand-5.glb'
 import { Pane } from 'tweakpane'
-import Texture from '../../assets/img/matcap-gold.png'
-import HDR from '../../assets/img/the_sky_is_on_fire_1k.hdr'
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import Flamenco from '@flamencojs/flamencojs'
-import { texture } from 'three/examples/jsm/nodes/accessors/TextureNode'
+import BG1 from '../../assets/img/bg_img_1.jpg'
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
+import HDR from '../../assets/img/kloofendal_48d_partly_cloudy_puresky_1k.hdr'
+import NormalMap from '../../assets/img/normal.png'
 
 const canvas = ref<HTMLCanvasElement>()
 
 const pane = new Pane()
 const PARAMS = {
     scale: 1,
+    roughness: 0.33,
+    transmission: 1.08,
+    thickness: 1,
+    ior: 1.73,
+    clearcoat: 0.68,
+    clearcoatRoughness: 0.49,
+    clearcoatNormalScale: 0.52,
+    envMapIntensity: 0.91,
 }
 
 pane.addBinding(PARAMS, 'scale', {
@@ -38,7 +47,6 @@ pane.addBinding(PARAMS, 'scale', {
     max: 2,
     step: 0.01,
 })
-
 // Scene
 const scene = new Scene()
 scene.background = new Color('white')
@@ -83,12 +91,43 @@ async function loadModel() {
     mesh.rotation.set(-1.57, 0, -1.02)
     mesh.position.y = -0.5
 
-    // Create a MeshToonMaterial instance
-    const toonMaterial = new MeshStandardMaterial({
-        roughness: 0,
-        transmission: 1,
-        thickness: 0.5, // Add refraction!
+    const hdrEquirect = new RGBELoader().load(HDR, () => {
+        hdrEquirect.mapping = EquirectangularReflectionMapping
     })
+
+    const textureLoader = new TextureLoader()
+    const normalMap = textureLoader.load(NormalMap)
+
+    // Create a MeshToonMaterial instance
+    const toonMaterial = new MeshPhysicalMaterial({
+        roughness: PARAMS.roughness,
+        // roughnessMap: normalMap,
+        transmission: PARAMS.transmission,
+        thickness: PARAMS.thickness,
+        envMap: hdrEquirect,
+        envMapIntensity: PARAMS.envMapIntensity,
+        normalMap: normalMap,
+        clearcoat: PARAMS.clearcoat,
+        clearcoatMap: normalMap,
+        clearcoatRoughness: PARAMS.clearcoatRoughness,
+        clearcoatNormalMap: normalMap,
+        clearcoatNormalScale: new Vector2(
+            PARAMS.clearcoatNormalScale,
+            PARAMS.clearcoatNormalScale
+        ),
+        ior: PARAMS.ior,
+    })
+
+    for (const paramsKey in PARAMS) {
+        pane.addBinding(PARAMS, paramsKey, {
+            min: 0,
+            max: 3,
+            step: 0.01,
+        }).on('change', () => {
+            toonMaterial[paramsKey] = PARAMS[paramsKey]
+            toonMaterial.needsUpdate = true
+        })
+    }
 
     toonMaterial.onBeforeCompile = (shader) => {
         shader.uniforms.fDisplacement = { value: 0.02 }
@@ -102,8 +141,14 @@ async function loadModel() {
         uniform float fMinZ;
         uniform float fMaxZ;
         `
+        // Replace the vertex shader code
+        toonMaterial.userData.shader = shader
+        shader.vertexShader = shader.vertexShader
+            .replace(
+                '#include <begin_vertex>',
+                `
+        #include <begin_vertex>
 
-        const fragmentShaderCode = `// Calculate the index based on the z position
             int index = int((position.z - fMinZ) / (fMaxZ - fMinZ) * 128.0);
             // Clamp the index to the array bounds
             index = clamp(index, 1, 127);
@@ -111,23 +156,14 @@ async function loadModel() {
             float dataValue = fDataArray[index];
             // Use the data value to displace the position
             vec3 newPosition = position + normal * dataValue * fDisplacement;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-        }
-        `
-        console.log(shader.vertexShader)
-
-        // Replace the vertex shader code
-        shader.vertexShader =
-            uniforms +
-            shader.vertexShader.split('}').join('') +
-            fragmentShaderCode
-        toonMaterial.userData.shader = shader
-        console.log(shader.vertexShader)
+            transformed = newPosition;
+    `
+            )
+            .replace('#include <common>', `${uniforms}\n#include <common>`)
     }
 
     // Now you can use toonMaterial as the material for your mesh
     mesh.material = toonMaterial
-    console.log(toonMaterial.userData)
 
     flamenco.addEffect({
         kind: 'custom',
@@ -137,6 +173,16 @@ async function loadModel() {
             toonMaterial.needsUpdate = true
         },
     })
+}
+
+function addImage({ url, position }: { url: string; position: Vector3 }) {
+    const texture = new TextureLoader().load(url)
+    const bg = new Mesh(
+        new PlaneGeometry(2, 2, 1, 1),
+        new MeshBasicMaterial({ map: texture })
+    )
+    bg.position.copy(position)
+    scene.add(bg)
 }
 
 function addLight() {
@@ -184,13 +230,6 @@ function initThree() {
     renderer.setSize(sizes.value.width, sizes.value.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    const pmremGenerator = new PMREMGenerator(renderer)
-    const hdriLoader = new RGBELoader()
-    const texture = hdriLoader.load(HDR)
-    const envMap = pmremGenerator.fromEquirectangular(texture).texture
-    texture.dispose()
-    scene.environment = envMap
-
     window.addEventListener('resize', () => {
         // Update sizes
         sizes.value.width = window.innerWidth
@@ -205,6 +244,10 @@ function initThree() {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     })
     loadModel()
+    addImage({
+        url: BG1,
+        position: new Vector3(0, 0, -1),
+    })
     addLight()
 
     const tick = () => {
