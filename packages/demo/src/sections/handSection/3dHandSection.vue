@@ -22,14 +22,21 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import Model from '../../assets/models/hand-5.glb'
 import { Pane } from 'tweakpane'
 import Flamenco from '@flamencojs/flamencojs'
-import BG1 from '../../assets/img/bg_img_1.jpg'
+import Concert1 from '../../assets/img/concert-1.jpg'
+import Concert2 from '../../assets/img/concert-2.jpg'
+import Concert3 from '../../assets/img/concert-3.jpg'
+import Concert4 from '../../assets/img/concert-4.jpg'
+import Concert5 from '../../assets/img/concert-5.jpg'
+import Concert6 from '../../assets/img/concert-6.jpg'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import HDR from '../../assets/img/kloofendal_48d_partly_cloudy_puresky_1k.hdr'
 import NormalMap from '../../assets/img/normal.png'
+import gsap from 'gsap'
 
 const canvas = ref<HTMLCanvasElement>()
 
 const pane = new Pane()
+pane.hidden = true
 const PARAMS = {
     scale: 1,
     roughness: 0.33,
@@ -55,18 +62,6 @@ scene.background = new Color('white')
 const flamenco = new Flamenco()
 
 //Set your music file
-flamenco.setMusic(Audio).then(() => {
-    //Start the music
-    // flamenco.play()
-    pane.addButton({ title: 'Play' }).on('click', () => {
-        flamenco.play()
-    })
-
-    pane.addButton({ title: 'Stop' }).on('click', () => {
-        flamenco.stop()
-    })
-    observer.observe(canvas.value)
-})
 
 window.addEventListener('keydown', (e) => {
     console.log(e.key)
@@ -195,7 +190,7 @@ function addImage({
         new MeshBasicMaterial({ map: texture })
     )
     bg.position.copy(position)
-    scene.add(bg)
+    return bg
 }
 
 function addLight() {
@@ -205,6 +200,27 @@ function addLight() {
 
     const ambientLight = new AmbientLight(0xffffff, 0.5)
     scene.add(ambientLight)
+}
+
+function createGrid(imgs: string[]) {
+    const grid = new Group()
+    const size = 1
+    const spacing = 0.1
+    const rows = 2
+    const cols = 3
+    const total = rows * cols
+    const halfSize = (total * size + (total - 1) * spacing) / 2
+    for (let i = 0; i < total; i++) {
+        const x = (i % cols) * (size + spacing) - halfSize
+        const y = Math.floor(i / cols) * (size + spacing) - halfSize
+        const img = addImage({
+            url: imgs[i],
+            position: new Vector3(x, y, -1),
+            size: new Vector2(size, size),
+        })
+        grid.add(img)
+    }
+    return grid
 }
 
 /**
@@ -230,21 +246,16 @@ camera.position.y = 0
 camera.position.z = 1
 scene.add(camera)
 
-function onIntersect(entries: IntersectionObserverEntry[]) {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+const observer = new IntersectionObserver(
+    (entries) => {
+        if (entries[0].isIntersecting) {
             flamenco.play()
         } else {
             flamenco.stop()
         }
-    })
-}
-
-const observer = new IntersectionObserver(onIntersect, {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
-})
+    },
+    { threshold: [0.1, 0.9] }
+)
 
 let renderer: WebGLRenderer | null = null
 
@@ -271,21 +282,41 @@ async function initThree() {
         camera.updateProjectionMatrix()
 
         // Update renderer
-        renderer.setSize(sizes.value.width, sizes.value.height)
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        renderer?.setSize(sizes.value.width, sizes.value.height)
+        renderer?.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     })
     const hand = await loadModel()
-    addImage({
-        url: BG1,
-        position: new Vector3(0, 0, -1),
-        size: new Vector2(2, 2),
-    })
+    const grid = createGrid([
+        Concert1,
+        Concert2,
+        Concert3,
+        Concert4,
+        Concert5,
+        Concert6,
+    ])
+    scene.add(grid)
+    grid.position.y = 2.8
+    grid.position.x = 2
     addLight()
 
+    await flamenco.setMusic(Audio)
+    observer.observe(canvas.value)
+    let previousScroll = window.scrollY
+    window.addEventListener('scroll', () => {
+        gsap.to(hand.rotation, {
+            y: window.scrollY * 0.01,
+            duration: 0.01,
+        })
+        gsap.to(grid.position, {
+            x: grid.position.x + (window.scrollY - previousScroll) * 0.001,
+            duration: 0.01,
+        })
+        previousScroll = window.scrollY
+    })
+
     const tick = () => {
-        hand.rotation.y = window.scrollY * 0.01
         // Render
-        renderer.render(scene, camera)
+        renderer?.render(scene, camera)
 
         // Call tick again on the next frame
         window.requestAnimationFrame(tick)
@@ -297,24 +328,16 @@ onMounted(initThree)
 
 onBeforeUnmount(() => {
     flamenco.stop()
-    observer.disconnect()
     renderer?.dispose()
     scene.traverse((child) => {
         if (!(child instanceof Mesh)) return
         child.geometry.dispose()
-        for (const key in child.material) {
-            const material = child.material[key]
-            if (material) {
-                material.dispose()
-            }
-        }
     })
 })
 </script>
 
 <template>
     <div>
-        <div class="spacer" />
         <canvas ref="canvas" />
         <div class="spacer" />
     </div>
