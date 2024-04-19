@@ -1,5 +1,4 @@
 import {AbstractSetEffect} from './AbstractSetEffect';
-import {extractIndexValue} from './utils/extractIndexValue';
 import {BackgroundColorEffect} from '../types';
 
 export class BackgroundColor extends AbstractSetEffect<BackgroundColorEffect> {
@@ -14,4 +13,3 @@ export class BackgroundColor extends AbstractSetEffect<BackgroundColorEffect> {
     });
   }
 }
-
