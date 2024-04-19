@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import {
     AmbientLight,
     Color,
@@ -15,8 +15,8 @@ import {
     MeshPhysicalMaterial,
     EquirectangularReflectionMapping,
     Vector2,
+    Group,
 } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Audio from '../../assets/serenade-string-e-major.mp3'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import Model from '../../assets/models/hand-5.glb'
@@ -65,6 +65,7 @@ flamenco.setMusic(Audio).then(() => {
     pane.addButton({ title: 'Stop' }).on('click', () => {
         flamenco.stop()
     })
+    observer.observe(canvas.value)
 })
 
 window.addEventListener('keydown', (e) => {
@@ -86,10 +87,9 @@ async function loadModel() {
     geometry.computeBoundingBox()
     minZ = Math.min(minZ, geometry.boundingBox?.min.z || 0)
     maxZ = Math.max(maxZ, geometry.boundingBox?.max.z || 0)
-    scene.add(mesh)
     mesh.scale.set(0.01, 0.01, 0.01)
-    mesh.rotation.set(-1.57, 0, -1.02)
-    mesh.position.y = -0.5
+    mesh.rotation.x = Math.PI
+    mesh.position.y = 0.5
 
     const hdrEquirect = new RGBELoader().load(HDR, () => {
         hdrEquirect.mapping = EquirectangularReflectionMapping
@@ -173,12 +173,25 @@ async function loadModel() {
             toonMaterial.needsUpdate = true
         },
     })
+    const group = new Group()
+    group.add(mesh)
+    scene.add(group)
+    group.rotation.z = Math.PI
+    return group
 }
 
-function addImage({ url, position }: { url: string; position: Vector3 }) {
+function addImage({
+    url,
+    position,
+    size = new Vector2(1, 1),
+}: {
+    url: string
+    position: Vector3
+    size: Vector2
+}) {
     const texture = new TextureLoader().load(url)
     const bg = new Mesh(
-        new PlaneGeometry(2, 2, 1, 1),
+        new PlaneGeometry(size.x, size.y, 1, 1),
         new MeshBasicMaterial({ map: texture })
     )
     bg.position.copy(position)
@@ -212,18 +225,36 @@ const camera = new PerspectiveCamera(
     0.1,
     100
 )
-camera.position.x = 1
-camera.position.y = 1
+camera.position.x = 0
+camera.position.y = 0
 camera.position.z = 1
 scene.add(camera)
 
-function initThree() {
+function onIntersect(entries: IntersectionObserverEntry[]) {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            flamenco.play()
+        } else {
+            flamenco.stop()
+        }
+    })
+}
+
+const observer = new IntersectionObserver(onIntersect, {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5,
+})
+
+let renderer: WebGLRenderer | null = null
+
+async function initThree() {
     if (!canvas.value) return
     // Controls
-    const controls = new OrbitControls(camera, canvas.value)
-    controls.enableDamping = true
+    // const controls = new OrbitControls(camera, canvas.value)
+    // controls.enableDamping = true
 
-    const renderer = new WebGLRenderer({
+    renderer = new WebGLRenderer({
         canvas: canvas.value,
         antialias: true,
     })
@@ -243,17 +274,16 @@ function initThree() {
         renderer.setSize(sizes.value.width, sizes.value.height)
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     })
-    loadModel()
+    const hand = await loadModel()
     addImage({
         url: BG1,
         position: new Vector3(0, 0, -1),
+        size: new Vector2(2, 2),
     })
     addLight()
 
     const tick = () => {
-        // Update controls
-        controls.update()
-
+        hand.rotation.y = window.scrollY * 0.01
         // Render
         renderer.render(scene, camera)
 
@@ -264,10 +294,39 @@ function initThree() {
 }
 
 onMounted(initThree)
+
+onBeforeUnmount(() => {
+    flamenco.stop()
+    observer.disconnect()
+    renderer?.dispose()
+    scene.traverse((child) => {
+        if (!(child instanceof Mesh)) return
+        child.geometry.dispose()
+        for (const key in child.material) {
+            const material = child.material[key]
+            if (material) {
+                material.dispose()
+            }
+        }
+    })
+})
 </script>
 
 <template>
-    <canvas ref="canvas" />
+    <div>
+        <div class="spacer" />
+        <canvas ref="canvas" />
+        <div class="spacer" />
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.spacer {
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
