@@ -39,7 +39,7 @@ const pane = new Pane()
 pane.hidden = true
 const PARAMS = {
     scale: 1,
-    roughness: 0.33,
+    roughness: 0.5,
     transmission: 1.08,
     thickness: 1,
     ior: 1.73,
@@ -56,7 +56,7 @@ pane.addBinding(PARAMS, 'scale', {
 })
 // Scene
 const scene = new Scene()
-scene.background = new Color('white')
+scene.background = new Color('#0f0f0f')
 
 //Create a new instance of FlamencoJS
 const flamenco = new Flamenco()
@@ -94,7 +94,7 @@ async function loadModel() {
     const normalMap = textureLoader.load(NormalMap)
 
     // Create a MeshToonMaterial instance
-    const toonMaterial = new MeshPhysicalMaterial({
+    const handMaterial = new MeshPhysicalMaterial({
         roughness: PARAMS.roughness,
         // roughnessMap: normalMap,
         transmission: PARAMS.transmission,
@@ -113,18 +113,18 @@ async function loadModel() {
         ior: PARAMS.ior,
     })
 
-    for (const paramsKey in PARAMS) {
-        pane.addBinding(PARAMS, paramsKey, {
-            min: 0,
-            max: 3,
-            step: 0.01,
-        }).on('change', () => {
-            toonMaterial[paramsKey] = PARAMS[paramsKey]
-            toonMaterial.needsUpdate = true
-        })
-    }
+    // for (const paramsKey in PARAMS) {
+    //     pane.addBinding(PARAMS, paramsKey, {
+    //         min: 0,
+    //         max: 3,
+    //         step: 0.01,
+    //     }).on('change', () => {
+    //         handMaterial[paramsKey] = PARAMS[paramsKey]
+    //         handMaterial.needsUpdate = true
+    //     })
+    // }
 
-    toonMaterial.onBeforeCompile = (shader) => {
+    handMaterial.onBeforeCompile = (shader) => {
         shader.uniforms.fDisplacement = { value: 0.02 }
         shader.uniforms.fDataArray = { value: new Float32Array(128) }
         shader.uniforms.fMinZ = { value: minZ }
@@ -137,7 +137,7 @@ async function loadModel() {
         uniform float fMaxZ;
         `
         // Replace the vertex shader code
-        toonMaterial.userData.shader = shader
+        handMaterial.userData.shader = shader
         shader.vertexShader = shader.vertexShader
             .replace(
                 '#include <begin_vertex>',
@@ -157,15 +157,15 @@ async function loadModel() {
             .replace('#include <common>', `${uniforms}\n#include <common>`)
     }
 
-    // Now you can use toonMaterial as the material for your mesh
-    mesh.material = toonMaterial
+    // Now you can use handMaterial as the material for your mesh
+    mesh.material = handMaterial
 
     flamenco.addEffect({
         kind: 'custom',
         onUpdate: ({ dataArray }) => {
-            toonMaterial.userData.shader.uniforms.fDataArray.value =
+            handMaterial.userData.shader.uniforms.fDataArray.value =
                 new Float32Array(dataArray.map((d) => d * PARAMS.scale))
-            toonMaterial.needsUpdate = true
+            handMaterial.needsUpdate = true
         },
     })
     const group = new Group()
@@ -286,6 +286,7 @@ async function initThree() {
         renderer?.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     })
     const hand = await loadModel()
+    hand.position.x = 0.5
     const grid = createGrid([
         Concert1,
         Concert2,
@@ -296,21 +297,19 @@ async function initThree() {
     ])
     scene.add(grid)
     grid.position.y = 2.8
-    grid.position.x = 2
+    grid.position.x = 2.5
     addLight()
 
     await flamenco.setMusic(Audio)
     observer.observe(canvas.value)
     let previousScroll = window.scrollY
+
+    const handYSetter = gsap.quickSetter(hand.rotation, 'y')
+    const gridXSetter = gsap.quickSetter(grid.position, 'x')
+
     window.addEventListener('scroll', () => {
-        gsap.to(hand.rotation, {
-            y: window.scrollY * 0.01,
-            duration: 0.01,
-        })
-        gsap.to(grid.position, {
-            x: grid.position.x + (window.scrollY - previousScroll) * 0.001,
-            duration: 0.01,
-        })
+        handYSetter(window.scrollY * 0.01)
+        gridXSetter(grid.position.x + (window.scrollY - previousScroll) * 0.001)
         previousScroll = window.scrollY
     })
 
@@ -337,10 +336,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div>
+    <div class="hand-section">
+        <div class="left">
+            <h2>Change.</h2>
+            <p>The way you interact</p>
+        </div>
         <canvas ref="canvas" />
-        <div class="spacer" />
     </div>
+    <div class="spacer"></div>
 </template>
 
 <style scoped>
@@ -351,5 +354,27 @@ onBeforeUnmount(() => {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.hand-section {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr;
+    height: 100vh;
+    color: white;
+    font-size: 1.5rem;
+
+    .left {
+        z-index: 1;
+        grid-area: 1/-1;
+        padding-left: 10vw;
+    }
+
+    canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        grid-area: 1/-1;
+    }
 }
 </style>

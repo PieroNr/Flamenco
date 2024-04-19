@@ -40,7 +40,7 @@ const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
     const fixedCellsIndices = [
         0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23,
-        25, 27, 28, 29, 30, 31, 32, 33, 35 ,36, 37, 38
+        25, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
     ]
 
     const fixedCellParams = [
@@ -48,8 +48,14 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[2] },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0], contentSlot: '<router-link  to="/doc">docs</router-link>' },
-        { backgroundColor: themeColor.value[0], contentSlot: '<router-link  to="/about">about</router-link>' },
+        {
+            backgroundColor: themeColor.value[0],
+            contentSlot: '<router-link  to="/doc">docs</router-link>',
+        },
+        {
+            backgroundColor: themeColor.value[0],
+            contentSlot: '<router-link  to="/about">about</router-link>',
+        },
         { backgroundColor: themeColor.value[1] },
         {
             backgroundImage: CONCERT4,
@@ -57,8 +63,7 @@ const updateCellSizes = () => {
             noise: NOISE,
             backgroundPosition: '60% 40%',
             backgroundSize: '450%',
-            blur: 3
-
+            blur: 3,
         },
         { backgroundColor: themeColor.value[2], contentSVG: LA_letter },
         { backgroundColor: themeColor.value[0], contentSVG: M_letter },
@@ -68,7 +73,6 @@ const updateCellSizes = () => {
             backgroundPosition: '35% 50%',
             backgroundSize: '450%',
             blur: 3,
-
         },
         { backgroundColor: themeColor.value[2], radius: '0 0 50% 0' },
         {
@@ -76,7 +80,6 @@ const updateCellSizes = () => {
             backgroundPosition: '35% 30%',
             backgroundSize: '450%',
             noise: NOISE,
-
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -94,8 +97,6 @@ const updateCellSizes = () => {
             blur: 3,
             backgroundPosition: '40% 50%',
             backgroundSize: '300%',
-
-
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -114,8 +115,7 @@ const updateCellSizes = () => {
             backgroundPosition: '85% 50%',
             backgroundSize: '300%',
             taller: 2,
-            blur: 2
-
+            blur: 2,
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -135,7 +135,8 @@ const updateCellSizes = () => {
                 backgroundImage: fixedCellParam.backgroundImage,
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
-                backgroundPosition: fixedCellParam.backgroundPosition || 'center',
+                backgroundPosition:
+                    fixedCellParam.backgroundPosition || 'center',
                 backgroundSize: fixedCellParam.backgroundSize,
                 contentSlot: fixedCellParam.contentSlot || '',
                 contentSVG: fixedCellParam.contentSVG || '',
@@ -147,10 +148,21 @@ const updateCellSizes = () => {
             return {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
-                backgroundColor: themeColor.value[Math.floor(Math.random() * themeColor.value.length)],
+                backgroundColor:
+                    themeColor.value[
+                        Math.floor(Math.random() * themeColor.value.length)
+                    ],
                 blurEffect: random > 0.7 ? 3 : 0,
                 noiseEffect: random < 0.3 ? NOISE : '',
-                backgroundImage: [CONCERT1, CONCERT2, CONCERT3, CONCERT4, CONCERT5, CONCERT6, CONCERT7][Math.floor(Math.random() * 7)],
+                backgroundImage: [
+                    CONCERT1,
+                    CONCERT2,
+                    CONCERT3,
+                    CONCERT4,
+                    CONCERT5,
+                    CONCERT6,
+                    CONCERT7,
+                ][Math.floor(Math.random() * 7)],
                 backgroundPosition: `${Math.floor(Math.random() * 60) + 20}% ${Math.floor(Math.random() * 60) + 20}%`,
                 backgroundSize: `${Math.floor(Math.random() * 200) + 200}%`,
             }
@@ -183,7 +195,7 @@ onUnmounted(() => {
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(6, 1fr);
     width: 100vw;
-    height: calc(100vh + 100vh/4);
+    height: calc(100vh + 100vh / 4);
     margin: 0;
     padding: 0;
     gap: 0;

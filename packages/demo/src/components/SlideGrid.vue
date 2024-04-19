@@ -3,7 +3,7 @@
         <MainGridCell
             v-for="(cell, index) in cells"
             :key="index"
-            :cellData="cell"
+            :cell-data="cell"
         >
             <p v-if="index === 18">Color</p>
             <p v-else>{{ index }}</p>
@@ -11,8 +11,8 @@
     </div>
 </template>
 
-<script>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+<script lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import MainGridCell from './MainGridCell.vue'
 
 export default {
@@ -20,7 +20,7 @@ export default {
         MainGridCell,
     },
     setup() {
-        const cells = ref([])
+        const cells = ref<any[]>([])
         const screenWidth = ref(window.innerWidth)
         const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
 
@@ -40,7 +40,7 @@ export default {
                 { backgroundColor: themeColor.value[0], contentSlot: 'about' },
                 { backgroundColor: themeColor.value[0] },
                 {
-                  backgroundColor: themeColor.value[0],
+                    backgroundColor: themeColor.value[0],
                 },
                 { backgroundColor: themeColor.value[0], contentSlot: 'LA' },
                 { backgroundColor: themeColor.value[0], contentSlot: 'M' },
@@ -95,7 +95,7 @@ export default {
                     // Trouver l'index de l'indice fixe dans fixedCellsIndices
                     const fixedCellIndex = fixedCellsIndices.indexOf(index)
                     // Utiliser cet index pour obtenir les paramètres correspondants dans fixedCellParams
-                    const fixedCellParam = fixedCellParams[fixedCellIndex]
+                    const fixedCellParam: any = fixedCellParams[fixedCellIndex]
                     cell = {
                         width: cellSize + 'px',
                         height: cellSize + 'px',
@@ -107,12 +107,11 @@ export default {
                         noiseEffect: fixedCellParam.noise
                             ? `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")`
                             : 'none',
-                        backgroundImage:
-                            fixedCellParam.backgroundImage,
-                      contentSlot: fixedCellParam.contentSlot || '',
-                      contentSVG: fixedCellParam.contentSVG || '',
-                      contentText: fixedCellParam.contentText || '',
-                      radius: fixedCellParam.radius || '0',
+                        backgroundImage: fixedCellParam.backgroundImage,
+                        contentSlot: fixedCellParam.contentSlot || '',
+                        contentSVG: fixedCellParam.contentSVG || '',
+                        contentText: fixedCellParam.contentText || '',
+                        radius: fixedCellParam.radius || '0',
                         larger: fixedCellParam.larger,
                     }
                 } else {
@@ -136,11 +135,11 @@ export default {
             })
         }
 
-        const getRandomColor = () => {
-            return themeColor.value[
-                Math.floor(Math.random() * themeColor.value.length)
-            ]
-        }
+        // const getRandomColor = () => {
+        //     return themeColor.value[
+        //         Math.floor(Math.random() * themeColor.value.length)
+        //     ]
+        // }
 
         // Met à jour la taille des cellules lorsque la fenêtre est redimensionnée
         const handleResize = () => {
