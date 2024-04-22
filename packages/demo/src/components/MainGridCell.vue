@@ -1,32 +1,41 @@
 <template>
-    <div :style="cellStyles" class="grid-cell">
+    <div
+        :style="cellStyles"
+        class="grid-cell"
+        @mouseover="applyHoverEffect($event)"
+        @mouseout="removeHoverEffect($event)"
+    >
         <img
             v-if="props.cellData.contentSVG"
             class="grid-cell__svg"
             :src="props.cellData.contentSVG"
             alt="Image"
         />
-      <div
-          :style="blurStyles"
-          v-if="props.cellData.blurEffect"
-        class="grid-cell__blur"
-    </div>
-  <div class="grid-cell__noise"  v-if="props.cellData.noiseEffect">
-    <svg>
-    <filter id="noise">
-      <feTurbulence id="turbulence">
-        <animate
-            attributeName="baseFrequency"
-            dur="50s"
-            values="0.9 0.9;0.8 0.8; 0.9 0.9"
-            repeatCount="indefinite"
-        ></animate>
-      </feTurbulence>
-      <feDisplacementMap in="SourceGraphic" scale="60"></feDisplacementMap>
-    </filter>
-  </svg></div>
+        <div
+            v-if="props.cellData.blurEffect"
+            :style="blurStyles"
+            class="grid-cell__blur"
+        ></div>
+        <div v-if="props.cellData.noiseEffect" class="grid-cell__noise">
+            <svg>
+                <filter id="noise">
+                    <feTurbulence id="turbulence">
+                        <animate
+                            attributeName="baseFrequency"
+                            dur="50s"
+                            values="0.9 0.9;0.8 0.8; 0.9 0.9"
+                            repeatCount="indefinite"
+                        ></animate>
+                    </feTurbulence>
+                    <feDisplacementMap
+                        in="SourceGraphic"
+                        scale="60"
+                    ></feDisplacementMap>
+                </filter>
+            </svg>
+        </div>
 
-<!--        <img
+        <!--        <img
             v-if="props.cellData.backgroundImage"
             :style="imgStyles"
             class="grid-cell__background"
@@ -36,20 +45,27 @@
         <span v-if="props.cellData.contentText">{{
             props.cellData.contentText
         }}</span>
-        <div class="grid-cell__contentSlot" v-else-if="props.cellData.contentSlot" v-html="props.cellData.contentSlot"></div>
+        <div
+            v-else-if="props.cellData.contentSlot"
+            class="grid-cell__contentSlot"
+            v-html="props.cellData.contentSlot"
+        ></div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import type { Cell } from './types'
 import { computed } from 'vue'
+import { HoverEffect } from './enums'
+import { gsap } from 'gsap'
 
 const props = defineProps<{ cellData: Cell }>()
 const cellStyles = computed(() => {
     return {
         width: props.cellData.larger ? '100%' : props.cellData.width,
         height: props.cellData.taller ? '100%' : props.cellData.height,
-        background: "url("+props.cellData.backgroundImage+") no-repeat left top",
+        background:
+            'url(' + props.cellData.backgroundImage + ') no-repeat left top',
         backgroundColor: props.cellData.backgroundColor,
         backgroundPosition: props.cellData.backgroundPosition,
         backgroundSize: props.cellData.backgroundSize,
@@ -59,19 +75,71 @@ const cellStyles = computed(() => {
             : '',
         borderRadius: props.cellData.radius,
         gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : null,
-
     }
 })
-
-if(props.cellData.noiseEffect){
-  console.log(cellStyles)
-}
 
 const blurStyles = computed(() => {
     return {
         backdropFilter: `blur(${props.cellData.blurEffect}px)`,
     }
 })
+const applyHoverEffect = (event: Event) => {
+    const target = event.currentTarget as Element
+    const svgElement = target ? target.querySelector('.grid-cell__svg') : null
+
+    switch (props.cellData.hoverEffect) {
+        case HoverEffect.Roll:
+            {
+                const tl = gsap.timeline()
+                tl.to(svgElement, {
+                    y: '100%',
+                    duration: 0.5,
+                    ease: 'power2.in',
+                })
+                    .to(svgElement, {
+                        y: '-100%',
+                        duration: 0,
+                    })
+                    .to(svgElement, {
+                        y: '100%',
+                        duration: 0.4,
+                    })
+                    .to(svgElement, {
+                        y: '-100%',
+                        duration: 0,
+                    })
+                    .to(svgElement, {
+                        y: '100%',
+                        duration: 0.3,
+                    })
+                    .to(svgElement, {
+                        y: '-100%',
+                        duration: 0,
+                    })
+                    .to(svgElement, {
+                        y: '0%',
+                        duration: 0.5,
+                        ease: 'power1.inOut',
+                    })
+            }
+            break
+        case HoverEffect.SwipeRight:
+            gsap.to(svgElement, {
+                x: '100%',
+                duration: 0.5,
+            })
+            break
+        default:
+            break
+    }
+}
+
+const removeHoverEffect = (event: Event) => {
+    const target = event.currentTarget as Element
+    const svgElement = target ? target.querySelector('.grid-cell__svg') : null
+    if (!props.cellData.hoverEffect) return
+    gsap.to(svgElement, { x: '0%', y: 0, duration: 0.5 })
+}
 </script>
 
 <style lang="scss">
@@ -83,19 +151,23 @@ const blurStyles = computed(() => {
     overflow: hidden;
     position: relative;
     background-repeat: no-repeat;
-    font-family: "League Spartan", sans-serif;
+    font-family: 'League Spartan', sans-serif;
 
-  &__noise {
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: calc(100% + 50px);
-    height: calc(100% + 50px);
-    background: repeating-linear-gradient(rgba(17, 17, 17, 0.16), rgba(255, 255, 255, 0.25) 50%, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.45));
-    background-size: 5px 5px;
-    filter: url(#noise);
-  }
-
+    &__noise {
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: calc(100% + 50px);
+        height: calc(100% + 50px);
+        background: repeating-linear-gradient(
+            rgba(17, 17, 17, 0.16),
+            rgba(255, 255, 255, 0.25) 50%,
+            rgb(0, 0, 0) 50%,
+            rgba(0, 0, 0, 0.45)
+        );
+        background-size: 5px 5px;
+        filter: url(#noise);
+    }
 
     &__svg {
         max-width: 100%;
@@ -105,33 +177,33 @@ const blurStyles = computed(() => {
     }
 
     &__background {
-      width: 100%;
-      height: 100%;
-      object-fit: none;
-      position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: none;
+        position: absolute;
     }
 
     &__blur {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      z-index: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 0;
     }
 
     &__contentSlot {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-  router-link {
-    text-decoration: underline;
-    font-size: 1.5rem;
-    text-underline-offset: 0.5em;
-    color: inherit;
-  }
+    router-link {
+        text-decoration: underline;
+        font-size: 1.5rem;
+        text-underline-offset: 0.5em;
+        color: inherit;
+    }
 }
 
 .large-column {

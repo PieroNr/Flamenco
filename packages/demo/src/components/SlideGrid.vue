@@ -3,7 +3,7 @@
         <MainGridCell
             v-for="(cell, index) in cells"
             :key="index"
-            :cellData="cell"
+            :cell-data="cell"
         >
             <p v-if="index === 18">Color</p>
             <p v-else>{{ index }}</p>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import MainGridCell from './MainGridCell.vue'
 
 export default {
@@ -40,7 +40,7 @@ export default {
                 { backgroundColor: themeColor.value[0], contentSlot: 'about' },
                 { backgroundColor: themeColor.value[0] },
                 {
-                  backgroundColor: themeColor.value[0],
+                    backgroundColor: themeColor.value[0],
                 },
                 { backgroundColor: themeColor.value[0], contentSlot: 'LA' },
                 { backgroundColor: themeColor.value[0], contentSlot: 'M' },
@@ -107,12 +107,11 @@ export default {
                         noiseEffect: fixedCellParam.noise
                             ? `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")`
                             : 'none',
-                        backgroundImage:
-                            fixedCellParam.backgroundImage,
-                      contentSlot: fixedCellParam.contentSlot || '',
-                      contentSVG: fixedCellParam.contentSVG || '',
-                      contentText: fixedCellParam.contentText || '',
-                      radius: fixedCellParam.radius || '0',
+                        backgroundImage: fixedCellParam.backgroundImage,
+                        contentSlot: fixedCellParam.contentSlot || '',
+                        contentSVG: fixedCellParam.contentSVG || '',
+                        contentText: fixedCellParam.contentText || '',
+                        radius: fixedCellParam.radius || '0',
                         larger: fixedCellParam.larger,
                     }
                 } else {
@@ -134,12 +133,6 @@ export default {
                 }
                 return cell
             })
-        }
-
-        const getRandomColor = () => {
-            return themeColor.value[
-                Math.floor(Math.random() * themeColor.value.length)
-            ]
         }
 
         // Met à jour la taille des cellules lorsque la fenêtre est redimensionnée

@@ -13,6 +13,7 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue'
+import { defineEmits } from 'vue'
 import MainGridCell from './MainGridCell.vue'
 import { Cell } from './types'
 import F_letter from '../assets/svg/f_letter.svg'
@@ -31,7 +32,9 @@ import CONCERT4 from '../assets/img/concert-4.jpg'
 import CONCERT5 from '../assets/img/concert-5.jpg'
 import CONCERT6 from '../assets/img/concert-6.jpg'
 import CONCERT7 from '../assets/img/concert-7.jpg'
+import { HoverEffect } from './enums.ts'
 
+const emit = defineEmits(['loaded'])
 const cells = ref<Cell[]>([])
 const screenWidth = ref(window.innerWidth)
 const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
@@ -40,7 +43,7 @@ const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
     const fixedCellsIndices = [
         0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23,
-        25, 27, 28, 29, 30, 31, 32, 33, 35 ,36, 37, 38
+        25, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
     ]
 
     const fixedCellParams = [
@@ -48,8 +51,14 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[2] },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0], contentSlot: '<router-link  to="/doc">docs</router-link>' },
-        { backgroundColor: themeColor.value[0], contentSlot: '<router-link  to="/about">about</router-link>' },
+        {
+            backgroundColor: themeColor.value[0],
+            contentSlot: '<router-link  to="/doc">docs</router-link>',
+        },
+        {
+            backgroundColor: themeColor.value[0],
+            contentSlot: '<router-link  to="/about">about</router-link>',
+        },
         { backgroundColor: themeColor.value[1] },
         {
             backgroundImage: CONCERT4,
@@ -57,10 +66,14 @@ const updateCellSizes = () => {
             noise: NOISE,
             backgroundPosition: '60% 40%',
             backgroundSize: '450%',
-            blur: 3
-
+            blur: 3,
+            hoverEffect: HoverEffect.Roll,
         },
-        { backgroundColor: themeColor.value[2], contentSVG: LA_letter },
+        {
+            backgroundColor: themeColor.value[2],
+            contentSVG: LA_letter,
+            hoverEffect: HoverEffect.SwipeRight,
+        },
         { backgroundColor: themeColor.value[0], contentSVG: M_letter },
         { backgroundColor: themeColor.value[2], contentSVG: E_letter },
         {
@@ -68,7 +81,6 @@ const updateCellSizes = () => {
             backgroundPosition: '35% 50%',
             backgroundSize: '450%',
             blur: 3,
-
         },
         { backgroundColor: themeColor.value[2], radius: '0 0 50% 0' },
         {
@@ -76,7 +88,6 @@ const updateCellSizes = () => {
             backgroundPosition: '35% 30%',
             backgroundSize: '450%',
             noise: NOISE,
-
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -94,8 +105,6 @@ const updateCellSizes = () => {
             blur: 3,
             backgroundPosition: '40% 50%',
             backgroundSize: '300%',
-
-
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -114,8 +123,7 @@ const updateCellSizes = () => {
             backgroundPosition: '85% 50%',
             backgroundSize: '300%',
             taller: 2,
-            blur: 2
-
+            blur: 2,
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -135,41 +143,62 @@ const updateCellSizes = () => {
                 backgroundImage: fixedCellParam.backgroundImage,
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
-                backgroundPosition: fixedCellParam.backgroundPosition || 'center',
+                backgroundPosition:
+                    fixedCellParam.backgroundPosition || 'center',
                 backgroundSize: fixedCellParam.backgroundSize,
                 contentSlot: fixedCellParam.contentSlot || '',
                 contentSVG: fixedCellParam.contentSVG || '',
                 contentText: fixedCellParam.contentText || '',
                 radius: fixedCellParam.radius || '0',
+                hoverEffect: fixedCellParam.hoverEffect,
             }
         } else {
             const random = Math.random()
             return {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
-                backgroundColor: themeColor.value[Math.floor(Math.random() * themeColor.value.length)],
+                backgroundColor: themeColor.value[0],
                 blurEffect: random > 0.7 ? 3 : 0,
                 noiseEffect: random < 0.3 ? NOISE : '',
-                backgroundImage: [CONCERT1, CONCERT2, CONCERT3, CONCERT4, CONCERT5, CONCERT6, CONCERT7][Math.floor(Math.random() * 7)],
+                backgroundImage: [
+                    CONCERT1,
+                    CONCERT2,
+                    CONCERT3,
+                    CONCERT4,
+                    CONCERT5,
+                    CONCERT6,
+                    CONCERT7,
+                ][Math.floor(Math.random() * 7)],
                 backgroundPosition: `${Math.floor(Math.random() * 60) + 20}% ${Math.floor(Math.random() * 60) + 20}%`,
                 backgroundSize: `${Math.floor(Math.random() * 200) + 200}%`,
+                radius: Math.random() < 0.3 ? getRandomRadius() : '0',
             }
         }
     })
 }
 
-// const getRandomColor = () => {
-//     return themeColor.value[Math.floor(Math.random() * themeColor.value.length)]
-// }
+const getRandomRadius = () => {
+    const random = Math.random()
+    if (random < 0.25) {
+        return '50% 0 0 0' // Haut gauche
+    } else if (random < 0.5) {
+        return '0 50% 0 0' // Haut droit
+    } else if (random < 0.75) {
+        return '0 0 50% 0' // Bas droit
+    } else {
+        return '0 0 0 50%' // Bas gauche
+    }
+}
 
-// Met à jour la taille des cellules lorsque la fenêtre est redimensionnée
 const handleResize = () => {
     screenWidth.value = window.innerWidth
 }
 
-onMounted(() => {
+onMounted(async () => {
     updateCellSizes()
     window.addEventListener('resize', handleResize)
+    await new Promise((resolve) => setTimeout(resolve, 4000))
+    emit('loaded') // Use emit here
 })
 
 onUnmounted(() => {
@@ -183,7 +212,7 @@ onUnmounted(() => {
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(6, 1fr);
     width: 100vw;
-    height: calc(100vh + 100vh/4);
+    height: calc(100vh + 100vh / 4);
     margin: 0;
     padding: 0;
     gap: 0;

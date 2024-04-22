@@ -1,3 +1,5 @@
+import { HoverEffect } from './enums'
+
 export type Cell = {
     width: string
     height: string
@@ -14,4 +16,5 @@ export type Cell = {
     radius: string
     larger: number
     taller: number
+    hoverEffect: HoverEffect
 }
