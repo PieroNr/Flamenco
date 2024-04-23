@@ -5,11 +5,10 @@
         @mouseover="applyHoverEffect($event)"
         @mouseout="removeHoverEffect($event)"
     >
-        <img
+        <object
             v-if="props.cellData.contentSVG"
             class="grid-cell__svg"
-            :src="props.cellData.contentSVG"
-            alt="Image"
+            :data="props.cellData.contentSVG"
         />
         <div
             v-if="props.cellData.blurEffect"
@@ -58,7 +57,9 @@ import type { Cell } from './types'
 import { computed } from 'vue'
 import { HoverEffect } from './enums'
 import { gsap } from 'gsap'
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 
+gsap.registerPlugin(DrawSVGPlugin)
 const props = defineProps<{ cellData: Cell }>()
 const cellStyles = computed(() => {
     return {
@@ -128,6 +129,8 @@ const applyHoverEffect = (event: Event) => {
                 x: '100%',
                 duration: 0.5,
             })
+            break
+        case HoverEffect.Morph:
             break
         default:
             break
@@ -210,4 +213,5 @@ const removeHoverEffect = (event: Event) => {
     grid-column: span 3;
     width: 100% !important;
 }
+
 </style>

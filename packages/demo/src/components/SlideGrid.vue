@@ -11,7 +11,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import MainGridCell from './MainGridCell.vue'
 

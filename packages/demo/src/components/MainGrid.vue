@@ -74,7 +74,9 @@ const updateCellSizes = () => {
             contentSVG: LA_letter,
             hoverEffect: HoverEffect.SwipeRight,
         },
-        { backgroundColor: themeColor.value[0], contentSVG: M_letter },
+        { backgroundColor: themeColor.value[0], contentSVG: M_letter ,
+          hoverEffect: HoverEffect.Morph
+        },
         { backgroundColor: themeColor.value[2], contentSVG: E_letter },
         {
             backgroundImage: CONCERT4,
