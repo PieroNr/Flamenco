@@ -3,7 +3,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Model from './assets/hand-model.glb'
 import {
     AmbientLight,
-    Color,
     DirectionalLight,
     EquirectangularReflectionMapping,
     Group,
@@ -30,7 +29,7 @@ type QuickSetter = (value: number) => void
 
 export class HandSectionScene extends Scene3d {
     params = {
-        scale: 1,
+        scale: 0.5,
         roughness: 0.4,
         transmission: 1.08,
         thickness: 1,
@@ -40,7 +39,7 @@ export class HandSectionScene extends Scene3d {
         clearcoatNormalScale: 0.52,
         envMapIntensity: 0.91,
     }
-    flamenco: Flamenco
+    flamenco: Pick<Flamenco, 'addEffect'>
 
     animateHand?: QuickSetter
     animateGrid?: QuickSetter
@@ -49,11 +48,11 @@ export class HandSectionScene extends Scene3d {
 
     constructor(
         canva: HTMLCanvasElement,
-        flamenco: Flamenco,
+        addEffect: Pick<Flamenco, 'addEffect'>,
         onLoaded: () => void
     ) {
         super(canva, { debug: false, onLoaded })
-        this.flamenco = flamenco
+        this.flamenco = addEffect
         this.init()
 
         // for (const this.paramsKey in this.params) {
@@ -189,20 +188,20 @@ export class HandSectionScene extends Scene3d {
                     `#include <begin_vertex> ${main}`
                 )
                 .replace('#include <common>', `${uniforms}\n#include <common>`)
+
+            this.flamenco.addEffect({
+                kind: 'custom',
+                onUpdate: ({ dataArray }) => {
+                    handMaterial.userData.shader.uniforms.fDataArray.value =
+                        new Float32Array(
+                            dataArray.map((d) => d * this.params.scale)
+                        )
+                    handMaterial.needsUpdate = true
+                },
+            })
         }
 
         mesh.material = handMaterial
-
-        this.flamenco.addEffect({
-            kind: 'custom',
-            onUpdate: ({ dataArray }) => {
-                handMaterial.userData.shader.uniforms.fDataArray.value =
-                    new Float32Array(
-                        dataArray.map((d) => d * this.params.scale)
-                    )
-                handMaterial.needsUpdate = true
-            },
-        })
 
         const group = new Group()
         group.add(mesh)

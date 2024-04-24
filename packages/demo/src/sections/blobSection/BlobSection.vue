@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { HandSectionScene } from './HandSectionScene'
+import { BlobSectionScene } from './BlobSectionScene'
 import { useFlamenco } from '../../utils/useFlamenco'
 
 const canvas = ref<HTMLCanvasElement>()
 // Scene
+
 const flamenco = useFlamenco().get()
 
 const emit = defineEmits<{
     (event: 'loaded'): void
 }>()
-let scene: HandSectionScene
+let scene: BlobSectionScene
 async function initThree() {
     if (!canvas.value) return
-    scene = new HandSectionScene(canvas.value, flamenco.value, () => {
-        console.log('loaded')
+    scene = new BlobSectionScene(canvas.value, flamenco.value, () => {
         emit('loaded')
     })
 }
@@ -48,7 +48,8 @@ onBeforeUnmount(() => {
     .left {
         z-index: 1;
         grid-area: 1/-1;
-        padding-left: 10vw;
+        padding-right: 10vw;
+        justify-self: flex-end;
     }
 
     canvas {
