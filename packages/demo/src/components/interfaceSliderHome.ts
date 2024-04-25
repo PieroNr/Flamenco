@@ -12,4 +12,5 @@ export type CellParams = {
     noise?: number
     opacity?: boolean
     params?: Array<CellParams>
+    contentText?: string
 }

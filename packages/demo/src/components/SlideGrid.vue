@@ -8,18 +8,17 @@
             class="animate-opacity"
         >
             <!-- {{ index }} -->
-            <p v-if="index === 14">Color</p>
             <button
                 v-if="cell.prev === true"
                 @click="prev((prevNext = !prevNext))"
             >
-                Prev
+                <img :src="Prev" alt="arrow prev flamenco" />
             </button>
             <button
                 v-if="cell.next === true"
                 @click="next((prevNext = !prevNext))"
             >
-                Next
+                <img :src="Next" alt="arrow prev flamenco" />
             </button>
         </MainGridCell>
     </div>
@@ -31,6 +30,8 @@ import MainGridCell from './MainGridCell.vue'
 import CONCERT1 from '../assets/img/concert-1.jpeg'
 import CONCERT3 from '../assets/img/concert-3.jpeg'
 import CONCERT1UP from '../assets/img/concert-1-up.jpg'
+import Prev from '../assets/img/prev.png'
+import Next from '../assets/img/next.png'
 import { SliderHome2 } from './slides/sliderHome2'
 import { SliderHome1 } from './slides/sliderHome1'
 import { gsap } from 'gsap'
@@ -135,19 +136,24 @@ const opacities = async (num) => {
     return new Promise((resolve) => {
         const shuffledSquares = shuffle(cellsOpacity)
         let completed = 0
-
+        const buttonIndices = cells.value
+            .map((cell, index) => (cell.next || cell.prev ? index : -1))
+            .filter((index) => index !== -1)
         shuffledSquares.forEach((square, index) => {
-            gsap.to(square.$el, {
-                opacity: num,
-                duration: 1 / 10,
-                delay: index / 30,
-                onComplete: () => {
-                    completed++
-                    if (completed === shuffledSquares.length) {
-                        resolve()
-                    }
-                },
-            })
+            completed++
+            if (index !== buttonIndices[0] && index !== buttonIndices[1]) {
+                console.log(index)
+                gsap.to(square.$el, {
+                    opacity: num,
+                    duration: 1 / 10,
+                    delay: index / 30,
+                    onComplete: () => {
+                        if (completed === shuffledSquares.length) {
+                            resolve()
+                        }
+                    },
+                })
+            }
         })
     })
 }
@@ -202,7 +208,7 @@ onUnmounted(() => {
     padding: 0;
     gap: 0;
 
-    p,
+    h2,
     button {
         width: 100%;
         height: 100%;
@@ -211,9 +217,17 @@ onUnmounted(() => {
         align-items: center;
     }
 
+    h2 {
+        font-size: 7vw;
+    }
+
     button {
         border: none;
         cursor: pointer;
+
+        img {
+            width: 25%;
+        }
     }
 }
 </style>
