@@ -3,159 +3,192 @@
         <MainGridCell
             v-for="(cell, index) in cells"
             :key="index"
-            :cell-data="cell"
+            :ref="(el) => (cellsOpacity[index] = el)"
+            :cellData="cell"
+            class="animate-opacity"
         >
-            <p>{{ index + ' -' }}</p>
+            <!-- {{ index }} -->
             <p v-if="index === 14">Color</p>
-            <p v-if="index === 13">Prev</p>
-            <p v-if="index === 10">Next</p>
+            <button
+                v-if="cell.prev === true"
+                @click="prev((prevNext = !prevNext))"
+            >
+                Prev
+            </button>
+            <button
+                v-if="cell.next === true"
+                @click="next((prevNext = !prevNext))"
+            >
+                Next
+            </button>
         </MainGridCell>
     </div>
 </template>
 
-<script lang="ts">
+<script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import MainGridCell from './MainGridCell.vue'
+import CONCERT1 from '../assets/img/concert-1.jpeg'
+import CONCERT3 from '../assets/img/concert-3.jpeg'
+import CONCERT1UP from '../assets/img/concert-1-up.jpg'
+import { SliderHome2 } from './slides/sliderHome2'
+import { SliderHome1 } from './slides/sliderHome1'
+import { gsap } from 'gsap'
+const cellsOpacity = []
 
-export default {
-    components: {
-        MainGridCell,
-    },
-    setup() {
-        const cells = ref<any[]>([])
-        const screenWidth = ref(window.innerWidth)
-        const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
+const cells = ref([])
+const screenWidth = ref(window.innerWidth)
+const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
+const fixedCellParams = ref([])
+const fixedCellsIndices = ref([])
+const cellSize = screenWidth.value / 8
+const prevNext = ref(false)
 
-        const updateCellSizes = () => {
-            const cellSize = screenWidth.value / 8
-            const fixedCellsIndices = [
-                2, 3, 8, 9, 10, 13, 14, 15, 16, 19, 20, 21, 25, 26, 27, 31, 32,
-                33, 34, 37,
-            ]
+const updateCellSizes = () => {
+    fixedCellsIndices.value = [
+        2, 3, 8, 9, 10, 13, 14, 15, 16, 19, 20, 21, 25, 26, 27,
+    ]
 
-            const fixedCellParams = [
-                { backgroundColor: themeColor.value[0], contentSlot: 'logo' },
-                { backgroundColor: themeColor.value[1], larger: 2, taller: 2 },
-                { backgroundColor: themeColor.value[2], taller: 2 },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0], contentSlot: 'about' },
-                { backgroundColor: themeColor.value[3], larger: 3 },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0], contentSlot: 'LA' },
-                { backgroundColor: themeColor.value[0], contentSlot: 'M' },
-                { backgroundColor: themeColor.value[2], larger: 3 },
-                {
-                    backgroundColor: themeColor.value[0],
-                    blur: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-                {
-                    backgroundColor: themeColor.value[0],
-                    noise: 50,
-                },
-                { backgroundColor: themeColor.value[2], larger: 2 },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[3] },
-                { backgroundColor: themeColor.value[0], contentSlot: 'N' },
-                { backgroundColor: themeColor.value[0], contentSlot: 'C' },
-                {
-                    backgroundColor: themeColor.value[0],
-                    blur: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-                {
-                    backgroundColor: themeColor.value[0],
-                    noise: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0], contentSlot: 'C' },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0], radius: '0 50% 0 0' },
-                {
-                    backgroundColor: themeColor.value[0],
-                    blur: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-                {
-                    backgroundColor: themeColor.value[0],
-                    noise: 50,
-                },
-                {
-                    backgroundColor: themeColor.value[0],
-                    blur: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-            ]
-
-            cells.value = Array.from({ length: 31 }, (_, index) => {
-                let cell = {}
-                if (fixedCellsIndices.includes(index)) {
-                    // Trouver l'index de l'indice fixe dans fixedCellsIndices
-                    const fixedCellIndex = fixedCellsIndices.indexOf(index)
-                    // Utiliser cet index pour obtenir les paramètres correspondants dans fixedCellParams
-                    const fixedCellParam: any = fixedCellParams[fixedCellIndex]
-                    cell = {
-                        width: cellSize + 'px',
-                        height: cellSize + 'px',
-                        backgroundColor:
-                            fixedCellParam.backgroundColor || 'none',
-                        blurEffect: fixedCellParam.blur
-                            ? `blur(${fixedCellParam.blur}px)`
-                            : 'none',
-                        noiseEffect: fixedCellParam.noise
-                            ? `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")`
-                            : 'none',
-                        backgroundImage: fixedCellParam.backgroundImage,
-                        contentSlot: fixedCellParam.contentSlot || '',
-                        contentSVG: fixedCellParam.contentSVG || '',
-                        contentText: fixedCellParam.contentText || '',
-                        radius: fixedCellParam.radius || '0',
-                        larger: fixedCellParam.larger,
-                        taller: fixedCellParam.taller,
-                    }
-                } else {
-                    // Assigner des valeurs aléatoires pour les autres cellules
-                    cell = {
-                        width: cellSize + 'px',
-                        height: cellSize + 'px',
-                        backgroundColor: 'red',
-                        blurEffect: Math.random() > 0.5 ? 'blur(5px)' : 'none',
-                        noiseEffect:
-                            Math.random() > 0.5
-                                ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
-                                : 'none',
-                        contentSlot:
-                            Math.random() > 0.5 ? 'Random Content' : '',
-                        radius: Math.random() > 0.5 ? '0' : '0',
-                        larger: false,
-                        taller: false,
-                    }
-                }
-                return cell
-            })
-        }
-
-        // Met à jour la taille des cellules lorsque la fenêtre est redimensionnée
-        const handleResize = () => {
-            screenWidth.value = window.innerWidth
-        }
-
-        onMounted(() => {
-            updateCellSizes()
-            window.addEventListener('resize', handleResize)
-        })
-
-        onUnmounted(() => {
-            window.removeEventListener('resize', handleResize)
-        })
-
-        return {
-            cells,
-        }
-    },
+    fixedCellParams.value = SliderHome1(
+        CONCERT1,
+        CONCERT3,
+        CONCERT1UP,
+        themeColor.value
+    )
+    cellsValue()
 }
+
+const cellsValue = async () => {
+    cells.value = Array.from({ length: 30 }, (_, index) => {
+        if (fixedCellsIndices.value.includes(index)) {
+            const fixedCellIndex = fixedCellsIndices.value.indexOf(index)
+            const fixedCellParam = fixedCellParams.value[fixedCellIndex]
+            return {
+                width: cellSize + 'px',
+                height: cellSize + 'px',
+                backgroundColor: fixedCellParam.backgroundColor || 'none',
+                blurEffect: fixedCellParam.blur
+                    ? `blur(${fixedCellParam.blur}px)`
+                    : 'none',
+                noiseEffect: fixedCellParam.noise
+                    ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
+                    : 'none',
+                backgroundImage: fixedCellParam.backgroundImage,
+                transform: fixedCellParam.transform,
+                taller: fixedCellParam.taller,
+                larger: fixedCellParam.larger,
+                backgroundPosition:
+                    fixedCellParam.backgroundPosition || 'center',
+                backgroundSize: fixedCellParam.backgroundSize,
+                contentSlot: fixedCellParam.contentSlot || '',
+                contentSVG: fixedCellParam.contentSVG || '',
+                contentText: fixedCellParam.contentText || '',
+                next: fixedCellParam.next || false,
+                prev: fixedCellParam.prev || false,
+                radius: fixedCellParam.radius || '0',
+            }
+        } else {
+            return {
+                width: cellSize + 'px',
+                height: cellSize + 'px',
+                backgroundColor: 'white',
+                blurEffect: Math.random() > 0.5 ? 'blur(5px)' : 'none',
+                noiseEffect:
+                    Math.random() > 0.5
+                        ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
+                        : 'none',
+                backgroundImage: null,
+                contentSlot: Math.random() > 0.5 ? '' : '',
+
+                contentSVG: '',
+                contentText: '',
+            }
+        }
+    })
+}
+
+// Met à jour la taille des cellules lorsque la fenêtre est redimensionnée
+const handleResize = () => {
+    screenWidth.value = window.innerWidth
+}
+
+function shuffle(array) {
+    let currentIndex = array.length,
+        temporaryValue,
+        randomIndex
+
+    // Tant qu'il reste des éléments à mélanger...
+    while (0 !== currentIndex) {
+        // Choisissez un élément restant...
+        randomIndex = Math.floor(Math.random() * currentIndex)
+        currentIndex -= 1
+
+        // Et échangez-le avec l'élément actuel.
+        temporaryValue = array[currentIndex]
+        array[currentIndex] = array[randomIndex]
+        array[randomIndex] = temporaryValue
+    }
+    return array
+}
+
+const opacities = async (num) => {
+    return new Promise((resolve) => {
+        const shuffledSquares = shuffle(cellsOpacity)
+        let completed = 0
+
+        shuffledSquares.forEach((square, index) => {
+            gsap.to(square.$el, {
+                opacity: num,
+                duration: 1 / 10,
+                delay: index / 30,
+                onComplete: () => {
+                    completed++
+                    if (completed === shuffledSquares.length) {
+                        resolve()
+                    }
+                },
+            })
+        })
+    })
+}
+
+const updateCellsAndAnimate = async () => {
+    // Attend que les opacités soient réduites avant de mettre à jour les cellules
+    await opacities(0)
+
+    // Met à jour les cellules avec les nouveaux paramètres
+    fixedCellsIndices.value = [
+        1, 3, 7, 8, 9, 12, 13, 14, 15, 19, 20, 21, 22, 28, 29,
+    ]
+    SliderHome2(fixedCellParams.value, CONCERT3, themeColor.value)
+
+    setTimeout(() => {
+        if (prevNext.value) {
+            cellsValue()
+        } else {
+            updateCellSizes()
+        }
+        opacities(1)
+    }, 350)
+}
+
+const next = async (bool) => {
+    // Met à jour les cellules et effectue les animations
+    await updateCellsAndAnimate(bool)
+}
+
+const prev = async (bool) => {
+    await updateCellsAndAnimate(bool)
+}
+
+onMounted(() => {
+    updateCellSizes()
+    window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <style>
@@ -168,5 +201,19 @@ export default {
     margin: 0;
     padding: 0;
     gap: 0;
+
+    p,
+    button {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    button {
+        border: none;
+        cursor: pointer;
+    }
 }
 </style>
