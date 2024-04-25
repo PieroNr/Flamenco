@@ -25,7 +25,7 @@ export class SoundAnalyzer {
 
     const analyze = (): void => {
 
-      this.analyser.getByteFrequencyData(this.dataArray);
+      this.analyser.getByteTimeDomainData(this.dataArray);
 
       animationCallback(this.dataArray);
 

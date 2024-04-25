@@ -66,6 +66,9 @@ importers:
       gsap:
         specifier: npm:@gsap/shockingly@^3.12.5
         version: /@gsap/shockingly@3.12.5
+      open-simplex-noise:
+        specifier: ^2.5.0
+        version: 2.5.0
       redaxios:
         specifier: ^0.5.1
         version: 0.5.1
@@ -3343,6 +3346,10 @@ packages:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
     dependencies:
       wrappy: 1.0.2
+
+  /open-simplex-noise@2.5.0:
+    resolution: {integrity: sha512-co7x8uWxGcgFtsJNBFqI9ylq+5Isotz2hZR7dsD5Sl+RDPGBeMEG41KAfF+5gF10ksi9Pg6DNpMHEoyTKLbejQ==}
+    dev: false
 
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}

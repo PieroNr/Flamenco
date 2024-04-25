@@ -1,4 +1,5 @@
 import {
+    Clock,
     LoadingManager,
     Mesh,
     PerspectiveCamera,
@@ -14,6 +15,7 @@ export class Scene3d extends Scene {
     protected loadingManager: LoadingManager
     protected sizes: { width: number; height: number } = { width: 0, height: 0 }
     protected pane?: Pane
+    protected clock: Clock
 
     constructor(
         canva: HTMLCanvasElement,
@@ -33,6 +35,8 @@ export class Scene3d extends Scene {
             canvas: canva,
             alpha: true,
         })
+        this.clock = new Clock()
+        this.clock.start()
 
         this.loadingManager = new LoadingManager()
         if (onLoaded) this.loadingManager.onLoad = onLoaded
@@ -65,7 +69,7 @@ export class Scene3d extends Scene {
     }
 
     scroll() {
-        console.log('scroll')
+        // Implement it if needed
     }
 
     destroy() {

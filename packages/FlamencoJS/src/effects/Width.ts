@@ -4,7 +4,7 @@ import {scale} from './utils/scale';
 import {WidthEffect} from '../types';
 
 export class Width extends AbstractSetEffect<WidthEffect> {
-  set(dataArray: Uint8Array): void {
+  update(dataArray: Uint8Array): void {
     this.effects.forEach(({elements}) => {
       elements?.forEach((element, i) => {
         const min = 2;
