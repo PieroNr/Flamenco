@@ -69,4 +69,3 @@ export class Flamenco {
     return this.player.musicLoaded;
   }
 }
-
