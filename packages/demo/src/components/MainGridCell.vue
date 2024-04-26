@@ -54,13 +54,15 @@
 
 <script lang="ts" setup>
 import type { Cell } from './types'
-import { computed } from 'vue'
+import {computed, ref} from 'vue'
 import { HoverEffect } from './enums'
 import { gsap } from 'gsap'
-import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(DrawSVGPlugin)
+gsap.registerPlugin(ScrollTrigger)
+
 const props = defineProps<{ cellData: Cell }>()
+
 const cellStyles = computed(() => {
     return {
         width: props.cellData.larger ? '100%' : props.cellData.width,
@@ -201,6 +203,45 @@ const removeHoverEffect = (event: Event) => {
         align-items: center;
     }
 
+  &-custom {
+    padding: 6rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    height: calc(100% - 12rem);
+    &__text {
+      font-size: 8rem;
+      font-weight: 500;
+      margin: 0;
+      letter-spacing: -5px;
+    }
+    &-sub{
+      display: flex;
+      width: 100%;
+      justify-content: start;
+      align-items: center;
+      gap:20px;
+      &__text {
+        font-size:1.5rem;
+        font-weight: 300;
+        margin: 0;
+      }
+      &__line {
+        width: 100%;
+        max-width: 20%;
+        height: 3px;
+        background-color: white;
+        display: block;
+      }
+    }
+
+
+  }
+
+
+
     router-link {
         text-decoration: underline;
         font-size: 1.5rem;
@@ -213,5 +254,4 @@ const removeHoverEffect = (event: Event) => {
     grid-column: span 3;
     width: 100% !important;
 }
-
 </style>

@@ -1,7 +1,11 @@
 <template>
     <div class="home-container">
         <LoadingScreen v-if="isLoading" />
-        <MainGrid @loaded="isLoading = false" />
+        <div>
+            <MainGrid @loaded="isLoading = false" />
+            <GridText text="flamenco is a Typescript library." sub-text="about to change the rythm of your life"/>
+            <GridText text="flamenco is an opensource library." sub-text="take part of it"/>
+        </div>
     </div>
 </template>
 
@@ -10,11 +14,13 @@ import { ref } from 'vue'
 import MainGrid from '../components/MainGrid.vue'
 import LoadingScreen from '../components/LoadingScreen.vue'
 import { watchEffect } from 'vue'
+import GridText from '../components/GridText.vue'
 
 const isLoading = ref(true)
 
 watchEffect(() => {
     if (isLoading.value) {
+        window.scrollTo(0, 0)
         document.body.classList.add('no-scroll')
     } else {
         document.body.classList.remove('no-scroll')
