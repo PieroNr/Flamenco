@@ -1,10 +1,14 @@
 <template>
-    <div :style="cellStyles" class="grid-cell">
-        <img
+    <div
+        :style="cellStyles"
+        :class="'grid-cell ' + props.cellData.className"
+        @mouseover="applyHoverEffect($event)"
+        @mouseout="removeHoverEffect($event)"
+    >
+        <object
             v-if="props.cellData.contentSVG"
             class="grid-cell__svg"
-            :src="props.cellData.contentSVG"
-            alt="Image"
+            :data="props.cellData.contentSVG"
         />
         <div
             v-if="props.cellData.blurEffect"
@@ -50,10 +54,16 @@
 
 <script lang="ts" setup>
 import type { Cell } from './types'
-import { computed, StyleValue } from 'vue'
+import { computed, ref } from 'vue'
+import { HoverEffect } from './enums'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps<{ cellData: Cell }>()
-const cellStyles = computed<StyleValue>(() => {
+
+const cellStyles = computed(() => {
     return {
         width: props.cellData.larger ? '100%' : props.cellData.width,
         height: props.cellData.taller ? '100%' : props.cellData.height,
@@ -66,21 +76,77 @@ const cellStyles = computed<StyleValue>(() => {
             ? 'span ' + props.cellData.larger
             : '',
         borderRadius: props.cellData.radius,
-        gridRows: props.cellData.taller
-            ? `span ${props.cellData.taller}`
+        gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : null,
+        gridColumn: props.cellData.larger
+            ? `span ${props.cellData.larger}`
             : null,
     }
 })
-
-if (props.cellData.noiseEffect) {
-    console.log(cellStyles)
-}
 
 const blurStyles = computed(() => {
     return {
         backdropFilter: `blur(${props.cellData.blurEffect}px)`,
     }
 })
+const applyHoverEffect = (event: Event) => {
+    const target = event.currentTarget as Element
+    const svgElement = target ? target.querySelector('.grid-cell__svg') : null
+
+    switch (props.cellData.hoverEffect) {
+        case HoverEffect.Roll:
+            {
+                const tl = gsap.timeline()
+                tl.to(svgElement, {
+                    y: '100%',
+                    duration: 0.5,
+                    ease: 'power2.in',
+                })
+                    .to(svgElement, {
+                        y: '-100%',
+                        duration: 0,
+                    })
+                    .to(svgElement, {
+                        y: '100%',
+                        duration: 0.4,
+                    })
+                    .to(svgElement, {
+                        y: '-100%',
+                        duration: 0,
+                    })
+                    .to(svgElement, {
+                        y: '100%',
+                        duration: 0.3,
+                    })
+                    .to(svgElement, {
+                        y: '-100%',
+                        duration: 0,
+                    })
+                    .to(svgElement, {
+                        y: '0%',
+                        duration: 0.5,
+                        ease: 'power1.inOut',
+                    })
+            }
+            break
+        case HoverEffect.SwipeRight:
+            gsap.to(svgElement, {
+                x: '100%',
+                duration: 0.5,
+            })
+            break
+        case HoverEffect.Morph:
+            break
+        default:
+            break
+    }
+}
+
+const removeHoverEffect = (event: Event) => {
+    const target = event.currentTarget as Element
+    const svgElement = target ? target.querySelector('.grid-cell__svg') : null
+    if (!props.cellData.hoverEffect) return
+    gsap.to(svgElement, { x: '0%', y: 0, duration: 0.5 })
+}
 </script>
 
 <style lang="scss">
@@ -93,6 +159,17 @@ const blurStyles = computed(() => {
     position: relative;
     background-repeat: no-repeat;
     font-family: 'League Spartan', sans-serif;
+    &-title {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 5;
+        &__text {
+            position: absolute;
+            bottom: -1.6rem;
+            left: 0;
+        }
+    }
 
     &__noise {
         position: absolute;
@@ -139,12 +216,55 @@ const blurStyles = computed(() => {
         align-items: center;
     }
 
+    &-custom {
+        padding: 6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+        height: calc(100% - 12rem);
+        &__text {
+            font-size: 8rem;
+            font-weight: 500;
+            margin: 0;
+            letter-spacing: -5px;
+        }
+        &-sub {
+            display: flex;
+            width: 100%;
+            justify-content: start;
+            align-items: center;
+            gap: 20px;
+            &__text {
+                font-size: 1.5rem;
+                font-weight: 300;
+                margin: 0;
+            }
+            &__line {
+                width: 100%;
+                max-width: 20%;
+                height: 3px;
+                display: block;
+            }
+        }
+    }
+
+    h2 {
+        font-size: 8rem;
+        font-weight: 500;
+        margin: 0;
+    }
+
     router-link {
         text-decoration: underline;
         font-size: 1.5rem;
         text-underline-offset: 0.5em;
         color: inherit;
     }
+}
+
+.overflow {
+    overflow: visible;
 }
 
 .large-column {

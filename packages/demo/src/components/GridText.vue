@@ -1,5 +1,9 @@
 <template>
-    <div ref="element" class="grid-container">
+    <div
+        ref="element"
+        class="grid-container"
+        :style="{ backgroundColor: themeColor[props.backColorIndex] }"
+    >
         <MainGridCell
             v-for="(cell, index) in cells"
             :key="index"
@@ -13,18 +17,10 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue'
-import { defineEmits } from 'vue'
+import { defineEmits, defineProps } from 'vue'
 import MainGridCell from './MainGridCell.vue'
 import { Cell } from './types'
-import F_letter from '../assets/svg/f_letter.svg'
-import LA_letter from '../assets/svg/la-letter.svg'
-import M_letter from '../assets/svg/m_letter.svg'
-import E_letter from '../assets/svg/e_letter.svg'
-import N_letter from '../assets/svg/n_letter.svg'
-import C_letter from '../assets/svg/c_letter.svg'
-import O_letter from '../assets/svg/o_letter.svg'
 import NOISE from '../assets/svg/noise.svg'
-import LOGO from '../assets/svg/logo.svg'
 import CONCERT1 from '../assets/img/concert-1.jpg'
 import CONCERT2 from '../assets/img/concert-2.jpg'
 import CONCERT3 from '../assets/img/concert-3.jpg'
@@ -32,7 +28,29 @@ import CONCERT4 from '../assets/img/concert-4.jpg'
 import CONCERT5 from '../assets/img/concert-5.jpg'
 import CONCERT6 from '../assets/img/concert-6.jpg'
 import CONCERT7 from '../assets/img/concert-7.jpg'
-import { HoverEffect } from './enums.ts'
+
+const props = defineProps({
+    text: {
+        type: String,
+        default: '',
+    },
+    subText: {
+        type: String,
+        default: '',
+    },
+    backColorIndex: {
+        type: Number,
+        default: 0,
+    },
+    textColorIndex: {
+        type: Number,
+        default: 1,
+    },
+    keyword: {
+        type: String,
+        default: '',
+    },
+})
 
 const element = ref<HTMLDivElement>()
 
@@ -48,104 +66,59 @@ const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
 const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
     const fixedCellsIndices = [
-        0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23,
-        25, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
+        0, 2, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18,
     ]
 
     const fixedCellParams = [
-        { backgroundColor: themeColor.value[0], contentSVG: LOGO },
-        { backgroundColor: themeColor.value[2] },
+        { backgroundColor: themeColor.value[props.backColorIndex] },
         { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColor.value[props.backColorIndex], larger: 3 },
         {
             backgroundColor: themeColor.value[0],
-            contentSlot: '<router-link  to="/doc">docs</router-link>',
+            backgroundImage: CONCERT4,
+            backgroundPosition: '40% 50%',
+            backgroundSize: '300%',
+            noise: NOISE,
         },
+        { backgroundColor: themeColor.value[2], radius: '0 50% 0 0' },
         {
-            backgroundColor: themeColor.value[0],
-            contentSlot: '<router-link  to="/about">about</router-link>',
+            backgroundColor: themeColor.value[props.backColorIndex],
+            larger: 6,
+            taller: 3,
+            contentSlot: `<div class="grid-cell-custom" style="color: ${themeColor.value[props.textColorIndex]}"><p class="grid-cell-custom__text">${getTextWithKeyWord()}</p>
+                        <div class="grid-cell-custom-sub"><span style="background-color: ${themeColor.value[props.textColorIndex]}" class="grid-cell-custom-sub__line" ref="line"></span>
+                        <p class="grid-cell-custom-sub__text">${props.subText}</p></div>
+                      </div>`,
         },
+        { backgroundColor: themeColor.value[2], radius: '0% 0 50% 0' },
         { backgroundColor: themeColor.value[1] },
         {
-            backgroundImage: CONCERT4,
-            contentSVG: F_letter,
-            noise: NOISE,
-            backgroundPosition: '60% 40%',
-            backgroundSize: '450%',
-            blur: 3,
-            hoverEffect: HoverEffect.Roll,
+            backgroundColor: themeColor.value[0],
+            backgroundImage: CONCERT3,
+            backgroundPosition: '40% 50%',
+            backgroundSize: '300%',
+            radius: '0 0 0 50%',
         },
-        {
-            backgroundColor: themeColor.value[2],
-            contentSVG: LA_letter,
-            hoverEffect: HoverEffect.SwipeRight,
-        },
+        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColor.value[0] },
         {
             backgroundColor: themeColor.value[0],
-            contentSVG: M_letter,
-            hoverEffect: HoverEffect.Morph,
-        },
-        { backgroundColor: themeColor.value[2], contentSVG: E_letter },
-        {
-            backgroundImage: CONCERT4,
-            backgroundPosition: '35% 50%',
-            backgroundSize: '450%',
-            blur: 3,
-        },
-        { backgroundColor: themeColor.value[2], radius: '0 0 50% 0' },
-        {
-            backgroundImage: CONCERT3,
-            backgroundPosition: '35% 30%',
-            backgroundSize: '450%',
-            noise: NOISE,
-        },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        {
             backgroundImage: CONCERT1,
-            taller: 3,
-            backgroundPosition: '25% 26%',
-            backgroundSize: 'cover',
-            noise: NOISE,
-        },
-        { backgroundColor: themeColor.value[2], contentSVG: N_letter },
-        { backgroundColor: themeColor.value[0], contentSVG: C_letter },
-        {
-            backgroundImage: CONCERT7,
-            blur: 3,
             backgroundPosition: '40% 50%',
             backgroundSize: '300%',
         },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0], contentSVG: O_letter },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[2], radius: '0 50% 0 0' },
+        { backgroundColor: themeColor.value[props.colorIndex], larger: 3 },
+        { backgroundColor: themeColor.value[2] },
         {
-            backgroundImage: CONCERT5,
-            backgroundPosition: '45% 50%',
+            backgroundColor: themeColor.value[1],
+            backgroundImage: CONCERT2,
+            backgroundPosition: '40% 50%',
             backgroundSize: '300%',
+            radius: '50% 0 0 0',
         },
-        { backgroundColor: themeColor.value[0] },
-        {
-            backgroundImage: CONCERT6,
-            backgroundPosition: '85% 50%',
-            backgroundSize: '300%',
-            radius: '0 0 0 25%',
-            blur: 2,
-        },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[1] },
-        { backgroundColor: themeColor.value[0] },
     ]
 
-    cells.value = Array.from({ length: 38 }, (_, index) => {
+    cells.value = Array.from({ length: 19 }, (_, index) => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
@@ -158,6 +131,7 @@ const updateCellSizes = () => {
                 backgroundImage: fixedCellParam.backgroundImage,
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
+                larger: fixedCellParam.larger,
                 backgroundPosition:
                     fixedCellParam.backgroundPosition || 'center',
                 backgroundSize: fixedCellParam.backgroundSize,
@@ -192,6 +166,16 @@ const updateCellSizes = () => {
     })
 }
 
+const getTextWithKeyWord = () => {
+    //create a p tag with text and replace the keyword with a span tag with themeColor[2]
+    const text = props.text
+    const keyword = props.keyword
+    return text.replace(
+        keyword,
+        `<span style="color: ${themeColor.value[2]}">${keyword}</span>`
+    )
+}
+
 const getRandomRadius = () => {
     const random = Math.random()
     if (random < 0.25) {
@@ -212,8 +196,6 @@ const handleResize = () => {
 onMounted(async () => {
     updateCellSizes()
     window.addEventListener('resize', handleResize)
-    await new Promise((resolve) => setTimeout(resolve, 4000))
-    emit('loaded') // Use emit here
 })
 
 onUnmounted(() => {
@@ -221,7 +203,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 .grid-container {
     display: grid;
     grid-template-columns: repeat(8, 1fr);

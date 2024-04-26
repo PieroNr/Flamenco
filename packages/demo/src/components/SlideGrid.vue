@@ -135,12 +135,6 @@ export default {
             })
         }
 
-        // const getRandomColor = () => {
-        //     return themeColor.value[
-        //         Math.floor(Math.random() * themeColor.value.length)
-        //     ]
-        // }
-
         // Met à jour la taille des cellules lorsque la fenêtre est redimensionnée
         const handleResize = () => {
             screenWidth.value = window.innerWidth
