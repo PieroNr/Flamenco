@@ -44,6 +44,7 @@ watchEffect(async () => {
 .code-highlighter {
     overflow-x: auto;
     display: flex;
+    width: max-content;
     align-items: center;
     background-color: #121212;
     padding: 0.7rem 1.3rem;

@@ -48,6 +48,16 @@ h6 {
     font-family: 'LSM', sans-serif;
 }
 
+:root{
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+}
+
 body {
     font-family:"League Spartan", sans-serif;
+    overscroll-behavior-y: none;
+}
+
+* {
+    box-sizing: border-box;
 }

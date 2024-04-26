@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import Markdown from 'unplugin-vue-markdown/vite'
+import markdownItAnchor from 'markdown-it-anchor'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,7 +10,11 @@ export default defineConfig({
         vue({
             include: [/\.vue$/, /\.md$/],
         }),
-        Markdown({}),
+        Markdown({
+            markdownItSetup(md) {
+                md.use(markdownItAnchor)
+            },
+        }),
     ],
     base: '/',
     assetsInclude: ['**/*.gltf', '**/*.glb', '**/*.hdr'],
