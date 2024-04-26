@@ -13,7 +13,7 @@ const routes = [
         path: '/about',
         name: 'About',
         component: About,
-    }
+    },
 ]
 
 const router = createRouter({
