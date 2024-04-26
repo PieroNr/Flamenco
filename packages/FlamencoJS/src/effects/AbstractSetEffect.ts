@@ -5,7 +5,6 @@ export abstract class AbstractSetEffect <T extends Effect>{
     effect: T;
     elements?: HTMLElement[];
   }[] = [];
-
   pushEffect(effect: T): void {
     if(effect.kind === 'custom') {
       this.effects.push({effect});
@@ -15,5 +14,6 @@ export abstract class AbstractSetEffect <T extends Effect>{
   }
 
   abstract update(dataArray: Uint8Array): void;
+
 
 }

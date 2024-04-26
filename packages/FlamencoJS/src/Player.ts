@@ -2,8 +2,8 @@ import {SoundAnalyzer} from './SoundAnalyser';
 import { EventEmitter } from './EventEmitter';
 
 export class Player extends EventEmitter<{
-    'music-loaded': void;
-    'sound-analyzed': {dataArray: Uint8Array};
+  'music-loaded': void;
+  'sound-analyzed': {dataArray: Uint8Array};
 }> {
   private analyser: SoundAnalyzer;
   private audioBuffer: AudioBuffer | null;
