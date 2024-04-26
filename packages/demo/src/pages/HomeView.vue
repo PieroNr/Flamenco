@@ -61,17 +61,17 @@ onMounted(() => {
         blobSection.value.element,
     ]
 
-  gsap.to(sections, {
-    yPercent: -100 * (sections.length - 1),
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".section-container",
-      pin: true,
-      scrub: 0,
-      snap: 1 / (sections.length - 1),
-      end: "+=3500",
-    }
-  });
+    gsap.to(sections, {
+        yPercent: -100 * (sections.length - 1),
+        ease: 'none',
+        scrollTrigger: {
+            trigger: '.section-container',
+            pin: true,
+            scrub: 0,
+            snap: 1 / (sections.length - 1),
+            end: '+=3500',
+        },
+    })
 })
 
 watchEffect(() => {
