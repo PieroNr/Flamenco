@@ -7,7 +7,7 @@ const canvas = ref<HTMLCanvasElement>()
 // Scene
 
 const flamenco = useFlamenco().get()
-console.log(flamenco.value)
+
 const emit = defineEmits<{
     (event: 'loaded'): void
 }>()
