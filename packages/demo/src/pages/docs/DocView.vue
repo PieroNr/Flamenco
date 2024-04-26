@@ -94,6 +94,19 @@ onMounted(() => {
             margin-top: 0.2rem;
             margin-bottom: 0.2rem;
         }
+
+        &:deep(.doc-line) {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        &:deep(.doc-line + .doc-line) {
+            margin-top: 0;
+        }
+
+        &:deep(.doc-line:has(+ .doc-line)) {
+            margin-bottom: 0;
+        }
     }
 
     .menu {
