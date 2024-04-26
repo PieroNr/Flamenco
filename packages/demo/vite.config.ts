@@ -9,6 +9,11 @@ export default defineConfig({
     plugins: [
         vue({
             include: [/\.vue$/, /\.md$/],
+            template: {
+                compilerOptions: {
+                    whitespace: 'preserve',
+                },
+            },
         }),
         Markdown({
             markdownItSetup(md) {

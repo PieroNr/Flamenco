@@ -8,11 +8,11 @@ const titles = ref<NavElement[]>([])
 onMounted(() => {
     const titleElements = document
         .querySelector('.docs')
-        ?.querySelectorAll('h2,h3')
+        ?.querySelectorAll('h1,h2,h3')
     if (!titleElements) return
     let previous: NavElement | null = null
     titleElements.forEach((el) => {
-        if (el.tagName === 'H2') {
+        if (el.tagName === 'H2' || el.tagName === 'H1') {
             const navElement = {
                 text: el.textContent || '',
                 id: el.id,
@@ -49,10 +49,15 @@ onMounted(() => {
     .docs {
         flex-grow: 1;
         justify-self: center;
-        max-width: 700px;
+        max-width: 900px;
 
+        &:deep(h1),
+        &:deep(h2),
+        &:deep(h3),
         &:deep(p) {
-            margin: 0;
+            margin-right: auto;
+            margin-left: auto;
+            max-width: 700px;
         }
 
         &:deep(h1),
@@ -66,24 +71,28 @@ onMounted(() => {
         &:deep(h1) {
             font-size: 128px;
             font-weight: 500;
-            margin: 1.5rem 0;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         &:deep(h2) {
             font-size: 32px;
             font-weight: 600;
-            margin: 1rem 0;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
 
         &:deep(h3) {
             font-size: 24px;
             font-weight: 600;
-            margin: 0.5rem 0;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
         }
 
         &:deep(p) {
             font-size: 16px;
-            margin: 0.2rem 0;
+            margin-top: 0.2rem;
+            margin-bottom: 0.2rem;
         }
     }
 
