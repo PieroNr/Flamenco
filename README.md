@@ -129,6 +129,8 @@ Developers:
 - [Piero Neri](https://github.com/PieroNr)
 - [Adrien Bouteiller](https://github.com/Adrien24)
 - [Cécile Denoncin](https://github.com/cdenoncin)
+- [Jessy Ernatus](https://github.com/mouzone9)
+- [Timothée Durand](https://github.com/timothee-durand)
 
 [**Return**](#-quick-links)
 

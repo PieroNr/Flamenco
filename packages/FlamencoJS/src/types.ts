@@ -1,4 +1,4 @@
-export const DEFAULT_EFFECTS = ['height', 'width', 'color', 'background'] as const;
+export const DEFAULT_EFFECTS = ['height', 'width', 'color', 'background', 'pulse'] as const;
 export type DefaultEffectKind = typeof DEFAULT_EFFECTS[number]
 export type EffectKind = DefaultEffectKind | 'custom'
 interface BaseEffect {
@@ -27,12 +27,18 @@ export interface FontColorEffect extends BaseDefaultEffect {
   selector: string;
 }
 
+export interface PulseEffect extends BaseDefaultEffect {
+  kind: 'pulse';
+  selector: string;
+}
+
 export interface BackgroundColorEffect extends BaseDefaultEffect {
   kind: 'background';
   selector: string;
 }
 
-export type DefaultEffect = HeightEffect | WidthEffect | FontColorEffect | BackgroundColorEffect
+
+export type DefaultEffect = HeightEffect | WidthEffect | FontColorEffect | BackgroundColorEffect | PulseEffect
 
 export type FunctionEffect = (context: { dataArray: Uint8Array, indexValue: number }) => void
 export interface CustomEffect extends BaseEffect {
