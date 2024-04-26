@@ -11,11 +11,9 @@ export class Pulse extends AbstractSetEffect<PulseEffect> {
           data: dataArray,
           elementNumber: this.effects.length,
         });
-
         // Normalize the indexValue to a range between 0 and 1
         const normalizedIndexValue = indexValue / 255;
         const newWaveFrequency = normalizedIndexValue * 50;
-        console.log(newWaveFrequency);
         // Calculate new opacity and scale values based on the music data
         const newOpacity = 0.4 + 0.6 * normalizedIndexValue;
         const newScale = 0.95 + 0.05 * normalizedIndexValue;
