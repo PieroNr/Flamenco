@@ -2,37 +2,40 @@ export class SoundAnalyzer {
   audioContext: AudioContext;
   private analyser: AnalyserNode;
   private dataArray: Uint8Array;
+  private source?: AudioBufferSourceNode;
+  private mustStop = false;
 
   constructor() {
     this.audioContext = new window.AudioContext();
     this.analyser = this.audioContext.createAnalyser();
-    this.analyser.fftSize = 256; // Vous pouvez ajuster la taille en fonction de vos besoins
+    this.analyser.fftSize = 256;
+    this.analyser.smoothingTimeConstant = 0.1;
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
   }
 
   analyzeSound(audioBuffer: AudioBuffer, animationCallback: (dataArray: Uint8Array) => void): void {
-    // Connectez l'analyseur au buffer audio
     const source = this.audioContext.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(this.analyser);
     this.analyser.connect(this.audioContext.destination);
 
-    // Commencez la lecture audio
     source.start();
 
-    // Utilisez une fonction fléchée pour garantir que le contexte (this) est correct
-    const analyze = (): void => {
-      // Mettez à jour dataArray avec les données actuelles de l'analyseur
-      this.analyser.getByteFrequencyData(this.dataArray);
+    this.source = source;
 
-      // Appelez la fonction de rappel d'animation avec les données d'analyse
+    const analyze = (): void => {
+
+      this.analyser.getByteTimeDomainData(this.dataArray);
+
       animationCallback(this.dataArray);
 
-      // Répétez l'analyse à la fréquence souhaitée
+      if(this.mustStop) {
+        this.mustStop = false;
+        return;
+      }
       requestAnimationFrame(analyze);
     };
 
-    // Démarrez l'analyse
     analyze();
   }
 
@@ -49,8 +52,8 @@ export class SoundAnalyzer {
   }
 
   stop(): void {
-    this.analyser.disconnect();
-    this.audioContext.close();
+    this.source?.stop();
+    this.mustStop = true;
   }
 }
 

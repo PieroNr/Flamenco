@@ -72,8 +72,7 @@ const cellStyles = computed(() => {
         backgroundColor: props.cellData.backgroundColor,
         backgroundPosition: props.cellData.backgroundPosition,
         backgroundSize: props.cellData.backgroundSize,
-        contentSlot: props.cellData.contentSlot,
-        gridColumn: props.cellData.larger
+        gridColumns: props.cellData.larger
             ? 'span ' + props.cellData.larger
             : '',
         borderRadius: props.cellData.radius,

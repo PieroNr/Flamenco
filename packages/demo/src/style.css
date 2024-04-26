@@ -2,3 +2,7 @@
 .no-scroll {
     overflow: hidden;
 }
+
+body {
+    font-family:"League Spartan", sans-serif;
+}

@@ -41,6 +41,8 @@ watchEffect(() => {
         window.scrollTo(0, 0)
     }
 })
+import HandSection from '../sections/handSection/3dHandSection.vue'
+import BlobSection from '../sections/blobSection/BlobSection.vue'
 </script>
 
 <style scoped lang="scss">

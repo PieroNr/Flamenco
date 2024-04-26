@@ -20,7 +20,7 @@ export default {
         MainGridCell,
     },
     setup() {
-        const cells = ref([])
+        const cells = ref<any[]>([])
         const screenWidth = ref(window.innerWidth)
         const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
 
@@ -95,7 +95,7 @@ export default {
                     // Trouver l'index de l'indice fixe dans fixedCellsIndices
                     const fixedCellIndex = fixedCellsIndices.indexOf(index)
                     // Utiliser cet index pour obtenir les paramètres correspondants dans fixedCellParams
-                    const fixedCellParam = fixedCellParams[fixedCellIndex]
+                    const fixedCellParam: any = fixedCellParams[fixedCellIndex]
                     cell = {
                         width: cellSize + 'px',
                         height: cellSize + 'px',
