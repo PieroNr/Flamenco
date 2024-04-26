@@ -7,18 +7,17 @@
             :cellData="cell"
             class="animate-opacity"
         >
-            <!-- {{ index }} -->
             <button
                 v-if="cell.prev === true"
                 @click="prev((prevNext = !prevNext))"
             >
-                <img :src="Prev" alt="arrow prev flamenco" />
+                <img :src="Prev" alt="arrow précédent slider flamenco" />
             </button>
             <button
                 v-if="cell.next === true"
                 @click="next((prevNext = !prevNext))"
             >
-                <img :src="Next" alt="arrow prev flamenco" />
+                <img :src="Next" alt="arrow suivant slider flamenco" />
             </button>
         </MainGridCell>
     </div>
@@ -27,8 +26,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import MainGridCell from './MainGridCell.vue'
-import CONCERT1 from '../assets/img/concert-1.jpeg'
-import CONCERT3 from '../assets/img/concert-3.jpeg'
+import CONCERT1 from '../assets/img/concert-1.jpg'
+import CONCERT3 from '../assets/img/concert-3.jpg'
 import CONCERT1UP from '../assets/img/concert-1-up.jpg'
 import Prev from '../assets/img/prev.png'
 import Next from '../assets/img/next.png'
@@ -68,12 +67,12 @@ const cellsValue = async () => {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
-                blurEffect: fixedCellParam.blur
-                    ? `blur(${fixedCellParam.blur}px)`
-                    : 'none',
-                noiseEffect: fixedCellParam.noise
-                    ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
-                    : 'none',
+                // blurEffect: fixedCellParam.blur
+                //     ? `blur(${fixedCellParam.blur}px)`
+                //     : 'none',
+                // noiseEffect: fixedCellParam.noise
+                //     ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
+                //     : 'none',
                 backgroundImage: fixedCellParam.backgroundImage,
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
@@ -93,11 +92,11 @@ const cellsValue = async () => {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
                 backgroundColor: 'white',
-                blurEffect: Math.random() > 0.5 ? 'blur(5px)' : 'none',
-                noiseEffect:
-                    Math.random() > 0.5
-                        ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
-                        : 'none',
+                // blurEffect: Math.random() > 0.5 ? 'blur(5px)' : 'none',
+                // noiseEffect:
+                //     Math.random() > 0.5
+                //         ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
+                //         : 'none',
                 backgroundImage: null,
                 contentSlot: Math.random() > 0.5 ? '' : '',
 
@@ -136,24 +135,19 @@ const opacities = async (num) => {
     return new Promise((resolve) => {
         const shuffledSquares = shuffle(cellsOpacity)
         let completed = 0
-        const buttonIndices = cells.value
-            .map((cell, index) => (cell.next || cell.prev ? index : -1))
-            .filter((index) => index !== -1)
+
         shuffledSquares.forEach((square, index) => {
-            completed++
-            if (index !== buttonIndices[0] && index !== buttonIndices[1]) {
-                console.log(index)
-                gsap.to(square.$el, {
-                    opacity: num,
-                    duration: 1 / 10,
-                    delay: index / 30,
-                    onComplete: () => {
-                        if (completed === shuffledSquares.length) {
-                            resolve()
-                        }
-                    },
-                })
-            }
+            gsap.to(square.$el, {
+                opacity: num,
+                duration: 1 / 5,
+                delay: index / 30,
+                onComplete: () => {
+                    completed++
+                    if (completed === shuffledSquares.length) {
+                        resolve()
+                    }
+                },
+            })
         })
     })
 }
@@ -208,7 +202,7 @@ onUnmounted(() => {
     padding: 0;
     gap: 0;
 
-    h2,
+    p,
     button {
         width: 100%;
         height: 100%;
@@ -217,14 +211,9 @@ onUnmounted(() => {
         align-items: center;
     }
 
-    h2 {
-        font-size: 7vw;
-    }
-
     button {
         border: none;
         cursor: pointer;
-
         img {
             width: 25%;
         }

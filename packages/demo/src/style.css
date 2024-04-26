@@ -4,7 +4,7 @@
 }
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=League+Spartan:wght@100..900&display=swap');
 .no-scroll {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 @font-face {

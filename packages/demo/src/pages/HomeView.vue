@@ -24,6 +24,7 @@
                 keyword="opensource"
             />
             <BlobSection ref="blobSection" />
+            <SlideGrid />
         </div>
     </div>
 </template>

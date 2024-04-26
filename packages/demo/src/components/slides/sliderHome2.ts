@@ -49,7 +49,7 @@ export function SliderHome2(
     params[7] = {
         backgroundColor: color[0],
         larger: 3,
-        contentText: 'Hello World',
+        contentText: 'height.',
     }
     params[8] = {
         backgroundColor: color[1],

@@ -42,14 +42,15 @@
             :src="props.cellData.backgroundImage"
             alt="Image"
         />-->
-        <span v-if="props.cellData.contentText">{{
-            props.cellData.contentText
-        }}</span>
+        <h2 v-if="props.cellData.contentText">
+            {{ props.cellData.contentText }}
+        </h2>
         <div
             v-else-if="props.cellData.contentSlot"
             class="grid-cell__contentSlot"
             v-html="props.cellData.contentSlot"
         ></div>
+        <slot></slot>
     </div>
 </template>
 
@@ -175,6 +176,10 @@ const removeHoverEffect = (event: Event) => {
             bottom: -1.6rem;
             left: 0;
         }
+    }
+
+    h2 {
+        font-size: 5vw;
     }
 
     &__noise {

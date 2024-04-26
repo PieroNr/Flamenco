@@ -28,7 +28,7 @@ export function SliderHome1(
         { backgroundColor: color[1] },
         { backgroundColor: color[2], next: true },
         { backgroundColor: color[2], prev: true },
-        { backgroundColor: color[0], larger: 3, contentText: 'Colors.' },
+        { backgroundColor: color[0], larger: 3, contentText: 'colors.' },
         { backgroundColor: color[1] },
         {
             backgroundColor: color[2],
