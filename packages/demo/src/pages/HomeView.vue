@@ -3,8 +3,21 @@
         <LoadingScreen v-if="isLoading" />
         <div>
             <MainGrid @loaded="isLoading = false" />
-            <GridText text="flamenco is a Typescript library." sub-text="about to change the rythm of your life"/>
-            <GridText text="flamenco is an opensource library." sub-text="take part of it"/>
+            <SetupGrid />
+            <GridText
+                text="flamenco is a Typescript library."
+                sub-text="about to change the rythm of your life"
+                back-color-index="1"
+                text-color-index="0"
+                keyword="Typescript"
+            />
+            <GridText
+                text="flamenco is an opensource library."
+                sub-text="take part of it"
+                back-color-index="0"
+                text-color-index="1"
+                keyword="opensource"
+            />
         </div>
     </div>
 </template>
@@ -15,6 +28,7 @@ import MainGrid from '../components/MainGrid.vue'
 import LoadingScreen from '../components/LoadingScreen.vue'
 import { watchEffect } from 'vue'
 import GridText from '../components/GridText.vue'
+import SetupGrid from "../components/SetupGrid.vue";
 
 const isLoading = ref(true)
 

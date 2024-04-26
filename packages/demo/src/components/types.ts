@@ -17,4 +17,5 @@ export type Cell = {
     larger: number
     taller: number
     hoverEffect: HoverEffect
+    className?: string
 }

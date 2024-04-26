@@ -43,7 +43,7 @@ const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
     const fixedCellsIndices = [
         0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23,
-        25, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38, 39, 41, 42, 43, 44,
+        25, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
     ]
 
     const fixedCellParams = [
@@ -127,7 +127,6 @@ const updateCellSizes = () => {
             backgroundPosition: '85% 50%',
             backgroundSize: '300%',
             radius: '0 0 0 25%',
-            taller: 2,
             blur: 2,
         },
         { backgroundColor: themeColor.value[0] },
@@ -140,7 +139,7 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[0] },
     ]
 
-    cells.value = Array.from({ length: 45 }, (_, index) => {
+    cells.value = Array.from({ length: 38 }, (_, index) => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
@@ -220,9 +219,9 @@ onUnmounted(() => {
 .grid-container {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(5, 1fr);
     width: 100vw;
-    height: calc(100vh + 100vh / 4);
+    height: calc(100vh);
     margin: 0;
     padding: 0;
     gap: 0;

@@ -1,7 +1,7 @@
 <template>
     <div
         :style="cellStyles"
-        class="grid-cell"
+        :class="'grid-cell ' + props.cellData.className"
         @mouseover="applyHoverEffect($event)"
         @mouseout="removeHoverEffect($event)"
     >
@@ -54,7 +54,7 @@
 
 <script lang="ts" setup>
 import type { Cell } from './types'
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 import { HoverEffect } from './enums'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -157,6 +157,17 @@ const removeHoverEffect = (event: Event) => {
     position: relative;
     background-repeat: no-repeat;
     font-family: 'League Spartan', sans-serif;
+    &-title {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 5;
+      &__text {
+        position: absolute;
+        bottom: -1.6rem;
+        left: 0;
+      }
+    }
 
     &__noise {
         position: absolute;
@@ -203,44 +214,45 @@ const removeHoverEffect = (event: Event) => {
         align-items: center;
     }
 
-  &-custom {
-    padding: 6rem;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
-    height: calc(100% - 12rem);
-    &__text {
+    &-custom {
+        padding: 6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+        height: calc(100% - 12rem);
+        &__text {
+            font-size: 8rem;
+            font-weight: 500;
+            margin: 0;
+            letter-spacing: -5px;
+        }
+        &-sub {
+            display: flex;
+            width: 100%;
+            justify-content: start;
+            align-items: center;
+            gap: 20px;
+            &__text {
+                font-size: 1.5rem;
+                font-weight: 300;
+                margin: 0;
+            }
+            &__line {
+                width: 100%;
+                max-width: 20%;
+                height: 3px;
+                display: block;
+            }
+        }
+    }
+
+    h2 {
       font-size: 8rem;
       font-weight: 500;
       margin: 0;
-      letter-spacing: -5px;
+
     }
-    &-sub{
-      display: flex;
-      width: 100%;
-      justify-content: start;
-      align-items: center;
-      gap:20px;
-      &__text {
-        font-size:1.5rem;
-        font-weight: 300;
-        margin: 0;
-      }
-      &__line {
-        width: 100%;
-        max-width: 20%;
-        height: 3px;
-        background-color: white;
-        display: block;
-      }
-    }
-
-
-  }
-
-
 
     router-link {
         text-decoration: underline;
@@ -248,6 +260,10 @@ const removeHoverEffect = (event: Event) => {
         text-underline-offset: 0.5em;
         color: inherit;
     }
+}
+
+.overflow {
+    overflow: visible;
 }
 
 .large-column {
