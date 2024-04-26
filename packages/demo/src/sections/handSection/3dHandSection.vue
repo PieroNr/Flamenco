@@ -3,6 +3,12 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { HandSectionScene } from './HandSectionScene'
 import { useFlamenco } from '../../utils/useFlamenco'
 
+const element = ref<HTMLDivElement>()
+
+defineExpose({
+    element,
+})
+
 const canvas = ref<HTMLCanvasElement>()
 // Scene
 const flamenco = useFlamenco().get()
@@ -27,7 +33,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="hand-section">
+    <div ref="element" class="hand-section">
         <div class="left">
             <h2>Change.</h2>
             <p>The way you interact</p>
@@ -41,6 +47,8 @@ onBeforeUnmount(() => {
     display: grid;
     align-items: center;
     grid-template-columns: 1fr;
+    position: relative;
+    z-index: 3;
     height: 100vh;
     color: white;
     font-size: 1.5rem;

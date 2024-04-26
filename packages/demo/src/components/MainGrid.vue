@@ -1,5 +1,5 @@
 <template>
-    <div class="grid-container">
+    <div ref="element" class="grid-container">
         <MainGridCell
             v-for="(cell, index) in cells"
             :key="index"
@@ -33,6 +33,12 @@ import CONCERT5 from '../assets/img/concert-5.jpg'
 import CONCERT6 from '../assets/img/concert-6.jpg'
 import CONCERT7 from '../assets/img/concert-7.jpg'
 import { HoverEffect } from './enums.ts'
+
+const element = ref<HTMLDivElement>()
+
+defineExpose({
+    element,
+})
 
 const emit = defineEmits(['loaded'])
 const cells = ref<Cell[]>([])

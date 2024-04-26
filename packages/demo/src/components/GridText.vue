@@ -1,5 +1,6 @@
 <template>
     <div
+        ref="element"
         class="grid-container"
         :style="{ backgroundColor: themeColor[props.backColorIndex] }"
     >
@@ -49,6 +50,12 @@ const props = defineProps({
         type: String,
         default: '',
     },
+})
+
+const element = ref<HTMLDivElement>()
+
+defineExpose({
+    element,
 })
 
 const emit = defineEmits(['loaded'])

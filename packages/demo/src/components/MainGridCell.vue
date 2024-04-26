@@ -77,6 +77,9 @@ const cellStyles = computed(() => {
             : '',
         borderRadius: props.cellData.radius,
         gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : null,
+        gridColumn: props.cellData.larger
+            ? `span ${props.cellData.larger}`
+            : null,
     }
 })
 
@@ -157,15 +160,15 @@ const removeHoverEffect = (event: Event) => {
     background-repeat: no-repeat;
     font-family: 'League Spartan', sans-serif;
     &-title {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      z-index: 5;
-      &__text {
-        position: absolute;
-        bottom: -1.6rem;
-        left: 0;
-      }
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 5;
+        &__text {
+            position: absolute;
+            bottom: -1.6rem;
+            left: 0;
+        }
     }
 
     &__noise {
@@ -247,10 +250,9 @@ const removeHoverEffect = (event: Event) => {
     }
 
     h2 {
-      font-size: 8rem;
-      font-weight: 500;
-      margin: 0;
-
+        font-size: 8rem;
+        font-weight: 500;
+        margin: 0;
     }
 
     router-link {
