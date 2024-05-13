@@ -3,7 +3,7 @@
         <LoadingScreen v-if="isLoading" />
         <div class="section-container">
             <MainGrid ref="mainGrid" @loaded="isLoading = false" />
-
+          <hand-section ref="handSection" />
             <GridText
                 ref="gridText1"
                 text="flamenco is a Typescript library."
@@ -13,7 +13,7 @@
                 keyword="Typescript"
             />
             <SetupGrid ref="setupGrid" />
-            <hand-section ref="handSection" />
+
 
             <GridText
                 ref="gridText2"
