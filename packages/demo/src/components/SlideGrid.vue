@@ -2,10 +2,11 @@
     <div class="grid-container">
         <MainGridCell
             v-for="(cell, index) in cells"
-            :key="index"
+            :key="index + Math.random()"
             :ref="(el) => (cellsOpacity[index] = el)"
             :cellData="cell"
             class="animate-opacity"
+            style="opacity: 0"
         >
             <button
                 v-if="cell.prev === true"
@@ -35,6 +36,7 @@ import { SliderHome2 } from './slides/sliderHome2'
 import { SliderHome1 } from './slides/sliderHome1'
 import { gsap } from 'gsap'
 const cellsOpacity = []
+const slideHash = ref(Math.random())
 
 const cells = ref([])
 const screenWidth = ref(window.innerWidth)
@@ -168,20 +170,27 @@ const updateCellsAndAnimate = async () => {
         } else {
             updateCellSizes()
         }
-        opacities(1)
+        setTimeout(() => {
+            opacities(1)
+        }, 100)
     }, 350)
 }
 
 const next = async (bool) => {
+    slideHash.value = Math.random()
     // Met à jour les cellules et effectue les animations
     await updateCellsAndAnimate(bool)
 }
 
 const prev = async (bool) => {
+    slideHash.value = Math.random()
     await updateCellsAndAnimate(bool)
 }
 
 onMounted(() => {
+    setTimeout(() => {
+        opacities(1)
+    }, 500)
     updateCellSizes()
     window.addEventListener('resize', handleResize)
 })

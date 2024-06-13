@@ -13,4 +13,5 @@ export type CellParams = {
     opacity?: boolean
     params?: Array<CellParams>
     contentText?: string
+    contentSlot?: string
 }

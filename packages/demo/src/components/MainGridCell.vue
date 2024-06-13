@@ -56,14 +56,33 @@
 
 <script lang="ts" setup>
 import type { Cell } from './types'
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { HoverEffect } from './enums'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useFlamenco } from '@/utils/useFlamenco'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps<{ cellData: Cell }>()
+
+// Scene
+const flamenco = useFlamenco().get()
+
+onMounted(() => {
+    upadteEffect()
+})
+
+const upadteEffect = () => {
+    flamenco.value.addEffect({
+        kind: 'color',
+        selector: '.colors',
+        options: {
+            min: '#eeeeee',
+            max: '#000000',
+        },
+    })
+}
 
 const cellStyles = computed(() => {
     return {
@@ -179,7 +198,11 @@ const removeHoverEffect = (event: Event) => {
     }
 
     h2 {
-        font-size: 5vw;
+        font-size: 7vw;
+    }
+
+    .colors {
+        transition: color 0.05s;
     }
 
     &__noise {

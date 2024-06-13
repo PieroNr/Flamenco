@@ -25,6 +25,7 @@ export interface WidthEffect extends BaseDefaultEffect {
 export interface FontColorEffect extends BaseDefaultEffect {
   kind: 'color';
   selector: string;
+  options: {min: string, max: string};
 }
 
 export interface PulseEffect extends BaseDefaultEffect {

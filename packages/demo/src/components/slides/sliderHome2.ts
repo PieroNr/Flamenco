@@ -49,7 +49,7 @@ export function SliderHome2(
     params[7] = {
         backgroundColor: color[0],
         larger: 3,
-        contentText: 'height.',
+        contentSlot: '<h2>height.</h2>',
     }
     params[8] = {
         backgroundColor: color[1],
