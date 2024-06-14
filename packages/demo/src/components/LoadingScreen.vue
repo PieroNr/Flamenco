@@ -3,7 +3,7 @@
         <div
             v-for="i in 40"
             :key="i"
-            :ref="(el) => (squares[i] = el)"
+            :ref="(el) => (squares[i] = el as HTMLElement)"
             class="loading-square"
         ></div>
         <p ref="loader">{{ loadingPercentage }}%</p>
@@ -16,7 +16,7 @@ import { gsap } from 'gsap'
 
 const loadingPercentage = ref(0)
 const loader = ref()
-const squares = []
+const squares: Array<HTMLElement | null> = []
 
 const increasePercentage = () => {
     const interval = setInterval(() => {
@@ -29,7 +29,7 @@ const increasePercentage = () => {
                 duration: 1,
                 delay: 0.5,
             })
-            shuffle(squares).forEach((square) => {
+            shuffle(squares).forEach((square: HTMLElement | null) => {
                 gsap.to(square, {
                     opacity: 0,
                     duration: 0.01,
@@ -40,18 +40,13 @@ const increasePercentage = () => {
     }, 20)
 }
 
-function shuffle(array) {
+function shuffle(array: Array<HTMLElement | null>) {
     let currentIndex = array.length,
         temporaryValue,
         randomIndex
-
-    // Tant qu'il reste des éléments à mélanger...
     while (0 !== currentIndex) {
-        // Choisissez un élément restant...
         randomIndex = Math.floor(Math.random() * currentIndex)
         currentIndex -= 1
-
-        // Et échangez-le avec l'élément actuel.
         temporaryValue = array[currentIndex]
         array[currentIndex] = array[randomIndex]
         array[randomIndex] = temporaryValue

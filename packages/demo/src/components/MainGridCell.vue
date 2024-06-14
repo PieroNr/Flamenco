@@ -56,11 +56,11 @@
 
 <script lang="ts" setup>
 import type { Cell } from './types'
-import { computed, ref, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { HoverEffect } from './enums'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useFlamenco } from '@/utils/useFlamenco'
+import { useFlamenco } from '../utils/useFlamenco'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -70,10 +70,10 @@ const props = defineProps<{ cellData: Cell }>()
 const flamenco = useFlamenco().get()
 
 onMounted(() => {
-    upadteEffect()
+    updateEffect()
 })
 
-const upadteEffect = () => {
+const updateEffect = () => {
     flamenco.value.addEffect({
         kind: 'color',
         selector: '.colors',
@@ -98,10 +98,10 @@ const cellStyles = computed(() => {
             ? 'span ' + props.cellData.larger
             : '',
         borderRadius: props.cellData.radius,
-        gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : null,
+        gridRow: props.cellData.taller ? `span ${props.cellData.taller}` : '',
         gridColumn: props.cellData.larger
             ? `span ${props.cellData.larger}`
-            : null,
+            : '',
     }
 })
 

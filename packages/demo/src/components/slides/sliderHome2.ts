@@ -1,10 +1,10 @@
-import { CellParams } from '../interfaceSliderHome'
+import { Cell } from '../types'
 
 export function SliderHome2(
-    params: CellParams[],
+    params: Cell[],
     CONCERT3: string,
-    color: string
-): CellParams[] {
+    color: string[]
+): Cell[] {
     params[0] = {
         backgroundImage: CONCERT3,
         taller: 2,

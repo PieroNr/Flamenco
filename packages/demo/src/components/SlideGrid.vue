@@ -4,19 +4,19 @@
             v-for="(cell, index) in cells"
             :key="index + Math.random()"
             :ref="(el) => (cellsOpacity[index] = el)"
-            :cellData="cell"
+            :cell-data="cell"
             class="animate-opacity"
             style="opacity: 0"
         >
             <button
                 v-if="cell.prev === true"
-                @click="prev((prevNext = !prevNext))"
+                @click="prev(), (prevNext = !prevNext)"
             >
                 <img :src="Prev" alt="arrow précédent slider flamenco" />
             </button>
             <button
                 v-if="cell.next === true"
-                @click="next((prevNext = !prevNext))"
+                @click="next(), (prevNext = !prevNext)"
             >
                 <img :src="Next" alt="arrow suivant slider flamenco" />
             </button>
@@ -35,14 +35,17 @@ import Next from '../assets/img/next.png'
 import { SliderHome2 } from './slides/sliderHome2'
 import { SliderHome1 } from './slides/sliderHome1'
 import { gsap } from 'gsap'
-const cellsOpacity = []
+import { Cell } from './types'
+import { HoverEffect } from './enums'
+
+const cellsOpacity: any[] = []
 const slideHash = ref(Math.random())
 
-const cells = ref([])
+const cells = ref<Cell[]>([])
 const screenWidth = ref(window.innerWidth)
 const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
-const fixedCellParams = ref([])
-const fixedCellsIndices = ref([])
+const fixedCellParams = ref<Cell[]>([])
+const fixedCellsIndices = ref<number[]>([])
 const cellSize = screenWidth.value / 8
 const prevNext = ref(false)
 
@@ -75,12 +78,8 @@ const cellsValue = async () => {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
-                // blurEffect: fixedCellParam.blur
-                //     ? `blur(${fixedCellParam.blur}px)`
-                //     : 'none',
-                // noiseEffect: fixedCellParam.noise
-                //     ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
-                //     : 'none',
+                blurEffect: fixedCellParam.blurEffect || 0,
+                noiseEffect: fixedCellParam.noiseEffect || '',
                 backgroundImage: fixedCellParam.backgroundImage,
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
@@ -91,25 +90,17 @@ const cellsValue = async () => {
                 contentSlot: fixedCellParam.contentSlot || '',
                 contentSVG: fixedCellParam.contentSVG || '',
                 contentText: fixedCellParam.contentText || '',
+                radius: fixedCellParam.radius || '0',
                 next: fixedCellParam.next || false,
                 prev: fixedCellParam.prev || false,
-                radius: fixedCellParam.radius || '0',
+                hoverEffect: fixedCellParam.hoverEffect || HoverEffect.None,
+                className: fixedCellParam.className || '',
             }
         } else {
             return {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
-                backgroundColor: 'white',
-                // blurEffect: Math.random() > 0.5 ? 'blur(5px)' : 'none',
-                // noiseEffect:
-                //     Math.random() > 0.5
-                //         ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
-                //         : 'none',
-                backgroundImage: null,
-                contentSlot: Math.random() > 0.5 ? '' : '',
-
-                contentSVG: '',
-                contentText: '',
+                backgroundColor: themeColor.value[0],
             }
         }
     })
@@ -120,7 +111,7 @@ const handleResize = () => {
     screenWidth.value = window.innerWidth
 }
 
-function shuffle(array) {
+function shuffle(array: any[]) {
     let currentIndex = array.length,
         temporaryValue,
         randomIndex
@@ -139,8 +130,8 @@ function shuffle(array) {
     return array
 }
 
-const opacities = async (num) => {
-    return new Promise((resolve) => {
+const opacities = async (num: number) => {
+    return new Promise<void>((resolve) => {
         const shuffledSquares = shuffle(cellsOpacity)
         let completed = 0
 
@@ -161,10 +152,8 @@ const opacities = async (num) => {
 }
 
 const updateCellsAndAnimate = async () => {
-    // Attend que les opacités soient réduites avant de mettre à jour les cellules
     await opacities(0)
 
-    // Met à jour les cellules avec les nouveaux paramètres
     fixedCellsIndices.value = [
         1, 3, 7, 8, 9, 12, 13, 14, 15, 19, 20, 21, 22, 28, 29,
     ]
@@ -173,6 +162,7 @@ const updateCellsAndAnimate = async () => {
     setTimeout(() => {
         if (prevNext.value) {
             cellsValue()
+            console.log('cellsValue')
         } else {
             updateCellSizes()
         }
@@ -182,15 +172,14 @@ const updateCellsAndAnimate = async () => {
     }, 350)
 }
 
-const next = async (bool) => {
+const next = async () => {
     slideHash.value = Math.random()
-    // Met à jour les cellules et effectue les animations
-    await updateCellsAndAnimate(bool)
+    await updateCellsAndAnimate()
 }
 
-const prev = async (bool) => {
+const prev = async () => {
     slideHash.value = Math.random()
-    await updateCellsAndAnimate(bool)
+    await updateCellsAndAnimate()
 }
 
 onMounted(() => {

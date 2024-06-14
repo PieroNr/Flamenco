@@ -2,7 +2,7 @@
     <div
         ref="element"
         class="grid-container"
-        :style="{ backgroundColor: themeColor[props.backColorIndex] }"
+        :style="{ backgroundColor: themeColor[parseInt(props.backColorIndex)] }"
     >
         <MainGridCell
             v-for="(cell, index) in cells"
@@ -28,6 +28,7 @@ import CONCERT4 from '../assets/img/concert-4.jpg'
 import CONCERT5 from '../assets/img/concert-5.jpg'
 import CONCERT6 from '../assets/img/concert-6.jpg'
 import CONCERT7 from '../assets/img/concert-7.jpg'
+import { HoverEffect } from './enums'
 
 const props = defineProps({
     text: {
@@ -39,12 +40,12 @@ const props = defineProps({
         default: '',
     },
     backColorIndex: {
-        type: Number,
-        default: 0,
+        type: String,
+        default: '0',
     },
     textColorIndex: {
-        type: Number,
-        default: 1,
+        type: String,
+        default: '1',
     },
     keyword: {
         type: String,
@@ -69,24 +70,30 @@ const updateCellSizes = () => {
         0, 2, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18,
     ]
 
-    const fixedCellParams = [
-        { backgroundColor: themeColor.value[props.backColorIndex] },
+    const fixedCellParams: Cell[] = [
+        {
+            backgroundColor: themeColor.value[parseInt(props.backColorIndex)],
+            larger: 3,
+        },
         { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[props.backColorIndex], larger: 3 },
+        {
+            backgroundColor: themeColor.value[parseInt(props.backColorIndex)],
+            larger: 3,
+        },
         {
             backgroundColor: themeColor.value[0],
             backgroundImage: CONCERT4,
             backgroundPosition: '40% 50%',
             backgroundSize: '300%',
-            noise: NOISE,
+            noiseEffect: NOISE,
         },
         { backgroundColor: themeColor.value[2], radius: '0 50% 0 0' },
         {
-            backgroundColor: themeColor.value[props.backColorIndex],
+            backgroundColor: themeColor.value[parseInt(props.backColorIndex)],
             larger: 6,
             taller: 3,
-            contentSlot: `<div class="grid-cell-custom" style="color: ${themeColor.value[props.textColorIndex]}"><p class="grid-cell-custom__text">${getTextWithKeyWord()}</p>
-                        <div class="grid-cell-custom-sub"><span style="background-color: ${themeColor.value[props.textColorIndex]}" class="grid-cell-custom-sub__line" ref="line"></span>
+            contentSlot: `<div class="grid-cell-custom" style="color: ${themeColor.value[parseInt(props.textColorIndex)]}"><p class="grid-cell-custom__text">${getTextWithKeyWord()}</p>
+                        <div class="grid-cell-custom-sub"><span style="background-color: ${themeColor.value[parseInt(props.textColorIndex)]}" class="grid-cell-custom-sub__line" ref="line"></span>
                         <p class="grid-cell-custom-sub__text">${props.subText}</p></div>
                       </div>`,
         },
@@ -107,7 +114,10 @@ const updateCellSizes = () => {
             backgroundPosition: '40% 50%',
             backgroundSize: '300%',
         },
-        { backgroundColor: themeColor.value[props.colorIndex], larger: 3 },
+        {
+            backgroundColor: themeColor.value[parseInt(props.backColorIndex)],
+            larger: 3,
+        },
         { backgroundColor: themeColor.value[2] },
         {
             backgroundColor: themeColor.value[1],
@@ -126,8 +136,8 @@ const updateCellSizes = () => {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
-                blurEffect: fixedCellParam.blur,
-                noiseEffect: fixedCellParam.noise,
+                blurEffect: fixedCellParam.blurEffect || 0,
+                noiseEffect: fixedCellParam.noiseEffect || '',
                 backgroundImage: fixedCellParam.backgroundImage,
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
@@ -139,7 +149,8 @@ const updateCellSizes = () => {
                 contentSVG: fixedCellParam.contentSVG || '',
                 contentText: fixedCellParam.contentText || '',
                 radius: fixedCellParam.radius || '0',
-                hoverEffect: fixedCellParam.hoverEffect,
+                hoverEffect: fixedCellParam.hoverEffect || HoverEffect.None,
+                className: fixedCellParam.className || '',
             }
         } else {
             const random = Math.random()
@@ -161,6 +172,7 @@ const updateCellSizes = () => {
                 backgroundPosition: `${Math.floor(Math.random() * 60) + 20}% ${Math.floor(Math.random() * 60) + 20}%`,
                 backgroundSize: `${Math.floor(Math.random() * 200) + 200}%`,
                 radius: Math.random() < 0.3 ? getRandomRadius() : '0',
+                transform: '',
             }
         }
     })

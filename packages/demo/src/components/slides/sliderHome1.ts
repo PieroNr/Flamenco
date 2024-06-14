@@ -1,12 +1,12 @@
-import { CellParams } from '../interfaceSliderHome'
+import { Cell } from '../types'
 
 export function SliderHome1(
     CONCERT1: string,
     CONCERT3: string,
     CONCERT1UP: string,
-    color: string
-): CellParams[] {
-    const params: CellParams[] = [
+    color: string[]
+): Cell[] {
+    const params: Cell[] = [
         {
             backgroundColor: color[0],
             radius: '0 0 50% 0',
@@ -53,12 +53,11 @@ export function SliderHome1(
         },
         {
             backgroundColor: color[2],
-            blur: 50,
+            blurEffect: 50,
         },
         { backgroundColor: color[1] },
         {
             backgroundColor: color[2],
-            noise: 50,
         },
         {
             backgroundColor: color[2],
@@ -73,12 +72,10 @@ export function SliderHome1(
         { backgroundColor: color[0] },
         {
             backgroundColor: color[0],
-            blur: 50,
         },
         { backgroundColor: color[0] },
         {
             backgroundColor: color[0],
-            noise: 50,
         },
         { backgroundColor: color[0] },
         { backgroundColor: color[0] },
@@ -87,16 +84,13 @@ export function SliderHome1(
         { backgroundColor: color[0], radius: '0 50% 0 0' },
         {
             backgroundColor: color[0],
-            blur: 50,
         },
         { backgroundColor: color[0] },
         {
             backgroundColor: color[0],
-            noise: 50,
         },
         {
             backgroundColor: color[0],
-            blur: 50,
         },
         { backgroundColor: color[0] },
         { backgroundColor: color[0] },

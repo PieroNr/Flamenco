@@ -45,22 +45,22 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
 
 const isLoading = ref(true)
 const mainGrid = ref<typeof MainGrid>()
-const gridText1 = ref<typeof GridText>(null)
-const setupGrid = ref<typeof SetupGrid>(null)
-const handSection = ref<typeof HandSection>(null)
-const gridText2 = ref<typeof GridText>(null)
-const blobSection = ref<typeof BlobSection>(null)
+const gridText1 = ref<typeof GridText>()
+const setupGrid = ref<typeof SetupGrid>()
+const handSection = ref<typeof HandSection>()
+const gridText2 = ref<typeof GridText>()
+const blobSection = ref<typeof BlobSection>()
 const slider = ref<typeof SlideGrid>()
 
 onMounted(() => {
     const sections = [
-        mainGrid.value.element,
-        gridText1.value.element,
-        setupGrid.value.element,
-        handSection.value.element,
-        gridText2.value.element,
-        blobSection.value.element,
-        slider.value.element,
+        mainGrid.value?.element,
+        gridText1.value?.element,
+        setupGrid.value?.element,
+        handSection.value?.element,
+        gridText2.value?.element,
+        blobSection.value?.element,
+        slider.value?.element,
     ]
 
     gsap.to(sections, {

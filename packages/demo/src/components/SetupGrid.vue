@@ -43,7 +43,7 @@ const updateCellSizes = () => {
         20, 21, 22,
     ]
 
-    const fixedCellParams = [
+    const fixedCellParams: Cell[] = [
         { backgroundColor: themeColor.value[0], taller: 2 },
         {
             backgroundColor: themeColor.value[1],
@@ -51,7 +51,7 @@ const updateCellSizes = () => {
             backgroundImage: CONCERT4,
             backgroundPosition: '20% 20%',
             backgroundSize: '200%',
-            noise: NOISE,
+            noiseEffect: NOISE,
         },
         {
             backgroundColor: themeColor.value[1],
@@ -65,7 +65,7 @@ const updateCellSizes = () => {
             backgroundImage: CONCERT2,
             backgroundPosition: '40% 40%',
             backgroundSize: '200%',
-            blur: 2,
+            blurEffect: 2,
         },
         { backgroundColor: themeColor.value[1] },
         { backgroundColor: themeColor.value[0] },
@@ -81,7 +81,7 @@ const updateCellSizes = () => {
             backgroundImage: CONCERT1,
             backgroundPosition: '40% 40%',
             backgroundSize: '200%',
-            noise: NOISE,
+            noiseEffect: NOISE,
         },
         { backgroundColor: themeColor.value[2] },
         {
@@ -130,10 +130,9 @@ const updateCellSizes = () => {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
-                blurEffect: fixedCellParam.blur,
-                noiseEffect: fixedCellParam.noise,
+                blurEffect: fixedCellParam.blurEffect,
+                noiseEffect: fixedCellParam.noiseEffect,
                 backgroundImage: fixedCellParam.backgroundImage,
-                transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
                 larger: fixedCellParam.larger,
                 backgroundPosition:
@@ -169,16 +168,6 @@ const updateCellSizes = () => {
             }
         }
     })
-}
-
-const getTextWithKeyWord = () => {
-    //create a p tag with text and replace the keyword with a span tag with themeColor[2]
-    const text = props.text
-    const keyword = props.keyword
-    return text.replace(
-        keyword,
-        `<span style="color: ${themeColor.value[2]}">${keyword}</span>`
-    )
 }
 
 const getRandomRadius = () => {

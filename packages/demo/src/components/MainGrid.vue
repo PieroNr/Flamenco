@@ -32,7 +32,7 @@ import CONCERT4 from '../assets/img/concert-4.jpg'
 import CONCERT5 from '../assets/img/concert-5.jpg'
 import CONCERT6 from '../assets/img/concert-6.jpg'
 import CONCERT7 from '../assets/img/concert-7.jpg'
-import { HoverEffect } from './enums.ts'
+import { HoverEffect } from './enums'
 
 const element = ref<HTMLDivElement>()
 
@@ -52,7 +52,7 @@ const updateCellSizes = () => {
         25, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
     ]
 
-    const fixedCellParams = [
+    const fixedCellParams: Cell[] = [
         { backgroundColor: themeColor.value[0], contentSVG: LOGO },
         { backgroundColor: themeColor.value[2] },
         { backgroundColor: themeColor.value[0] },
@@ -69,10 +69,10 @@ const updateCellSizes = () => {
         {
             backgroundImage: CONCERT4,
             contentSVG: F_letter,
-            noise: NOISE,
+            noiseEffect: NOISE,
             backgroundPosition: '60% 40%',
             backgroundSize: '450%',
-            blur: 3,
+            blurEffect: 3,
             hoverEffect: HoverEffect.Roll,
         },
         {
@@ -90,14 +90,14 @@ const updateCellSizes = () => {
             backgroundImage: CONCERT4,
             backgroundPosition: '35% 50%',
             backgroundSize: '450%',
-            blur: 3,
+            blurEffect: 3,
         },
         { backgroundColor: themeColor.value[2], radius: '0 0 50% 0' },
         {
             backgroundImage: CONCERT3,
             backgroundPosition: '35% 30%',
             backgroundSize: '450%',
-            noise: NOISE,
+            noiseEffect: NOISE,
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -106,13 +106,13 @@ const updateCellSizes = () => {
             taller: 3,
             backgroundPosition: '25% 26%',
             backgroundSize: 'cover',
-            noise: NOISE,
+            noiseEffect: NOISE,
         },
         { backgroundColor: themeColor.value[2], contentSVG: N_letter },
         { backgroundColor: themeColor.value[0], contentSVG: C_letter },
         {
             backgroundImage: CONCERT7,
-            blur: 3,
+            blurEffect: 3,
             backgroundPosition: '40% 50%',
             backgroundSize: '300%',
         },
@@ -133,7 +133,7 @@ const updateCellSizes = () => {
             backgroundPosition: '85% 50%',
             backgroundSize: '300%',
             radius: '0 0 0 25%',
-            blur: 2,
+            blurEffect: 2,
         },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -153,19 +153,22 @@ const updateCellSizes = () => {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
-                blurEffect: fixedCellParam.blur,
-                noiseEffect: fixedCellParam.noise,
+                blurEffect: fixedCellParam.blurEffect,
+                noiseEffect: fixedCellParam.noiseEffect,
                 backgroundImage: fixedCellParam.backgroundImage,
-                transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
                 backgroundPosition:
                     fixedCellParam.backgroundPosition || 'center',
                 backgroundSize: fixedCellParam.backgroundSize,
                 contentSlot: fixedCellParam.contentSlot || '',
                 contentSVG: fixedCellParam.contentSVG || '',
-                contentText: fixedCellParam.contentText || '',
                 radius: fixedCellParam.radius || '0',
-                hoverEffect: fixedCellParam.hoverEffect,
+                transform: '', // Add default values for the missing properties
+                contentText: '',
+                larger: 0,
+                opacity: 1,
+                className: '',
+                hoverEffect: fixedCellParam.hoverEffect || HoverEffect.None,
             }
         } else {
             const random = Math.random()
@@ -187,6 +190,8 @@ const updateCellSizes = () => {
                 backgroundPosition: `${Math.floor(Math.random() * 60) + 20}% ${Math.floor(Math.random() * 60) + 20}%`,
                 backgroundSize: `${Math.floor(Math.random() * 200) + 200}%`,
                 radius: Math.random() < 0.3 ? getRandomRadius() : '0',
+                transform: '',
+                hoverEffect: HoverEffect.None,
             }
         }
     })
