@@ -73,7 +73,6 @@ const updateCellSizes = () => {
     const fixedCellParams: Cell[] = [
         {
             backgroundColor: themeColor.value[parseInt(props.backColorIndex)],
-            larger: 3,
         },
         { backgroundColor: themeColor.value[0] },
         {
