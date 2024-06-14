@@ -2,6 +2,7 @@
     <div
         :style="cellStyles"
         :class="'grid-cell ' + props.cellData.className"
+        class="opacity"
         @mouseover="applyHoverEffect($event)"
         @mouseout="removeHoverEffect($event)"
     >
@@ -41,27 +42,47 @@
             :src="props.cellData.backgroundImage"
             alt="Image"
         />-->
-        <span v-if="props.cellData.contentText">{{
-            props.cellData.contentText
-        }}</span>
+        <h2 v-if="props.cellData.contentText">
+            {{ props.cellData.contentText }}
+        </h2>
         <div
             v-else-if="props.cellData.contentSlot"
             class="grid-cell__contentSlot"
             v-html="props.cellData.contentSlot"
         ></div>
+        <slot></slot>
     </div>
 </template>
 
 <script lang="ts" setup>
 import type { Cell } from './types'
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { HoverEffect } from './enums'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useFlamenco } from '@/utils/useFlamenco'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps<{ cellData: Cell }>()
+
+// Scene
+const flamenco = useFlamenco().get()
+
+onMounted(() => {
+    upadteEffect()
+})
+
+const upadteEffect = () => {
+    flamenco.value.addEffect({
+        kind: 'color',
+        selector: '.colors',
+        options: {
+            min: '#eeeeee',
+            max: '#000000',
+        },
+    })
+}
 
 const cellStyles = computed(() => {
     return {
@@ -70,6 +91,7 @@ const cellStyles = computed(() => {
         background:
             'url(' + props.cellData.backgroundImage + ') no-repeat left top',
         backgroundColor: props.cellData.backgroundColor,
+        backgroundImage: 'url(' + props.cellData.backgroundImage + ')',
         backgroundPosition: props.cellData.backgroundPosition,
         backgroundSize: props.cellData.backgroundSize,
         gridColumns: props.cellData.larger
@@ -150,6 +172,10 @@ const removeHoverEffect = (event: Event) => {
 </script>
 
 <style lang="scss">
+.opacity {
+    transition: opacity 0.5s;
+}
+
 .grid-cell {
     display: flex;
     justify-content: center;
@@ -169,6 +195,14 @@ const removeHoverEffect = (event: Event) => {
             bottom: -1.6rem;
             left: 0;
         }
+    }
+
+    h2 {
+        font-size: 7vw;
+    }
+
+    .colors {
+        transition: color 0.05s;
     }
 
     &__noise {

@@ -3,7 +3,7 @@
         <LoadingScreen v-if="isLoading" />
         <div class="section-container">
             <MainGrid ref="mainGrid" @loaded="isLoading = false" />
-          <hand-section ref="handSection" />
+            <hand-section ref="handSection" />
             <GridText
                 ref="gridText1"
                 text="flamenco is a Typescript library."
@@ -13,8 +13,7 @@
                 keyword="Typescript"
             />
             <SetupGrid ref="setupGrid" />
-
-
+            <SlideGrid ref="slider" />
             <GridText
                 ref="gridText2"
                 text="flamenco is an opensource library."
@@ -40,6 +39,7 @@ import BlobSection from '../sections/blobSection/BlobSection.vue'
 import { gsap } from 'gsap'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import SlideGrid from '../components/SlideGrid.vue'
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
 
@@ -50,6 +50,7 @@ const setupGrid = ref<typeof SetupGrid>(null)
 const handSection = ref<typeof HandSection>(null)
 const gridText2 = ref<typeof GridText>(null)
 const blobSection = ref<typeof BlobSection>(null)
+const slider = ref<typeof SlideGrid>()
 
 onMounted(() => {
     const sections = [
@@ -59,6 +60,7 @@ onMounted(() => {
         handSection.value.element,
         gridText2.value.element,
         blobSection.value.element,
+        slider.value.element,
     ]
 
     gsap.to(sections, {

@@ -16,6 +16,7 @@ export type Cell = {
     radius: string
     larger: number
     taller: number
+    opacity: number
     hoverEffect: HoverEffect
     className?: string
 }

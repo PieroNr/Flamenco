@@ -1,162 +1,212 @@
 <template>
-    <div class="grid-container">
+    <div ref="element" class="grid-container">
         <MainGridCell
             v-for="(cell, index) in cells"
-            :key="index"
-            :cell-data="cell"
+            :key="index + Math.random()"
+            :ref="(el) => (cellsOpacity[index] = el)"
+            :cellData="cell"
+            class="animate-opacity"
+            style="opacity: 0"
         >
-            <p v-if="index === 18">Color</p>
-            <p v-else>{{ index }}</p>
+            <button
+                v-if="cell.prev === true"
+                @click="prev((prevNext = !prevNext))"
+            >
+                <img :src="Prev" alt="arrow précédent slider flamenco" />
+            </button>
+            <button
+                v-if="cell.next === true"
+                @click="next((prevNext = !prevNext))"
+            >
+                <img :src="Next" alt="arrow suivant slider flamenco" />
+            </button>
         </MainGridCell>
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import MainGridCell from './MainGridCell.vue'
+import CONCERT1 from '../assets/img/concert-1.jpg'
+import CONCERT3 from '../assets/img/concert-3.jpg'
+import CONCERT1UP from '../assets/img/concert-1-up.jpg'
+import Prev from '../assets/img/prev.png'
+import Next from '../assets/img/next.png'
+import { SliderHome2 } from './slides/sliderHome2'
+import { SliderHome1 } from './slides/sliderHome1'
+import { gsap } from 'gsap'
+const cellsOpacity = []
+const slideHash = ref(Math.random())
 
-export default {
-    components: {
-        MainGridCell,
-    },
-    setup() {
-        const cells = ref<any[]>([])
-        const screenWidth = ref(window.innerWidth)
-        const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
+const cells = ref([])
+const screenWidth = ref(window.innerWidth)
+const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
+const fixedCellParams = ref([])
+const fixedCellsIndices = ref([])
+const cellSize = screenWidth.value / 8
+const prevNext = ref(false)
 
-        const updateCellSizes = () => {
-            const cellSize = screenWidth.value / 8
-            const fixedCellsIndices = [
-                2, 3, 4, 7, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23,
-                24, 25, 26, 27, 29, 31, 32, 33, 34, 37,
-            ]
+const element = ref<HTMLDivElement | null>(null)
 
-            const fixedCellParams = [
-                { backgroundColor: themeColor.value[0], contentSlot: 'logo' },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0], contentSlot: 'about' },
-                { backgroundColor: themeColor.value[0] },
-                {
-                    backgroundColor: themeColor.value[0],
-                },
-                { backgroundColor: themeColor.value[0], contentSlot: 'LA' },
-                { backgroundColor: themeColor.value[0], contentSlot: 'M' },
-                { backgroundColor: themeColor.value[0], contentSlot: 'E' },
-                {
-                    backgroundColor: themeColor.value[2],
-                    blur: 50,
-                },
-                { backgroundColor: themeColor.value[0], larger: 3 },
-                {
-                    backgroundImage: 'https://picsum.photos/200/300',
-                    noise: 50,
-                },
-                { backgroundColor: themeColor.value[2] },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[3] },
-                { backgroundColor: themeColor.value[0], contentSlot: 'N' },
-                { backgroundColor: themeColor.value[0], contentSlot: 'C' },
-                {
-                    backgroundImage: 'https://picsum.photos/200/300',
-                    blur: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-                {
-                    backgroundImage: 'https://picsum.photos/200/300',
-                    noise: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0], contentSlot: 'C' },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0] },
-                { backgroundColor: themeColor.value[0], radius: '0 50% 0 0' },
-                {
-                    backgroundImage: 'https://picsum.photos/200/300',
-                    blur: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-                {
-                    backgroundImage: 'https://picsum.photos/200/300',
-                    noise: 50,
-                },
-                {
-                    backgroundImage: 'https://picsum.photos/200/300',
-                    blur: 50,
-                },
-                { backgroundColor: themeColor.value[0] },
-            ]
+defineExpose({
+    element,
+})
 
-            cells.value = Array.from({ length: 38 }, (_, index) => {
-                let cell = {}
-                if (fixedCellsIndices.includes(index)) {
-                    // Trouver l'index de l'indice fixe dans fixedCellsIndices
-                    const fixedCellIndex = fixedCellsIndices.indexOf(index)
-                    // Utiliser cet index pour obtenir les paramètres correspondants dans fixedCellParams
-                    const fixedCellParam: any = fixedCellParams[fixedCellIndex]
-                    cell = {
-                        width: cellSize + 'px',
-                        height: cellSize + 'px',
-                        backgroundColor:
-                            fixedCellParam.backgroundColor || 'none',
-                        blurEffect: fixedCellParam.blur
-                            ? `blur(${fixedCellParam.blur}px)`
-                            : 'none',
-                        noiseEffect: fixedCellParam.noise
-                            ? `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")`
-                            : 'none',
-                        backgroundImage: fixedCellParam.backgroundImage,
-                        contentSlot: fixedCellParam.contentSlot || '',
-                        contentSVG: fixedCellParam.contentSVG || '',
-                        contentText: fixedCellParam.contentText || '',
-                        radius: fixedCellParam.radius || '0',
-                        larger: fixedCellParam.larger,
-                    }
-                } else {
-                    // Assigner des valeurs aléatoires pour les autres cellules
-                    cell = {
-                        width: cellSize + 'px',
-                        height: cellSize + 'px',
-                        backgroundColor: 'red',
-                        blurEffect: Math.random() > 0.5 ? 'blur(5px)' : 'none',
-                        noiseEffect:
-                            Math.random() > 0.5
-                                ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
-                                : 'none',
-                        contentSlot:
-                            Math.random() > 0.5 ? 'Random Content' : '',
-                        radius: Math.random() > 0.5 ? '0' : '0',
-                        size: false,
-                    }
-                }
-                return cell
-            })
-        }
+const updateCellSizes = () => {
+    fixedCellsIndices.value = [
+        2, 3, 8, 9, 10, 13, 14, 15, 16, 19, 20, 21, 25, 26, 27,
+    ]
 
-        // Met à jour la taille des cellules lorsque la fenêtre est redimensionnée
-        const handleResize = () => {
-            screenWidth.value = window.innerWidth
-        }
-
-        onMounted(() => {
-            updateCellSizes()
-            window.addEventListener('resize', handleResize)
-        })
-
-        onUnmounted(() => {
-            window.removeEventListener('resize', handleResize)
-        })
-
-        return {
-            cells,
-        }
-    },
+    fixedCellParams.value = SliderHome1(
+        CONCERT1,
+        CONCERT3,
+        CONCERT1UP,
+        themeColor.value
+    )
+    cellsValue()
 }
+
+const cellsValue = async () => {
+    cells.value = Array.from({ length: 30 }, (_, index) => {
+        if (fixedCellsIndices.value.includes(index)) {
+            const fixedCellIndex = fixedCellsIndices.value.indexOf(index)
+            const fixedCellParam = fixedCellParams.value[fixedCellIndex]
+            return {
+                width: cellSize + 'px',
+                height: cellSize + 'px',
+                backgroundColor: fixedCellParam.backgroundColor || 'none',
+                // blurEffect: fixedCellParam.blur
+                //     ? `blur(${fixedCellParam.blur}px)`
+                //     : 'none',
+                // noiseEffect: fixedCellParam.noise
+                //     ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
+                //     : 'none',
+                backgroundImage: fixedCellParam.backgroundImage,
+                transform: fixedCellParam.transform,
+                taller: fixedCellParam.taller,
+                larger: fixedCellParam.larger,
+                backgroundPosition:
+                    fixedCellParam.backgroundPosition || 'center',
+                backgroundSize: fixedCellParam.backgroundSize,
+                contentSlot: fixedCellParam.contentSlot || '',
+                contentSVG: fixedCellParam.contentSVG || '',
+                contentText: fixedCellParam.contentText || '',
+                next: fixedCellParam.next || false,
+                prev: fixedCellParam.prev || false,
+                radius: fixedCellParam.radius || '0',
+            }
+        } else {
+            return {
+                width: cellSize + 'px',
+                height: cellSize + 'px',
+                backgroundColor: 'white',
+                // blurEffect: Math.random() > 0.5 ? 'blur(5px)' : 'none',
+                // noiseEffect:
+                //     Math.random() > 0.5
+                //         ? 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwAB/7+o9gAAAABJRU5ErkJggg==")'
+                //         : 'none',
+                backgroundImage: null,
+                contentSlot: Math.random() > 0.5 ? '' : '',
+
+                contentSVG: '',
+                contentText: '',
+            }
+        }
+    })
+}
+
+// Met à jour la taille des cellules lorsque la fenêtre est redimensionnée
+const handleResize = () => {
+    screenWidth.value = window.innerWidth
+}
+
+function shuffle(array) {
+    let currentIndex = array.length,
+        temporaryValue,
+        randomIndex
+
+    // Tant qu'il reste des éléments à mélanger...
+    while (0 !== currentIndex) {
+        // Choisissez un élément restant...
+        randomIndex = Math.floor(Math.random() * currentIndex)
+        currentIndex -= 1
+
+        // Et échangez-le avec l'élément actuel.
+        temporaryValue = array[currentIndex]
+        array[currentIndex] = array[randomIndex]
+        array[randomIndex] = temporaryValue
+    }
+    return array
+}
+
+const opacities = async (num) => {
+    return new Promise((resolve) => {
+        const shuffledSquares = shuffle(cellsOpacity)
+        let completed = 0
+
+        shuffledSquares.forEach((square, index) => {
+            gsap.to(square.$el, {
+                opacity: num,
+                duration: 1 / 5,
+                delay: index / 30,
+                onComplete: () => {
+                    completed++
+                    if (completed === shuffledSquares.length) {
+                        resolve()
+                    }
+                },
+            })
+        })
+    })
+}
+
+const updateCellsAndAnimate = async () => {
+    // Attend que les opacités soient réduites avant de mettre à jour les cellules
+    await opacities(0)
+
+    // Met à jour les cellules avec les nouveaux paramètres
+    fixedCellsIndices.value = [
+        1, 3, 7, 8, 9, 12, 13, 14, 15, 19, 20, 21, 22, 28, 29,
+    ]
+    SliderHome2(fixedCellParams.value, CONCERT3, themeColor.value)
+
+    setTimeout(() => {
+        if (prevNext.value) {
+            cellsValue()
+        } else {
+            updateCellSizes()
+        }
+        setTimeout(() => {
+            opacities(1)
+        }, 100)
+    }, 350)
+}
+
+const next = async (bool) => {
+    slideHash.value = Math.random()
+    // Met à jour les cellules et effectue les animations
+    await updateCellsAndAnimate(bool)
+}
+
+const prev = async (bool) => {
+    slideHash.value = Math.random()
+    await updateCellsAndAnimate(bool)
+}
+
+onMounted(() => {
+    setTimeout(() => {
+        opacities(1)
+    }, 500)
+    updateCellSizes()
+    window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+})
 </script>
 
-<style>
+<style scoped lang="scss">
 .grid-container {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -166,5 +216,22 @@ export default {
     margin: 0;
     padding: 0;
     gap: 0;
+
+    p,
+    button {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    button {
+        border: none;
+        cursor: pointer;
+        img {
+            width: 25%;
+        }
+    }
 }
 </style>
