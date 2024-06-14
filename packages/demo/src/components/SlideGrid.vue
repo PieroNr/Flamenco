@@ -1,5 +1,5 @@
 <template>
-    <div class="grid-container">
+    <div ref="element" class="grid-container">
         <MainGridCell
             v-for="(cell, index) in cells"
             :key="index + Math.random()"
@@ -24,7 +24,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import MainGridCell from './MainGridCell.vue'
 import CONCERT1 from '../assets/img/concert-1.jpg'
@@ -45,6 +45,12 @@ const fixedCellParams = ref([])
 const fixedCellsIndices = ref([])
 const cellSize = screenWidth.value / 8
 const prevNext = ref(false)
+
+const element = ref<HTMLDivElement | null>(null)
+
+defineExpose({
+    element,
+})
 
 const updateCellSizes = () => {
     fixedCellsIndices.value = [
@@ -200,7 +206,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style>
+<style scoped lang="scss">
 .grid-container {
     display: grid;
     grid-template-columns: repeat(8, 1fr);

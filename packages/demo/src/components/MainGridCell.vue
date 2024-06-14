@@ -2,9 +2,9 @@
     <div
         :style="cellStyles"
         :class="'grid-cell ' + props.cellData.className"
+        class="opacity"
         @mouseover="applyHoverEffect($event)"
         @mouseout="removeHoverEffect($event)"
-        class="opacity"
     >
         <object
             v-if="props.cellData.contentSVG"
@@ -91,7 +91,7 @@ const cellStyles = computed(() => {
         background:
             'url(' + props.cellData.backgroundImage + ') no-repeat left top',
         backgroundColor: props.cellData.backgroundColor,
-        backgroundImage: 'url('+props.cellData.backgroundImage+')',
+        backgroundImage: 'url(' + props.cellData.backgroundImage + ')',
         backgroundPosition: props.cellData.backgroundPosition,
         backgroundSize: props.cellData.backgroundSize,
         gridColumns: props.cellData.larger
