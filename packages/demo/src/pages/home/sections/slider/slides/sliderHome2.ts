@@ -1,4 +1,4 @@
-import { Cell } from '../../../../../components/types.ts'
+import { Cell } from '@/components/types'
 
 export function SliderHome2(
     params: Cell[],

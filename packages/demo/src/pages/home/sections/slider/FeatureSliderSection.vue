@@ -70,7 +70,7 @@ const updateCellSizes = () => {
 }
 
 const cellsValue = async () => {
-    cells.value = Array.from({ length: 30 }, (_, index) => {
+    cells.value = Array.from({ length: 30 }, (_, index): Cell => {
         if (fixedCellsIndices.value.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.value.indexOf(index)
             const fixedCellParam = fixedCellParams.value[fixedCellIndex]
@@ -79,7 +79,7 @@ const cellsValue = async () => {
                 height: cellSize + 'px',
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
                 blurEffect: fixedCellParam.blurEffect || 0,
-                noiseEffect: fixedCellParam.noiseEffect || '',
+                noiseEffect: fixedCellParam.noiseEffect,
                 backgroundImage: fixedCellParam.backgroundImage,
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import LoadingScreen from '@/components/LoadingScreen.vue'
 import { useFlamenco } from '@/utils/useFlamenco'
-import { onMounted, ref, watchEffect } from 'vue'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
+import { ref, watchEffect } from 'vue'
 
 const { init } = useFlamenco()
 const loader = (): Promise<void> => {

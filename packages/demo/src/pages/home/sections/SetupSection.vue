@@ -16,7 +16,6 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { defineEmits } from 'vue'
 import MainGridCell from '@/components/MainGridCell.vue'
 import { Cell } from '@/components/types'
-import NOISE from '@/assets/svg/noise.svg'
 import CONCERT1 from '@/assets/img/concert-1.jpg'
 import CONCERT2 from '@/assets/img/concert-2.jpg'
 import CONCERT3 from '@/assets/img/concert-3.jpg'
@@ -51,7 +50,7 @@ const updateCellSizes = () => {
             backgroundImage: CONCERT4,
             backgroundPosition: '20% 20%',
             backgroundSize: '200%',
-            noiseEffect: NOISE,
+            noiseEffect: true,
         },
         {
             backgroundColor: themeColor.value[1],
@@ -81,7 +80,7 @@ const updateCellSizes = () => {
             backgroundImage: CONCERT1,
             backgroundPosition: '40% 40%',
             backgroundSize: '200%',
-            noiseEffect: NOISE,
+            noiseEffect: true,
         },
         { backgroundColor: themeColor.value[2] },
         {
@@ -122,7 +121,7 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[1] },
     ]
 
-    cells.value = Array.from({ length: 23 }, (_, index) => {
+    cells.value = Array.from({ length: 23 }, (_, index): Cell => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
@@ -152,7 +151,7 @@ const updateCellSizes = () => {
                 height: cellSize + 'px',
                 backgroundColor: themeColor.value[0],
                 blurEffect: random > 0.7 ? 3 : 0,
-                noiseEffect: random < 0.3 ? NOISE : '',
+                noiseEffect: random < 0.3,
                 backgroundImage: [
                     CONCERT1,
                     CONCERT2,

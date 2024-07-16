@@ -20,10 +20,10 @@ async function copyCode() {
         }
         const tl = gsap.timeline({
             onStart: () => {
-                gsap.set(img.value, { transition: 'none' })
+                gsap.set(img.value as HTMLImageElement, { transition: 'none' })
             },
             onComplete: () => {
-                gsap.set(img.value, { clearProps: 'all' })
+                gsap.set(img.value as HTMLImageElement, { clearProps: 'all' })
             },
         })
         tl.to(img.value, { rotation: 10, duration: 0.1 })
