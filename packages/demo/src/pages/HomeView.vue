@@ -1,9 +1,9 @@
 <template>
     <div class="home-container">
-        <LoadingScreen v-if="isLoading" />
+        <LoadingScreen v-if="isLoading && initialized" />
         <div class="section-container">
             <MainGrid ref="mainGrid" @loaded="isLoading = false" />
-            <hand-section ref="handSection" />
+            <HandSection ref="handSection" />
             <GridText
                 ref="gridText1"
                 text="flamenco is a Typescript library."
@@ -36,6 +36,9 @@ import GridText from '../components/GridText.vue'
 import SetupGrid from '../components/SetupGrid.vue'
 import HandSection from '../sections/handSection/3dHandSection.vue'
 import BlobSection from '../sections/blobSection/BlobSection.vue'
+import { useFlamenco } from '../utils/useFlamenco'
+
+const { initialized } = useFlamenco()
 import { gsap } from 'gsap'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'

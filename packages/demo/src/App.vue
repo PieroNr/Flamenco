@@ -1,11 +1,7 @@
-<script setup lang="ts">
-import { useFlamenco } from './utils/useFlamenco.ts'
-
-const { initialized } = useFlamenco()
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <div v-if="initialized" class="container">
+    <div class="container">
         <router-view />
     </div>
 </template>
