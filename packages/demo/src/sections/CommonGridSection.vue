@@ -18,8 +18,8 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { defineEmits, defineProps } from 'vue'
-import MainGridCell from './MainGridCell.vue'
-import { Cell } from './types'
+import MainGridCell from '../components/MainGridCell.vue'
+import { Cell } from '../components/types'
 import NOISE from '../assets/svg/noise.svg'
 import CONCERT1 from '../assets/img/concert-1.jpg'
 import CONCERT2 from '../assets/img/concert-2.jpg'
@@ -28,7 +28,7 @@ import CONCERT4 from '../assets/img/concert-4.jpg'
 import CONCERT5 from '../assets/img/concert-5.jpg'
 import CONCERT6 from '../assets/img/concert-6.jpg'
 import CONCERT7 from '../assets/img/concert-7.jpg'
-import { HoverEffect } from './enums'
+import { HoverEffect } from '../components/enums'
 
 const props = defineProps({
     text: {

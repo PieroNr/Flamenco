@@ -2,9 +2,9 @@
     <div class="home-container">
         <LoadingScreen :loaders="[init, loader]" @loaded="isLoading = false" />
         <div class="section-container">
-            <MainGrid ref="mainGrid" />
+            <HeroSection ref="mainGrid" />
             <HandSection ref="handSection" />
-            <GridText
+            <CommonGridSection
                 ref="gridText1"
                 text="flamenco is a Typescript library."
                 sub-text="about to change the rythm of your life"
@@ -14,7 +14,7 @@
             />
             <SetupGrid ref="setupGrid" />
             <SlideGrid ref="slider" />
-            <GridText
+            <CommonGridSection
                 ref="gridText2"
                 text="flamenco is an opensource library."
                 sub-text="take part of it"
@@ -29,10 +29,10 @@
 
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
-import MainGrid from '../components/MainGrid.vue'
+import HeroSection from '../sections/HeroSection.vue'
 import LoadingScreen from '../components/LoadingScreen.vue'
 import { watchEffect } from 'vue'
-import GridText from '../components/GridText.vue'
+import CommonGridSection from '../sections/CommonGridSection.vue'
 import SetupGrid from '../components/SetupGrid.vue'
 import HandSection from '../sections/handSection/3dHandSection.vue'
 import BlobSection from '../sections/blobSection/BlobSection.vue'
