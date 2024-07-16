@@ -12,8 +12,8 @@
                 text-color-index="0"
                 keyword="Typescript"
             />
-            <SetupGrid ref="setupGrid" />
-            <SlideGrid ref="slider" />
+            <SetupSection ref="setupGrid" />
+            <FeatureSliderSection ref="slider" />
             <CommonGridSection
                 ref="gridText2"
                 text="flamenco is an opensource library."
@@ -32,14 +32,14 @@ import { nextTick, onMounted, ref } from 'vue'
 import HeroSection from './sections/HeroSection.vue'
 import { watchEffect } from 'vue'
 import CommonGridSection from './sections/CommonGridSection.vue'
-import SetupGrid from './sections/SetupGrid.vue'
+import FeatureSliderSection from './sections//slider/FeatureSliderSection.vue'
 import HandSection from './sections/handSection/3dHandSection.vue'
 import BlobSection from './sections/blobSection/BlobSection.vue'
 import { useFlamenco } from '@/utils/useFlamenco'
 import { gsap } from 'gsap'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import SlideGrid from './sections/slider/SlideGrid.vue'
+import SetupSection from './sections/SetupSection.vue'
 import LoadingScreen from '@/components/LoadingScreen.vue'
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
