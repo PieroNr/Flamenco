@@ -9,6 +9,6 @@
 
 <script lang="ts" setup>
 
-import AboutGrid from "@/components/AboutGrid.vue";
+import AboutGrid from "../components/AboutGrid.vue";
 
 </script>
