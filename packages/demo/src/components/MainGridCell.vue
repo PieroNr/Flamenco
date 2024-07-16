@@ -1,22 +1,22 @@
 <template>
     <div
         :style="cellStyles"
-        :class="'grid-cell ' + props.cellData.className"
+        :class="'grid-cell ' + cellData.className"
         class="opacity"
         @mouseover="applyHoverEffect($event)"
         @mouseout="removeHoverEffect($event)"
     >
         <object
-            v-if="props.cellData.contentSVG"
+            v-if="cellData.contentSVG"
             class="grid-cell__svg"
-            :data="props.cellData.contentSVG"
+            :data="cellData.contentSVG"
         />
         <div
-            v-if="props.cellData.blurEffect"
+            v-if="cellData.blurEffect"
             :style="blurStyles"
             class="grid-cell__blur"
         ></div>
-        <div v-if="props.cellData.noiseEffect" class="grid-cell__noise">
+        <div v-if="cellData.noiseEffect" class="grid-cell__noise">
             <svg>
                 <filter id="noise">
                     <feTurbulence id="turbulence">
@@ -42,15 +42,15 @@
             :src="props.cellData.backgroundImage"
             alt="Image"
         />-->
-        <h2 v-if="props.cellData.contentText">
-            {{ props.cellData.contentText }}
+        <h2 v-if="cellData.contentText">
+            {{ cellData.contentText }}
         </h2>
         <div
-            v-else-if="props.cellData.contentSlot"
+            v-else-if="cellData.contentSlot"
             class="grid-cell__contentSlot"
-            v-html="props.cellData.contentSlot"
+            v-html="cellData.contentSlot"
         ></div>
-        <slot></slot>
+        <slot :slot-id="cellData.contentSlotId"></slot>
     </div>
 </template>
 

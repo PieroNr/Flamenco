@@ -5,8 +5,14 @@
             :key="index"
             :cell-data="cell"
         >
-            <img v-if="cell.contentSlot === 'image'" src="" />
-            <span v-else-if="cell.contentSlot === 'text'">Contenu texte</span>
+            <template #default="{ slotId }">
+                <RouterLink v-if="slotId === docSlotId" to="/docs">
+                    docs
+                </RouterLink>
+                <RouterLink v-else-if="slotId === aboutSlotId" to="/about">
+                    about
+                </RouterLink>
+            </template>
         </MainGridCell>
     </div>
 </template>
@@ -35,6 +41,9 @@ import { HoverEffect } from '@/components/enums'
 
 const element = ref<HTMLDivElement>()
 
+const docSlotId = 'docLink'
+const aboutSlotId = 'aboutLink'
+
 defineExpose({
     element,
 })
@@ -57,11 +66,11 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[0] },
         {
             backgroundColor: themeColor.value[0],
-            contentSlot: '<a  href="/doc">docs</a>',
+            contentSlotId: docSlotId,
         },
         {
             backgroundColor: themeColor.value[0],
-            contentSlot: '<a  href="/about">about</a>',
+            contentSlotId: aboutSlotId,
         },
         { backgroundColor: themeColor.value[1] },
         {
@@ -143,7 +152,7 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[0] },
     ]
 
-    cells.value = Array.from({ length: 38 }, (_, index) => {
+    cells.value = Array.from({ length: 38 }, (_, index): Cell => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
@@ -160,6 +169,7 @@ const updateCellSizes = () => {
                 backgroundSize: fixedCellParam.backgroundSize,
                 contentSlot: fixedCellParam.contentSlot || '',
                 contentSVG: fixedCellParam.contentSVG || '',
+                contentSlotId: fixedCellParam.contentSlotId || '',
                 radius: fixedCellParam.radius || '0',
                 transform: '', // Add default values for the missing properties
                 contentText: '',

@@ -11,6 +11,7 @@ export type Cell = {
     backgroundPosition?: string
     backgroundSize?: string
     contentSlot?: string
+    contentSlotId?: string
     contentSVG?: string
     contentText?: string
     radius?: string

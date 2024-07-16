@@ -1,5 +1,5 @@
 <template>
-    <div class="loading-screen">
+    <div v-if="!isAnimationDone" class="loading-screen">
         <div
             v-for="i in 40"
             :key="i"
