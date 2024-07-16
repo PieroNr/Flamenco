@@ -37,6 +37,7 @@ import CONCERT6 from '@/assets/img/concert-6.jpg'
 import CONCERT7 from '@/assets/img/concert-7.jpg'
 import { HoverEffect } from '@/components/enums'
 import NavLink from '@/components/NavLink.vue'
+import { themeColors } from '@/utils/theme'
 
 const element = ref<HTMLDivElement>()
 
@@ -49,7 +50,6 @@ defineExpose({
 
 const cells = ref<Cell[]>([])
 const screenWidth = ref(window.innerWidth)
-const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
 
 const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
@@ -59,19 +59,19 @@ const updateCellSizes = () => {
     ]
 
     const fixedCellParams: Cell[] = [
-        { backgroundColor: themeColor.value[0], contentSVG: LOGO },
-        { backgroundColor: themeColor.value[2] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColors[0], contentSVG: LOGO },
+        { backgroundColor: themeColors[2] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
         {
-            backgroundColor: themeColor.value[0],
+            backgroundColor: themeColors[0],
             contentSlotId: docSlotId,
         },
         {
-            backgroundColor: themeColor.value[0],
+            backgroundColor: themeColors[0],
             contentSlotId: aboutSlotId,
         },
-        { backgroundColor: themeColor.value[1] },
+        { backgroundColor: themeColors[1] },
         {
             backgroundImage: CONCERT4,
             contentSVG: F_letter,
@@ -82,31 +82,31 @@ const updateCellSizes = () => {
             hoverEffect: HoverEffect.Roll,
         },
         {
-            backgroundColor: themeColor.value[2],
+            backgroundColor: themeColors[2],
             contentSVG: LA_letter,
             hoverEffect: HoverEffect.SwipeRight,
         },
         {
-            backgroundColor: themeColor.value[0],
+            backgroundColor: themeColors[0],
             contentSVG: M_letter,
             hoverEffect: HoverEffect.Morph,
         },
-        { backgroundColor: themeColor.value[2], contentSVG: E_letter },
+        { backgroundColor: themeColors[2], contentSVG: E_letter },
         {
             backgroundImage: CONCERT4,
             backgroundPosition: '35% 50%',
             backgroundSize: '450%',
             blurEffect: 3,
         },
-        { backgroundColor: themeColor.value[2], radius: '0 0 50% 0' },
+        { backgroundColor: themeColors[2], radius: '0 0 50% 0' },
         {
             backgroundImage: CONCERT3,
             backgroundPosition: '35% 30%',
             backgroundSize: '450%',
             noiseEffect: NOISE,
         },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
         {
             backgroundImage: CONCERT1,
             taller: 3,
@@ -114,26 +114,26 @@ const updateCellSizes = () => {
             backgroundSize: 'cover',
             noiseEffect: NOISE,
         },
-        { backgroundColor: themeColor.value[2], contentSVG: N_letter },
-        { backgroundColor: themeColor.value[0], contentSVG: C_letter },
+        { backgroundColor: themeColors[2], contentSVG: N_letter },
+        { backgroundColor: themeColors[0], contentSVG: C_letter },
         {
             backgroundImage: CONCERT7,
             blurEffect: 3,
             backgroundPosition: '40% 50%',
             backgroundSize: '300%',
         },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0], contentSVG: O_letter },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[2], radius: '0 50% 0 0' },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0], contentSVG: O_letter },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[2], radius: '0 50% 0 0' },
         {
             backgroundImage: CONCERT5,
             backgroundPosition: '45% 50%',
             backgroundSize: '300%',
         },
-        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColors[0] },
         {
             backgroundImage: CONCERT6,
             backgroundPosition: '85% 50%',
@@ -141,14 +141,14 @@ const updateCellSizes = () => {
             radius: '0 0 0 25%',
             blurEffect: 2,
         },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[1] },
-        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[0] },
+        { backgroundColor: themeColors[1] },
+        { backgroundColor: themeColors[0] },
     ]
 
     cells.value = Array.from({ length: 38 }, (_, index): Cell => {
@@ -182,7 +182,7 @@ const updateCellSizes = () => {
             return {
                 width: cellSize + 'px',
                 height: cellSize + 'px',
-                backgroundColor: themeColor.value[0],
+                backgroundColor: themeColors[0],
                 blurEffect: random > 0.7 ? 3 : 0,
                 noiseEffect: random < 0.3 ? NOISE : '',
                 backgroundImage: [

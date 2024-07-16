@@ -3,6 +3,7 @@ import Docs from './parts/content/DOCS.md'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { NavElement } from './types'
 import DocMenu from '@/pages/docs/parts/menu/DocMenu.vue'
+import DocHeader from '@/pages/docs/parts/DocHeader.vue'
 
 const titles = ref<NavElement[]>([])
 const isInitialized = ref(false)
@@ -64,13 +65,16 @@ onUnmounted(() => {
 
 <template>
     <div ref="page" class="docs-view">
-        <DocMenu :children="titles" class="menu" />
-        <Docs class="docs" />
+        <DocHeader />
+        <div class="doc-content">
+            <DocMenu :children="titles" class="menu" />
+            <Docs class="docs" />
+        </div>
     </div>
 </template>
 
 <style scoped lang="scss">
-.docs-view {
+.doc-content {
     width: 100%;
     display: grid;
     grid-template-columns: minmax(100px, 280px) 1fr;
