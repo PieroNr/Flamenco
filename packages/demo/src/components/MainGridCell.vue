@@ -67,7 +67,7 @@ gsap.registerPlugin(ScrollTrigger)
 const props = defineProps<{ cellData: Cell }>()
 
 // Scene
-const flamenco = useFlamenco().get()
+const { flamenco } = useFlamenco()
 
 onMounted(() => {
     updateEffect()

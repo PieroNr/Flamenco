@@ -12,7 +12,7 @@ defineExpose({
 const canvas = ref<HTMLCanvasElement>()
 // Scene
 
-const flamenco = useFlamenco().get()
+const { flamenco } = useFlamenco()
 
 const emit = defineEmits<{
     (event: 'loaded'): void

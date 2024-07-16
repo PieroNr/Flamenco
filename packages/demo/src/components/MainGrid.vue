@@ -13,7 +13,6 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue'
-import { defineEmits } from 'vue'
 import MainGridCell from './MainGridCell.vue'
 import { Cell } from './types'
 import F_letter from '../assets/svg/f_letter.svg'
@@ -40,7 +39,6 @@ defineExpose({
     element,
 })
 
-const emit = defineEmits(['loaded'])
 const cells = ref<Cell[]>([])
 const screenWidth = ref(window.innerWidth)
 const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
@@ -214,11 +212,9 @@ const handleResize = () => {
     screenWidth.value = window.innerWidth
 }
 
-onMounted(async () => {
+onMounted(() => {
     updateCellSizes()
     window.addEventListener('resize', handleResize)
-    await new Promise((resolve) => setTimeout(resolve, 4000))
-    emit('loaded') // Use emit here
 })
 
 onUnmounted(() => {
