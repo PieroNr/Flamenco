@@ -72,7 +72,7 @@ const updateCellSizes = () => {
         {
             backgroundColor: themeColor.value[0],
             larger: 2,
-            contentSlot: `<div class="grid-cell-title"><h2 class="colors grid-cell-title__text">setup.</h2></div>`,
+            contentSlot: `<div class="grid-cell-title"><h2 class="grid-cell-title__text">setup.</h2></div>`,
             className: 'overflow',
         },
         { backgroundColor: themeColor.value[0], larger: 3 },
