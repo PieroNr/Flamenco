@@ -72,7 +72,11 @@ onUnmounted(() => {
         </div>
     </div>
 </template>
-
+<style>
+html {
+    scroll-behavior: smooth !important;
+}
+</style>
 <style scoped lang="scss">
 .doc-content {
     width: 100%;

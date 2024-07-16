@@ -73,6 +73,10 @@ export class Flamenco {
     this.player.stop();
   }
 
+  get isPlaying(): boolean {
+    return this.player.isPlaying;
+  }
+
   get initialized(): boolean {
     return this.player.musicLoaded;
   }

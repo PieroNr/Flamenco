@@ -14,15 +14,16 @@
                 <NavLink v-else-if="slotId === aboutSlotId" to="/about">
                     about
                 </NavLink>
+                <PlayButton v-else-if="slotId === playSlotId" />
             </template>
         </MainGridCell>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import MainGridCell from '@/components/MainGridCell.vue'
-import { Cell } from '@/components/types'
+import { Cell } from '@/components/types.ts'
 import F_letter from '@/assets/svg/f_letter.svg'
 import LA_letter from '@/assets/svg/la-letter.svg'
 import M_letter from '@/assets/svg/m_letter.svg'
@@ -38,14 +39,16 @@ import CONCERT4 from '@/assets/img/concert-4.jpg'
 import CONCERT5 from '@/assets/img/concert-5.jpg'
 import CONCERT6 from '@/assets/img/concert-6.jpg'
 import CONCERT7 from '@/assets/img/concert-7.jpg'
-import { HoverEffect } from '@/components/enums'
+import { HoverEffect } from '@/components/enums.ts'
 import NavLink from '@/components/NavLink.vue'
-import { themeColors } from '@/utils/theme'
+import { themeColors } from '@/utils/theme.ts'
+import PlayButton from '@/pages/home/sections/heroSection/PlayButton.vue'
 
 const element = ref<HTMLDivElement>()
 
 const docSlotId = 'docLink'
 const aboutSlotId = 'aboutLink'
+const playSlotId = 'play'
 
 defineExpose({
     element,
@@ -54,9 +57,7 @@ defineExpose({
 const cells = ref<Cell[]>([])
 const screenWidth = ref(window.innerWidth)
 
-const cellSize = computed(() => {
-    return screenWidth.value / 8
-})
+const cellSize = screenWidth.value / 8
 
 const fixedCellParams: Cell[] = [
     { backgroundColor: themeColors[0], contentSVG: LOGO },
@@ -125,8 +126,12 @@ const fixedCellParams: Cell[] = [
     { backgroundColor: themeColors[0] },
     { backgroundColor: themeColors[0] },
     { backgroundColor: themeColors[0], contentSVG: O_letter },
-    { backgroundColor: themeColors[0] },
-    { backgroundColor: themeColors[0] },
+    {
+        backgroundColor: themeColors[0],
+        taller: 2,
+        larger: 2,
+        contentSlotId: playSlotId,
+    },
     { backgroundColor: themeColors[2], radius: '0 50% 0 0' },
     {
         backgroundImage: CONCERT5,
@@ -141,25 +146,18 @@ const fixedCellParams: Cell[] = [
         radius: '0 0 0 25%',
         blurEffect: 2,
     },
-    { backgroundColor: themeColors[0] },
-    { backgroundColor: themeColors[0] },
-    { backgroundColor: themeColors[0] },
-    { backgroundColor: themeColors[0] },
-    { backgroundColor: themeColors[0] },
-    { backgroundColor: themeColors[0] },
-    { backgroundColor: themeColors[1] },
-    { backgroundColor: themeColors[0] },
 ]
 const fixedCellsIndices = [
     0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23, 25,
-    27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
+    27, 28, 29, 31, 32, 33, 35, 36,
 ]
 
 const generateCells = () => {
-    cells.value = Array.from({ length: 38 }, (_, index): Cell => {
+    cells.value = Array.from({ length: 35 }, (_, index): Cell => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
+            console.log(fixedCellIndex, fixedCellParam)
             return {
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
                 blurEffect: fixedCellParam.blurEffect,
@@ -175,7 +173,7 @@ const generateCells = () => {
                 radius: fixedCellParam.radius || '0',
                 transform: '', // Add default values for the missing properties
                 contentText: '',
-                larger: 0,
+                larger: fixedCellParam.larger ?? 0,
                 opacity: 1,
                 className: '',
                 hoverEffect: fixedCellParam.hoverEffect || HoverEffect.None,

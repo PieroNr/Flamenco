@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import HeroSection from './sections/HeroSection.vue'
+import HeroSection from './sections/heroSection/HeroSection.vue'
 import CommonGridSection from './sections/CommonGridSection.vue'
 import FeatureSliderSection from './sections//slider/FeatureSliderSection.vue'
 import HandSection from './sections/handSection/3dHandSection.vue'
