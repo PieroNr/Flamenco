@@ -1,10 +1,30 @@
 <script setup lang="ts">
 import Docs from './DOCS.md'
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { NavElement } from './types'
 import DocMenu from './DocMenu/DocMenu.vue'
 
 const titles = ref<NavElement[]>([])
+const isInitialized = ref(false)
+const intersectionObserver = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible')
+                if (!isInitialized.value) {
+                    entry.target.classList.add('initialization')
+                }
+            }
+        })
+        if (!isInitialized.value) {
+            isInitialized.value = true
+        }
+    },
+    {
+        threshold: 0.7,
+    }
+)
+
 onMounted(() => {
     const titleElements = document
         .querySelector('.docs')
@@ -29,6 +49,17 @@ onMounted(() => {
             })
         }
     })
+    const scrollElements = document.querySelectorAll(
+        '.docs h1, .docs h2, .docs h3, .docs p'
+    )
+    scrollElements.forEach((el, i) => {
+        intersectionObserver.observe(el)
+        el.style.setProperty('--index', i)
+    })
+})
+
+onUnmounted(() => {
+    intersectionObserver.disconnect()
 })
 </script>
 
@@ -58,6 +89,21 @@ onMounted(() => {
             margin-right: auto;
             margin-left: auto;
             max-width: 700px;
+            transform: translateY(5rem);
+            opacity: 0;
+            transition:
+                transform ease-out 0.2ms,
+                opacity ease-out 0.2ms;
+            &.visible {
+                transition:
+                    transform 0.5s,
+                    opacity 0.5s;
+                transform: translateY(0);
+                opacity: 1;
+                &.initialization {
+                    transition-delay: calc(var(--index, 0) * 0.1s);
+                }
+            }
         }
 
         &:deep(h1),
@@ -71,28 +117,33 @@ onMounted(() => {
         &:deep(h1) {
             font-size: 128px;
             font-weight: 500;
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         &:deep(h2) {
             font-size: 32px;
             font-weight: 600;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         &:deep(h3) {
             font-size: 24px;
             font-weight: 600;
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
 
         &:deep(p) {
             font-size: 16px;
-            margin-top: 0.2rem;
-            margin-bottom: 0.2rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+
+            & + p {
+                margin-top: 1rem;
+            }
         }
 
         &:deep(.doc-line) {

@@ -58,6 +58,7 @@ aside {
     height: 100vh;
     color: white;
     font-size: 17px;
+    overflow-y: auto;
 
     ul {
         list-style: none;

@@ -19,6 +19,7 @@ export default defineConfig({
             markdownItSetup(md) {
                 md.use(markdownItAnchor)
             },
+            escapeCodeTagInterpolation: false,
         }),
     ],
     base: '/',

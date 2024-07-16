@@ -35,8 +35,8 @@ onBeforeUnmount(() => {
 <template>
     <div ref="element" class="hand-section">
         <div class="left">
-            <h2>Change.</h2>
-            <p>The way you interact</p>
+            <h2>Make.</h2>
+            <p>The web more interactive.</p>
         </div>
         <canvas ref="canvas" />
     </div>

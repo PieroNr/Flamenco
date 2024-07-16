@@ -13,7 +13,7 @@
     grid-template-columns: repeat(5, 1fr);
 
     &:deep(.code-highlighter-container) {
-        grid-column: 2/5;
+        grid-column: 2/6;
     }
 }
 </style>

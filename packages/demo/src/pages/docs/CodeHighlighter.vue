@@ -7,7 +7,7 @@ const slots = useSlots()
 const button = ref<typeof CopyButton>()
 const props = withDefaults(
     defineProps<{
-        lang?: 'ts' | 'basb'
+        lang?: 'ts' | 'bash'
         theme?: 'dark' | 'light'
     }>(),
     {
@@ -19,25 +19,27 @@ const props = withDefaults(
 const html = ref('')
 const code = ref('')
 
+const lineNumber = computed(() => {
+    return code.value.split('\n').length
+})
+
+const isInitialized = computed(() => !!html.value)
+
 function removeEmptyLine(str: string): string {
-    console.log(str.split('\n').filter((line) => line !== ''))
-    const wordRegex = /\w/g
-    return str
-        .split('\n')
-        .filter((line) => wordRegex.test(line))
-        .join('\n')
+    const wordRegex = /[\w{}()[\];]*/
+    const lines = str.split('\n')
+    const filtered = lines.filter((line) => wordRegex.test(line))
+    return filtered.join('\n')
 }
 
 function extractCode(): string {
     let children = slots.default?.()[0].children
-    console.log(children)
     if (!children || typeof children !== 'string') return ''
     return removeEmptyLine(children)
 }
 
 watchEffect(async () => {
     code.value = extractCode()
-    console.log(code.value)
     html.value = await codeToHtml(code.value, {
         lang: props.lang,
         theme: props.theme === 'dark' ? 'github-dark' : 'github-light',
@@ -55,7 +57,15 @@ const classes = computed(() => {
     <div class="code-highlighter-container" :class="classes">
         <slot name="comment" />
         <div class="code-highlighter" @click="() => button?.copyCode()">
-            <div v-html="html" />
+            <div
+                class="code"
+                :style="
+                    !isInitialized
+                        ? { [`--line-number`]: lineNumber }
+                        : undefined
+                "
+                v-html="html"
+            />
             <CopyButton
                 ref="button"
                 :theme="theme"
@@ -90,6 +100,7 @@ const classes = computed(() => {
     &.theme-light {
         color: black;
         background-color: #d9d9d9;
+
         .code-highlighter {
             background-color: #f1f0f0;
 
@@ -126,6 +137,11 @@ const classes = computed(() => {
             transition:
                 opacity 100ms ease-out,
                 transform 200ms ease-out 100ms;
+        }
+
+        .code {
+            min-height: calc(var(--line-number, 1) * 1em);
+            min-width: 200px;
         }
 
         &:hover .copy-btn {
