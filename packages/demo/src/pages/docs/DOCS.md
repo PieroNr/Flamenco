@@ -5,7 +5,7 @@ import DocCell from './DocCell.vue'
 import Img1 from '../../assets/img/concert-2.jpg'
 </script>
 
-# setup
+# Docs
 
 FlamencoJS is a **TypeScript** library for creating dynamic web element animations that synchronize with music. It's
 designed to make your web projects come alive with rhythm, movement, and color in response to your selected music.

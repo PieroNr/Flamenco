@@ -6,12 +6,10 @@
             :cell-data="cell"
         >
             <template #default="{ slotId }">
-                <RouterLink v-if="slotId === docSlotId" to="/docs">
-                    docs
-                </RouterLink>
-                <RouterLink v-else-if="slotId === aboutSlotId" to="/about">
+                <NavLink v-if="slotId === docSlotId" to="/docs"> docs </NavLink>
+                <NavLink v-else-if="slotId === aboutSlotId" to="/about">
                     about
-                </RouterLink>
+                </NavLink>
             </template>
         </MainGridCell>
     </div>
@@ -38,6 +36,7 @@ import CONCERT5 from '@/assets/img/concert-5.jpg'
 import CONCERT6 from '@/assets/img/concert-6.jpg'
 import CONCERT7 from '@/assets/img/concert-7.jpg'
 import { HoverEffect } from '@/components/enums'
+import NavLink from '@/components/NavLink.vue'
 
 const element = ref<HTMLDivElement>()
 

@@ -288,13 +288,6 @@ const removeHoverEffect = (event: Event) => {
         font-weight: 500;
         margin: 0;
     }
-
-    a {
-        text-decoration: underline;
-        font-size: 1.5rem;
-        text-underline-offset: 0.5em;
-        color: inherit;
-    }
 }
 
 .overflow {

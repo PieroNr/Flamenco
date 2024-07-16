@@ -49,22 +49,21 @@ onMounted(() => {
             })
         }
     })
-    const scrollElements = document.querySelectorAll(
+    const scrollElements = document.querySelectorAll<HTMLElement>(
         '.docs h1, .docs h2, .docs h3, .docs p'
     )
     scrollElements.forEach((el, i) => {
         intersectionObserver.observe(el)
-        el.style.setProperty('--index', i)
+        el.style.setProperty('--index', i.toString())
     })
 })
-
 onUnmounted(() => {
     intersectionObserver.disconnect()
 })
 </script>
 
 <template>
-    <div class="docs-view">
+    <div ref="page" class="docs-view">
         <DocMenu :children="titles" class="menu" />
         <Docs class="docs" />
     </div>
