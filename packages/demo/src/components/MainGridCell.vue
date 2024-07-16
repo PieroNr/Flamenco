@@ -192,7 +192,7 @@ const removeHoverEffect = (event: Event) => {
         z-index: 5;
         &__text {
             position: absolute;
-            bottom: -1.6rem;
+            bottom: -1.75rem;
             left: 0;
         }
     }
@@ -289,7 +289,7 @@ const removeHoverEffect = (event: Event) => {
         margin: 0;
     }
 
-    router-link {
+    a {
         text-decoration: underline;
         font-size: 1.5rem;
         text-underline-offset: 0.5em;

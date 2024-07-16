@@ -59,11 +59,11 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[0] },
         {
             backgroundColor: themeColor.value[0],
-            contentSlot: '<router-link  to="/doc">docs</router-link>',
+            contentSlot: '<a  href="/doc">docs</a>',
         },
         {
             backgroundColor: themeColor.value[0],
-            contentSlot: '<router-link  to="/about">about</router-link>',
+            contentSlot: '<a  href="/about">about</a>',
         },
         { backgroundColor: themeColor.value[1] },
         {
