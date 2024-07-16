@@ -1,6 +1,6 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from './pages/HomeView.vue'
+import Home from './pages/home/HomeView.vue'
 import About from './pages/AboutView.vue'
 import DocView from './pages/docs/DocView.vue'
 

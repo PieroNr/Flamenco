@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { BlobSectionScene } from './BlobSectionScene'
-import { useFlamenco } from '../../utils/useFlamenco'
+import { useFlamenco } from '@/utils/useFlamenco'
 
 const element = ref<HTMLDivElement>()
 

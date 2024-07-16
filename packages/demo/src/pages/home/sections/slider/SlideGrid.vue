@@ -26,17 +26,17 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import MainGridCell from './MainGridCell.vue'
-import CONCERT1 from '../assets/img/concert-1.jpg'
-import CONCERT3 from '../assets/img/concert-3.jpg'
-import CONCERT1UP from '../assets/img/concert-1-up.jpg'
-import Prev from '../assets/img/prev.png'
-import Next from '../assets/img/next.png'
+import MainGridCell from '@/components/MainGridCell.vue'
+import CONCERT1 from '@/assets/img/concert-1.jpg'
+import CONCERT3 from '@/assets/img/concert-3.jpg'
+import CONCERT1UP from '@/assets/img/concert-1-up.jpg'
+import Prev from '@/assets/img/prev.png'
+import Next from '@/assets/img/next.png'
 import { SliderHome2 } from './slides/sliderHome2'
 import { SliderHome1 } from './slides/sliderHome1'
 import { gsap } from 'gsap'
-import { Cell } from './types'
-import { HoverEffect } from './enums'
+import { Cell } from '@/components/types'
+import { HoverEffect } from '@/components/enums'
 
 const cellsOpacity: any[] = []
 const slideHash = ref(Math.random())

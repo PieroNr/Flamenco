@@ -1,4 +1,4 @@
-import { Cell } from '../types'
+import { Cell } from '../../../../../components/types.ts'
 
 export function SliderHome1(
     CONCERT1: string,

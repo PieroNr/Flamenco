@@ -29,18 +29,18 @@
 
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
-import HeroSection from '../sections/HeroSection.vue'
-import LoadingScreen from '../components/LoadingScreen.vue'
+import HeroSection from './sections/HeroSection.vue'
 import { watchEffect } from 'vue'
-import CommonGridSection from '../sections/CommonGridSection.vue'
-import SetupGrid from '../components/SetupGrid.vue'
-import HandSection from '../sections/handSection/3dHandSection.vue'
-import BlobSection from '../sections/blobSection/BlobSection.vue'
-import { useFlamenco } from '../utils/useFlamenco'
+import CommonGridSection from './sections/CommonGridSection.vue'
+import SetupGrid from './sections/SetupGrid.vue'
+import HandSection from './sections/handSection/3dHandSection.vue'
+import BlobSection from './sections/blobSection/BlobSection.vue'
+import { useFlamenco } from '@/utils/useFlamenco'
 import { gsap } from 'gsap'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import SlideGrid from '../components/SlideGrid.vue'
+import SlideGrid from './sections/slider/SlideGrid.vue'
+import LoadingScreen from '@/components/LoadingScreen.vue'
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
 
@@ -53,11 +53,11 @@ const loader = (): Promise<void> => {
     })
 }
 const isLoading = ref(true)
-const mainGrid = ref<typeof MainGrid>()
-const gridText1 = ref<typeof GridText>()
+const mainGrid = ref<typeof HeroSection>()
+const gridText1 = ref<typeof CommonGridSection>()
 const setupGrid = ref<typeof SetupGrid>()
 const handSection = ref<typeof HandSection>()
-const gridText2 = ref<typeof GridText>()
+const gridText2 = ref<typeof CommonGridSection>()
 const blobSection = ref<typeof BlobSection>()
 const slider = ref<typeof SlideGrid>()
 

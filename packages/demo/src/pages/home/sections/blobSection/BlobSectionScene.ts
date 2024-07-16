@@ -1,4 +1,4 @@
-import { Scene3d } from '../../utils/Scene3d'
+import { Scene3d } from '@/utils/Scene3d'
 import Flamenco from '@flamencojs/flamencojs'
 import {
     Color,
