@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { HandSectionScene } from './HandSectionScene'
-import { useFlamenco } from '../../utils/useFlamenco'
+import { useFlamenco } from '@/utils/useFlamenco'
 
 const element = ref<HTMLDivElement>()
 
@@ -11,7 +11,7 @@ defineExpose({
 
 const canvas = ref<HTMLCanvasElement>()
 // Scene
-const flamenco = useFlamenco().get()
+const { flamenco } = useFlamenco()
 
 const emit = defineEmits<{
     (event: 'loaded'): void

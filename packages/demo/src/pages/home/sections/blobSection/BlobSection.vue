@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { BlobSectionScene } from './BlobSectionScene'
-import { useFlamenco } from '../../utils/useFlamenco'
+import { useFlamenco } from '@/utils/useFlamenco'
 
 const element = ref<HTMLDivElement>()
 
@@ -12,7 +12,7 @@ defineExpose({
 const canvas = ref<HTMLCanvasElement>()
 // Scene
 
-const flamenco = useFlamenco().get()
+const { flamenco } = useFlamenco()
 
 const emit = defineEmits<{
     (event: 'loaded'): void
@@ -35,8 +35,8 @@ onBeforeUnmount(() => {
 <template>
     <div ref="element" class="hand-section">
         <div class="left">
-            <h2>Change.</h2>
-            <p>The way you interact</p>
+            <h2>Make.</h2>
+            <p>The web more interactive.</p>
         </div>
         <canvas ref="canvas" />
     </div>

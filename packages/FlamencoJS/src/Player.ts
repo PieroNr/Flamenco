@@ -20,6 +20,8 @@ export class Player extends EventEmitter<{
     EXTERNAL: number;
   };
 
+  public isPlaying = false;
+
   constructor(forceAudioContext?: AudioContext) {
     super();
     this.analyser = new SoundAnalyzer();
@@ -79,6 +81,7 @@ export class Player extends EventEmitter<{
     if (!this.audioBuffer) {
       throw new Error('Set music before starting the player.');
     }
+    this.isPlaying = true;
 
     this.analyser.analyzeSound(this.audioBuffer, (dataArray) => {
       this.emit('sound-analyzed', {dataArray});
@@ -86,6 +89,7 @@ export class Player extends EventEmitter<{
   }
 
   stop = (): void => {
+    this.isPlaying = false;
     this.analyser.stop();
   };
 

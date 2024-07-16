@@ -1,9 +1,9 @@
 <template>
-    <div class="loading-screen">
+    <div v-if="!isAnimationDone" class="loading-screen">
         <div
             v-for="i in 40"
             :key="i"
-            :ref="(el) => (squares[i] = el as HTMLElement)"
+            ref="squares"
             class="loading-square"
         ></div>
         <p ref="loader">{{ loadingPercentage }}%</p>
@@ -11,12 +11,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
 import { gsap } from 'gsap'
+
+const props = defineProps<{
+    loaders: Array<() => Promise<void>>
+}>()
 
 const loadingPercentage = ref(0)
 const loader = ref()
 const squares: Array<HTMLElement | null> = []
+
+const isAnimationDone = ref(false)
+const isLoaderDone = ref(false)
+const emit = defineEmits<{
+    (event: 'loaded'): void
+}>()
 
 const increasePercentage = () => {
     const interval = setInterval(() => {
@@ -28,6 +38,9 @@ const increasePercentage = () => {
                 opacity: 0,
                 duration: 1,
                 delay: 0.5,
+                onComplete: () => {
+                    isAnimationDone.value = true
+                },
             })
             shuffle(squares).forEach((square: HTMLElement | null) => {
                 gsap.to(square, {
@@ -55,8 +68,16 @@ function shuffle(array: Array<HTMLElement | null>) {
     return array
 }
 
-onMounted(() => {
+onMounted(async () => {
     increasePercentage()
+    await Promise.all(props.loaders.map((loader) => loader()))
+    isLoaderDone.value = true
+})
+
+watchEffect(() => {
+    if (isAnimationDone.value && isLoaderDone.value) {
+        emit('loaded')
+    }
 })
 </script>
 

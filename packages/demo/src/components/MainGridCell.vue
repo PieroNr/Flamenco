@@ -1,22 +1,22 @@
 <template>
     <div
         :style="cellStyles"
-        :class="'grid-cell ' + props.cellData.className"
+        :class="'grid-cell ' + cellData.className"
         class="opacity"
         @mouseover="applyHoverEffect($event)"
         @mouseout="removeHoverEffect($event)"
     >
         <object
-            v-if="props.cellData.contentSVG"
+            v-if="cellData.contentSVG"
             class="grid-cell__svg"
-            :data="props.cellData.contentSVG"
+            :data="cellData.contentSVG"
         />
         <div
-            v-if="props.cellData.blurEffect"
+            v-if="cellData.blurEffect"
             :style="blurStyles"
             class="grid-cell__blur"
         ></div>
-        <div v-if="props.cellData.noiseEffect" class="grid-cell__noise">
+        <div v-if="cellData.noiseEffect" class="grid-cell__noise">
             <svg>
                 <filter id="noise">
                     <feTurbulence id="turbulence">
@@ -34,23 +34,15 @@
                 </filter>
             </svg>
         </div>
-
-        <!--        <img
-            v-if="props.cellData.backgroundImage"
-            :style="imgStyles"
-            class="grid-cell__background"
-            :src="props.cellData.backgroundImage"
-            alt="Image"
-        />-->
-        <h2 v-if="props.cellData.contentText">
-            {{ props.cellData.contentText }}
+        <h2 v-if="cellData.contentText">
+            {{ cellData.contentText }}
         </h2>
         <div
-            v-else-if="props.cellData.contentSlot"
+            v-else-if="cellData.contentSlot"
             class="grid-cell__contentSlot"
-            v-html="props.cellData.contentSlot"
+            v-html="cellData.contentSlot"
         ></div>
-        <slot></slot>
+        <slot :slot-id="cellData.contentSlotId"></slot>
     </div>
 </template>
 
@@ -67,7 +59,7 @@ gsap.registerPlugin(ScrollTrigger)
 const props = defineProps<{ cellData: Cell }>()
 
 // Scene
-const flamenco = useFlamenco().get()
+const { flamenco } = useFlamenco()
 
 onMounted(() => {
     updateEffect()
@@ -166,7 +158,7 @@ const applyHoverEffect = (event: Event) => {
 const removeHoverEffect = (event: Event) => {
     const target = event.currentTarget as Element
     const svgElement = target ? target.querySelector('.grid-cell__svg') : null
-    if (!props.cellData.hoverEffect) return
+    if (!props.cellData.hoverEffect || !svgElement) return
     gsap.to(svgElement, { x: '0%', y: 0, duration: 0.5 })
 }
 </script>
@@ -287,13 +279,6 @@ const removeHoverEffect = (event: Event) => {
         font-size: 8rem;
         font-weight: 500;
         margin: 0;
-    }
-
-    a {
-        text-decoration: underline;
-        font-size: 1.5rem;
-        text-underline-offset: 0.5em;
-        color: inherit;
     }
 }
 

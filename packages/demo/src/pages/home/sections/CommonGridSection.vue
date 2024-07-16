@@ -18,17 +18,16 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { defineEmits, defineProps } from 'vue'
-import MainGridCell from './MainGridCell.vue'
-import { Cell } from './types'
-import NOISE from '../assets/svg/noise.svg'
-import CONCERT1 from '../assets/img/concert-1.jpg'
-import CONCERT2 from '../assets/img/concert-2.jpg'
-import CONCERT3 from '../assets/img/concert-3.jpg'
-import CONCERT4 from '../assets/img/concert-4.jpg'
-import CONCERT5 from '../assets/img/concert-5.jpg'
-import CONCERT6 from '../assets/img/concert-6.jpg'
-import CONCERT7 from '../assets/img/concert-7.jpg'
-import { HoverEffect } from './enums'
+import MainGridCell from '@/components/MainGridCell.vue'
+import { Cell } from '@/components/types'
+import CONCERT1 from '@/assets/img/concert-1.jpg'
+import CONCERT2 from '@/assets/img/concert-2.jpg'
+import CONCERT3 from '@/assets/img/concert-3.jpg'
+import CONCERT4 from '@/assets/img/concert-4.jpg'
+import CONCERT5 from '@/assets/img/concert-5.jpg'
+import CONCERT6 from '@/assets/img/concert-6.jpg'
+import CONCERT7 from '@/assets/img/concert-7.jpg'
+import { HoverEffect } from '@/components/enums'
 
 const props = defineProps({
     text: {
@@ -84,7 +83,7 @@ const updateCellSizes = () => {
             backgroundImage: CONCERT4,
             backgroundPosition: '40% 50%',
             backgroundSize: '300%',
-            noiseEffect: NOISE,
+            noiseEffect: true,
         },
         { backgroundColor: themeColor.value[2], radius: '0 50% 0 0' },
         {
@@ -127,7 +126,7 @@ const updateCellSizes = () => {
         },
     ]
 
-    cells.value = Array.from({ length: 19 }, (_, index) => {
+    cells.value = Array.from({ length: 19 }, (_, index): Cell => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
@@ -136,7 +135,7 @@ const updateCellSizes = () => {
                 height: cellSize + 'px',
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
                 blurEffect: fixedCellParam.blurEffect || 0,
-                noiseEffect: fixedCellParam.noiseEffect || '',
+                noiseEffect: fixedCellParam.noiseEffect,
                 backgroundImage: fixedCellParam.backgroundImage,
                 transform: fixedCellParam.transform,
                 taller: fixedCellParam.taller,
@@ -158,7 +157,7 @@ const updateCellSizes = () => {
                 height: cellSize + 'px',
                 backgroundColor: themeColor.value[0],
                 blurEffect: random > 0.7 ? 3 : 0,
-                noiseEffect: random < 0.3 ? NOISE : '',
+                noiseEffect: random < 0.3,
                 backgroundImage: [
                     CONCERT1,
                     CONCERT2,

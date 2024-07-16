@@ -1,11 +1,31 @@
 <script setup lang="ts">
-import { useFlamenco } from './utils/useFlamenco.ts'
+import LoadingScreen from '@/components/LoadingScreen.vue'
+import { useFlamenco } from '@/utils/useFlamenco'
+import { ref, watchEffect } from 'vue'
 
-const { initialized } = useFlamenco()
+const { init } = useFlamenco()
+const loader = (): Promise<void> => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve()
+        }, 500)
+    })
+}
+const isLoading = ref(true)
+
+watchEffect(() => {
+    if (isLoading.value) {
+        window.scrollTo(0, 0)
+        document.body.classList.add('no-scroll')
+    } else {
+        document.body.classList.remove('no-scroll')
+    }
+})
 </script>
 
 <template>
-    <div v-if="initialized" class="container">
+    <div class="container">
+        <LoadingScreen :loaders="[init, loader]" @loaded="isLoading = false" />
         <router-view />
     </div>
 </template>

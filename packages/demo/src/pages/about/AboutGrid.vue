@@ -5,8 +5,12 @@
             :key="index"
             :cell-data="cell"
         >
-            <img v-if="cell.contentSlot === 'image'" src="" />
-            <span v-else-if="cell.contentSlot === 'text'">Contenu texte</span>
+            <template #default="{ slotId }">
+                <NavLink v-if="slotId === docSlotId" to="/docs"> docs </NavLink>
+                <NavLink v-else-if="slotId === aboutSlotId" to="/about">
+                    about
+                </NavLink>
+            </template>
         </MainGridCell>
     </div>
 </template>
@@ -14,31 +18,32 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { defineEmits } from 'vue'
-import MainGridCell from './MainGridCell.vue'
-import { Cell } from './types'
-import F_letter from '../assets/svg/f_letter.svg'
-import LA_letter from '../assets/svg/la-letter.svg'
-import M_letter from '../assets/svg/m_letter.svg'
-import E_letter from '../assets/svg/e_letter.svg'
-import N_letter from '../assets/svg/n_letter.svg'
-import C_letter from '../assets/svg/c_letter.svg'
-import O_letter from '../assets/svg/o_letter.svg'
-import NOISE from '../assets/svg/noise.svg'
-import LOGO from '../assets/svg/logo.svg'
-import CONCERT1 from '../assets/img/concert-1.jpg'
-import CONCERT2 from '../assets/img/concert-2.jpg'
-import CONCERT3 from '../assets/img/concert-3.jpg'
-import CONCERT4 from '../assets/img/concert-4.jpg'
-import CONCERT5 from '../assets/img/concert-5.jpg'
-import CONCERT6 from '../assets/img/concert-6.jpg'
-import CONCERT7 from '../assets/img/concert-7.jpg'
-import { HoverEffect } from './enums'
+import MainGridCell from '@/components/MainGridCell.vue'
+import { Cell } from '@/components/types'
+import LOGO from '@/assets/svg/logo.svg'
+import CONCERT1 from '@/assets/img/concert-1.jpg'
+import CONCERT2 from '@/assets/img/concert-2.jpg'
+import CONCERT3 from '@/assets/img/concert-3.jpg'
+import CONCERT4 from '@/assets/img/concert-4.jpg'
+import CONCERT5 from '@/assets/img/concert-5.jpg'
+import CONCERT6 from '@/assets/img/concert-6.jpg'
+import CONCERT7 from '@/assets/img/concert-7.jpg'
+import CECILE from '@/assets/img/profil-cecile.png'
+import ADRIEN from '@/assets/img/profil-adrien.png'
+import TIM from '@/assets/img/profil-timothee.png'
+import PIERO from '@/assets/img/profil-piero.png'
+import JESSY from '@/assets/img/profil-jessy.png'
+import { HoverEffect } from '@/components/enums'
+import NavLink from '@/components/NavLink.vue'
 
 const element = ref<HTMLDivElement>()
 
 defineExpose({
     element,
 })
+
+const docSlotId = 'docLink'
+const aboutSlotId = 'aboutLink'
 
 const emit = defineEmits(['loaded'])
 const cells = ref<Cell[]>([])
@@ -48,8 +53,8 @@ const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
 const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
     const fixedCellsIndices = [
-        0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23,
-        25, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
+        0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+        22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
     ]
 
     const fixedCellParams: Cell[] = [
@@ -59,83 +64,78 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[0] },
         {
             backgroundColor: themeColor.value[0],
-            contentSlot: '<a  href="/doc">docs</a>',
+            contentSlotId: docSlotId,
         },
         {
             backgroundColor: themeColor.value[0],
-            contentSlot: '<a  href="/about">about</a>',
+            contentSlotId: aboutSlotId,
+        },
+        { backgroundColor: themeColor.value[1], radius: '0 0 50% 0' },
+        {
+            backgroundColor: themeColor.value[0],
+            larger: 3,
+            contentSlot: `<div class="grid-cell-title" style="margin-left: 60px"><h2 class="grid-cell-title__text">team.</h2></div>`,
+            className: 'overflow',
+        },
+        {
+            backgroundColor: themeColor.value[1],
+        },
+        {
+            backgroundColor: themeColor.value[0],
+        },
+        {
+            larger: 2,
+            taller: 2,
+            backgroundImage: CECILE,
+            backgroundSize: '100%',
+        },
+        {
+            backgroundColor: themeColor.value[0],
+        },
+        { backgroundColor: themeColor.value[2] },
+        {
+            backgroundImage: ADRIEN,
+            backgroundSize: '100%',
+            larger: 2,
+            taller: 2,
+        },
+        { backgroundColor: themeColor.value[2] },
+        { backgroundColor: themeColor.value[0] },
+        {
+            backgroundImage: TIM,
+            backgroundSize: '100%',
+            larger: 2,
+            taller: 2,
+            radius: '0 25% 0 0',
+        },
+        {
+            backgroundImage: PIERO,
+            backgroundSize: '100%',
+            larger: 2,
+            taller: 2,
+            radius: '0 0 25% 0',
+        },
+        { backgroundColor: themeColor.value[0], larger: 2 },
+        {
+            backgroundColor: themeColor.value[0],
         },
         { backgroundColor: themeColor.value[1] },
         {
-            backgroundImage: CONCERT4,
-            contentSVG: F_letter,
-            noiseEffect: NOISE,
-            backgroundPosition: '60% 40%',
-            backgroundSize: '450%',
-            blurEffect: 3,
-            hoverEffect: HoverEffect.Roll,
+            backgroundImage: JESSY,
+            backgroundSize: '100%',
+            larger: 2,
+            taller: 2,
         },
+        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColor.value[2], radius: '0 0 0 50%' },
+        { backgroundColor: themeColor.value[0], larger: 2 },
+        { backgroundColor: themeColor.value[1], radius: '50% 0 0 0' },
+        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColor.value[0], larger: 5 },
         {
             backgroundColor: themeColor.value[2],
-            contentSVG: LA_letter,
-            hoverEffect: HoverEffect.SwipeRight,
         },
-        {
-            backgroundColor: themeColor.value[0],
-            contentSVG: M_letter,
-            hoverEffect: HoverEffect.Morph,
-        },
-        { backgroundColor: themeColor.value[2], contentSVG: E_letter },
-        {
-            backgroundImage: CONCERT4,
-            backgroundPosition: '35% 50%',
-            backgroundSize: '450%',
-            blurEffect: 3,
-        },
-        { backgroundColor: themeColor.value[2], radius: '0 0 50% 0' },
-        {
-            backgroundImage: CONCERT3,
-            backgroundPosition: '35% 30%',
-            backgroundSize: '450%',
-            noiseEffect: NOISE,
-        },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        {
-            backgroundImage: CONCERT1,
-            taller: 3,
-            backgroundPosition: '25% 26%',
-            backgroundSize: 'cover',
-            noiseEffect: NOISE,
-        },
-        { backgroundColor: themeColor.value[2], contentSVG: N_letter },
-        { backgroundColor: themeColor.value[0], contentSVG: C_letter },
-        {
-            backgroundImage: CONCERT7,
-            blurEffect: 3,
-            backgroundPosition: '40% 50%',
-            backgroundSize: '300%',
-        },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0], contentSVG: O_letter },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[0] },
-        { backgroundColor: themeColor.value[2], radius: '0 50% 0 0' },
-        {
-            backgroundImage: CONCERT5,
-            backgroundPosition: '45% 50%',
-            backgroundSize: '300%',
-        },
-        { backgroundColor: themeColor.value[0] },
-        {
-            backgroundImage: CONCERT6,
-            backgroundPosition: '85% 50%',
-            backgroundSize: '300%',
-            radius: '0 0 0 25%',
-            blurEffect: 2,
-        },
-        { backgroundColor: themeColor.value[0] },
+        { backgroundColor: themeColor.value[0], larger: 2 },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
         { backgroundColor: themeColor.value[0] },
@@ -145,7 +145,7 @@ const updateCellSizes = () => {
         { backgroundColor: themeColor.value[0] },
     ]
 
-    cells.value = Array.from({ length: 38 }, (_, index) => {
+    cells.value = Array.from({ length: 31 }, (_, index): Cell => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
@@ -165,7 +165,8 @@ const updateCellSizes = () => {
                 radius: fixedCellParam.radius || '0',
                 transform: '', // Add default values for the missing properties
                 contentText: '',
-                larger: 0,
+                contentSlotId: fixedCellParam.contentSlotId || '',
+                larger: fixedCellParam.larger,
                 opacity: 1,
                 className: '',
                 hoverEffect: fixedCellParam.hoverEffect || HoverEffect.None,
@@ -177,7 +178,7 @@ const updateCellSizes = () => {
                 height: cellSize + 'px',
                 backgroundColor: themeColor.value[0],
                 blurEffect: random > 0.7 ? 3 : 0,
-                noiseEffect: random < 0.3 ? NOISE : '',
+                noiseEffect: random < 0.3,
                 backgroundImage: [
                     CONCERT1,
                     CONCERT2,
