@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NavElement } from '../types'
+import { NavElement } from '../../types.ts'
 import { onMounted, ref } from 'vue'
 import DocMenuLink from './DocMenuLink.vue'
 

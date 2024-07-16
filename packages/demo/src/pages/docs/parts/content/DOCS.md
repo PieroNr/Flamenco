@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import CodeHighlighter from './CodeHighlighter.vue'
-import DocLine from './DocLine.vue'
-import DocCell from './DocCell.vue'
-import Img1 from '../../assets/img/concert-2.jpg'
+import CodeHighlighter from './components/CodeHighlighter.vue'
+import DocLine from './components/DocLine.vue'
+import DocCell from './components/DocCell.vue'
+import Img1 from '@/assets/img/concert-2.jpg'
 </script>
 
 # Docs

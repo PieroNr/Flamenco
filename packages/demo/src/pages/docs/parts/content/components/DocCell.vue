@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import MainGridCell from '../../components/MainGridCell.vue'
+import MainGridCell from '../../../../../components/MainGridCell.vue'
 import { computed } from 'vue'
-import { Cell } from '../../components/types'
+import { Cell } from '../../../../../components/types.ts'
 
 const props = defineProps<{
     src: string

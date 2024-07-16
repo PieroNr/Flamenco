@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Docs from './DOCS.md'
+import Docs from './parts/content/DOCS.md'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { NavElement } from './types'
-import DocMenu from './DocMenu/DocMenu.vue'
+import DocMenu from '@/pages/docs/parts/menu/DocMenu.vue'
 
 const titles = ref<NavElement[]>([])
 const isInitialized = ref(false)
