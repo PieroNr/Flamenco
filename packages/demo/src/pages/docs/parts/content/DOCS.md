@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import CodeHighlighter from './components/CodeHighlighter.vue'
 import DocLine from './components/DocLine.vue'
 import DocCell from './components/DocCell.vue'

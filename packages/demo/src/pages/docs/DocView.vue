@@ -73,7 +73,7 @@ onUnmounted(() => {
     </div>
 </template>
 <style>
-html {
+body {
     scroll-behavior: smooth !important;
 }
 </style>
