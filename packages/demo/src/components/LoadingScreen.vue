@@ -3,7 +3,7 @@
         <div
             v-for="i in 40"
             :key="i"
-            :ref="(el) => (squares[i] = el as HTMLElement)"
+            ref="squares"
             class="loading-square"
         ></div>
         <p ref="loader">{{ loadingPercentage }}%</p>

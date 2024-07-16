@@ -3,7 +3,11 @@
         <MainGridCell
             v-for="(cell, index) in cells"
             :key="index"
-            :cell-data="cell"
+            :cell-data="{
+                ...cell,
+                width: cellSize + 'px',
+                height: cellSize + 'px',
+            }"
         >
             <template #default="{ slotId }">
                 <NavLink v-if="slotId === docSlotId" to="/docs"> docs </NavLink>
@@ -16,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import MainGridCell from '@/components/MainGridCell.vue'
 import { Cell } from '@/components/types'
 import F_letter from '@/assets/svg/f_letter.svg'
@@ -26,7 +30,6 @@ import E_letter from '@/assets/svg/e_letter.svg'
 import N_letter from '@/assets/svg/n_letter.svg'
 import C_letter from '@/assets/svg/c_letter.svg'
 import O_letter from '@/assets/svg/o_letter.svg'
-import NOISE from '@/assets/svg/noise.svg'
 import LOGO from '@/assets/svg/logo.svg'
 import CONCERT1 from '@/assets/img/concert-1.jpg'
 import CONCERT2 from '@/assets/img/concert-2.jpg'
@@ -51,113 +54,113 @@ defineExpose({
 const cells = ref<Cell[]>([])
 const screenWidth = ref(window.innerWidth)
 
-const updateCellSizes = () => {
-    const cellSize = screenWidth.value / 8
-    const fixedCellsIndices = [
-        0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23,
-        25, 27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
-    ]
+const cellSize = computed(() => {
+    return screenWidth.value / 8
+})
 
-    const fixedCellParams: Cell[] = [
-        { backgroundColor: themeColors[0], contentSVG: LOGO },
-        { backgroundColor: themeColors[2] },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        {
-            backgroundColor: themeColors[0],
-            contentSlotId: docSlotId,
-        },
-        {
-            backgroundColor: themeColors[0],
-            contentSlotId: aboutSlotId,
-        },
-        { backgroundColor: themeColors[1] },
-        {
-            backgroundImage: CONCERT4,
-            contentSVG: F_letter,
-            noiseEffect: NOISE,
-            backgroundPosition: '60% 40%',
-            backgroundSize: '450%',
-            blurEffect: 3,
-            hoverEffect: HoverEffect.Roll,
-        },
-        {
-            backgroundColor: themeColors[2],
-            contentSVG: LA_letter,
-            hoverEffect: HoverEffect.SwipeRight,
-        },
-        {
-            backgroundColor: themeColors[0],
-            contentSVG: M_letter,
-            hoverEffect: HoverEffect.Morph,
-        },
-        { backgroundColor: themeColors[2], contentSVG: E_letter },
-        {
-            backgroundImage: CONCERT4,
-            backgroundPosition: '35% 50%',
-            backgroundSize: '450%',
-            blurEffect: 3,
-        },
-        { backgroundColor: themeColors[2], radius: '0 0 50% 0' },
-        {
-            backgroundImage: CONCERT3,
-            backgroundPosition: '35% 30%',
-            backgroundSize: '450%',
-            noiseEffect: NOISE,
-        },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        {
-            backgroundImage: CONCERT1,
-            taller: 3,
-            backgroundPosition: '25% 26%',
-            backgroundSize: 'cover',
-            noiseEffect: NOISE,
-        },
-        { backgroundColor: themeColors[2], contentSVG: N_letter },
-        { backgroundColor: themeColors[0], contentSVG: C_letter },
-        {
-            backgroundImage: CONCERT7,
-            blurEffect: 3,
-            backgroundPosition: '40% 50%',
-            backgroundSize: '300%',
-        },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0], contentSVG: O_letter },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[2], radius: '0 50% 0 0' },
-        {
-            backgroundImage: CONCERT5,
-            backgroundPosition: '45% 50%',
-            backgroundSize: '300%',
-        },
-        { backgroundColor: themeColors[0] },
-        {
-            backgroundImage: CONCERT6,
-            backgroundPosition: '85% 50%',
-            backgroundSize: '300%',
-            radius: '0 0 0 25%',
-            blurEffect: 2,
-        },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[0] },
-        { backgroundColor: themeColors[1] },
-        { backgroundColor: themeColors[0] },
-    ]
+const fixedCellParams: Cell[] = [
+    { backgroundColor: themeColors[0], contentSVG: LOGO },
+    { backgroundColor: themeColors[2] },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    {
+        backgroundColor: themeColors[0],
+        contentSlotId: docSlotId,
+    },
+    {
+        backgroundColor: themeColors[0],
+        contentSlotId: aboutSlotId,
+    },
+    { backgroundColor: themeColors[1] },
+    {
+        backgroundImage: CONCERT4,
+        contentSVG: F_letter,
+        noiseEffect: true,
+        backgroundPosition: '60% 40%',
+        backgroundSize: '450%',
+        blurEffect: 3,
+        hoverEffect: HoverEffect.Roll,
+    },
+    {
+        backgroundColor: themeColors[2],
+        contentSVG: LA_letter,
+        hoverEffect: HoverEffect.SwipeRight,
+    },
+    {
+        backgroundColor: themeColors[0],
+        contentSVG: M_letter,
+        hoverEffect: HoverEffect.Morph,
+    },
+    { backgroundColor: themeColors[2], contentSVG: E_letter },
+    {
+        backgroundImage: CONCERT4,
+        backgroundPosition: '35% 50%',
+        backgroundSize: '450%',
+        blurEffect: 3,
+    },
+    { backgroundColor: themeColors[2], radius: '0 0 50% 0' },
+    {
+        backgroundImage: CONCERT3,
+        backgroundPosition: '35% 30%',
+        backgroundSize: '450%',
+        noiseEffect: true,
+    },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    {
+        backgroundImage: CONCERT1,
+        taller: 3,
+        backgroundPosition: '25% 26%',
+        backgroundSize: 'cover',
+        noiseEffect: true,
+    },
+    { backgroundColor: themeColors[2], contentSVG: N_letter },
+    { backgroundColor: themeColors[0], contentSVG: C_letter },
+    {
+        backgroundImage: CONCERT7,
+        blurEffect: 3,
+        backgroundPosition: '40% 50%',
+        backgroundSize: '300%',
+    },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0], contentSVG: O_letter },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[2], radius: '0 50% 0 0' },
+    {
+        backgroundImage: CONCERT5,
+        backgroundPosition: '45% 50%',
+        backgroundSize: '300%',
+    },
+    { backgroundColor: themeColors[0] },
+    {
+        backgroundImage: CONCERT6,
+        backgroundPosition: '85% 50%',
+        backgroundSize: '300%',
+        radius: '0 0 0 25%',
+        blurEffect: 2,
+    },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[0] },
+    { backgroundColor: themeColors[1] },
+    { backgroundColor: themeColors[0] },
+]
+const fixedCellsIndices = [
+    0, 1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 23, 25,
+    27, 28, 29, 30, 31, 32, 33, 35, 36, 37, 38,
+]
 
+const generateCells = () => {
     cells.value = Array.from({ length: 38 }, (_, index): Cell => {
         if (fixedCellsIndices.includes(index)) {
             const fixedCellIndex = fixedCellsIndices.indexOf(index)
             const fixedCellParam = fixedCellParams[fixedCellIndex]
             return {
-                width: cellSize + 'px',
-                height: cellSize + 'px',
                 backgroundColor: fixedCellParam.backgroundColor || 'none',
                 blurEffect: fixedCellParam.blurEffect,
                 noiseEffect: fixedCellParam.noiseEffect,
@@ -180,11 +183,9 @@ const updateCellSizes = () => {
         } else {
             const random = Math.random()
             return {
-                width: cellSize + 'px',
-                height: cellSize + 'px',
                 backgroundColor: themeColors[0],
                 blurEffect: random > 0.7 ? 3 : 0,
-                noiseEffect: random < 0.3 ? NOISE : '',
+                noiseEffect: random < 0.3,
                 backgroundImage: [
                     CONCERT1,
                     CONCERT2,
@@ -222,7 +223,7 @@ const handleResize = () => {
 }
 
 onMounted(() => {
-    updateCellSizes()
+    generateCells()
     window.addEventListener('resize', handleResize)
 })
 

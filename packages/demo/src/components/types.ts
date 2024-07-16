@@ -5,7 +5,7 @@ export type Cell = {
     height?: string
     backgroundColor?: string
     blurEffect?: number
-    noiseEffect?: string | undefined
+    noiseEffect?: boolean
     backgroundImage?: string | undefined
     transform?: string
     backgroundPosition?: string

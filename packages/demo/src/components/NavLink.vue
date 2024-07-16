@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-    <RouterLink v-if="slotId === docSlotId" class="nav-link" :to="to">
+    <RouterLink class="nav-link" :to="to">
         <slot />
     </RouterLink>
 </template>

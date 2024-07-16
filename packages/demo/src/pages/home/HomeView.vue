@@ -1,27 +1,31 @@
 <template>
-    <div class="home-container">
-        <div class="section-container">
-            <HeroSection ref="mainGrid" />
-            <HandSection ref="handSection" />
-            <CommonGridSection
-                ref="gridText1"
-                text="flamenco is a Typescript library."
-                sub-text="about to change the rythm of your life"
-                back-color-index="1"
-                text-color-index="0"
-                keyword="Typescript"
-            />
-            <SetupSection ref="setupGrid" />
-            <FeatureSliderSection ref="slider" />
-            <CommonGridSection
-                ref="gridText2"
-                text="flamenco is an opensource library."
-                sub-text="take part of it"
-                back-color-index="0"
-                text-color-index="1"
-                keyword="opensource"
-            />
-            <BlobSection ref="blobSection" />
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            <div class="home-container">
+                <div class="section-container">
+                    <HeroSection ref="mainGrid" />
+                    <HandSection ref="handSection" />
+                    <CommonGridSection
+                        ref="gridText1"
+                        text="flamenco is a Typescript library."
+                        sub-text="about to change the rythm of your life"
+                        back-color-index="1"
+                        text-color-index="0"
+                        keyword="Typescript"
+                    />
+                    <SetupSection ref="setupGrid" />
+                    <FeatureSliderSection ref="slider" />
+                    <CommonGridSection
+                        ref="gridText2"
+                        text="flamenco is an opensource library."
+                        sub-text="take part of it"
+                        back-color-index="0"
+                        text-color-index="1"
+                        keyword="opensource"
+                    />
+                    <BlobSection ref="blobSection" />
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -72,6 +76,8 @@ onMounted(() => {
     })
 
     ScrollSmoother.create({
+        wrapper: '#smooth-wrapper',
+        content: '#smooth-content',
         smooth: 1, // how long (in seconds) it takes to "catch up" to the native scroll position
         effects: true, // looks for data-speed and data-lag attributes on elements
         smoothTouch: 0.1, // much shorter smoothing time on touch devices (default is NO smoothing on touch devices)

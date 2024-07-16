@@ -34,14 +34,6 @@
                 </filter>
             </svg>
         </div>
-
-        <!--        <img
-            v-if="props.cellData.backgroundImage"
-            :style="imgStyles"
-            class="grid-cell__background"
-            :src="props.cellData.backgroundImage"
-            alt="Image"
-        />-->
         <h2 v-if="cellData.contentText">
             {{ cellData.contentText }}
         </h2>
@@ -166,7 +158,7 @@ const applyHoverEffect = (event: Event) => {
 const removeHoverEffect = (event: Event) => {
     const target = event.currentTarget as Element
     const svgElement = target ? target.querySelector('.grid-cell__svg') : null
-    if (!props.cellData.hoverEffect) return
+    if (!props.cellData.hoverEffect || !svgElement) return
     gsap.to(svgElement, { x: '0%', y: 0, duration: 0.5 })
 }
 </script>
