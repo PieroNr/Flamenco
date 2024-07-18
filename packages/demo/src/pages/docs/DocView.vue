@@ -78,6 +78,9 @@ body {
 }
 </style>
 <style scoped lang="scss">
+.docs-view {
+    width: 100%;
+}
 .doc-content {
     width: 100%;
     display: grid;
