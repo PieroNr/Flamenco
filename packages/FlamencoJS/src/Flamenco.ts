@@ -1,5 +1,6 @@
 // Flamenco.ts
 import {Player} from './Player';
+
 import { Effect } from './types';
 import { Height } from './effects/Height';
 import { Width } from './effects/Width';
@@ -7,6 +8,7 @@ import { FontColor } from './effects/FontColor';
 import { Pulse } from './effects/Pulse';
 import { BackgroundColor } from './effects/Background';
 import { Custom } from './effects/Custom';
+import {OpticalIllusion} from './effects/OpticalIllusion';
 
 export class Flamenco {
   private player: Player;
@@ -17,6 +19,7 @@ export class Flamenco {
   private backgroundEffect = new BackgroundColor();
   private pulseEffect = new Pulse();
   private customEffects = new Custom();
+  private opticalIllusion = new OpticalIllusion();
 
   private effects = [
     this.heightEffect,
@@ -24,6 +27,7 @@ export class Flamenco {
     this.colorEffect,
     this.backgroundEffect,
     this.pulseEffect,
+    this.opticalIllusion,
     this.customEffects,
   ];
 
@@ -47,6 +51,9 @@ export class Flamenco {
       break;
     case 'pulse':
       this.pulseEffect.pushEffect(effect);
+      break;
+    case 'opticalIllusion':
+      this.opticalIllusion.pushEffect(effect);
       break;
     case 'custom':
       this.customEffects.pushEffect(effect);
