@@ -62,7 +62,7 @@ export function SliderHome1(
         {
             backgroundColor: color[2],
             larger: 2,
-            backgroundImage: CONCERT1UP,
+            backgroundImage: CONCERT1,
             backgroundPosition: '100% 83%',
             backgroundSize: '150%',
         },
