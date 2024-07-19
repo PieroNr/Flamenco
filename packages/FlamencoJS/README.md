@@ -82,6 +82,15 @@ flamenco.setEffect("Height", ".className");
 flamenco.setEffect("Background", ".className");
 ```
 
+- Optical Illusion: This class is designed to add several circile to the element, creating an optical illusion. This effect is responsive to the music, and the circles will move in response to the music.
+
+```ts
+flamenco.addEffect({
+   effect: "opticalIllusion",
+   selector: ".opticallEffect"
+});
+```
+
 Each of these classes is designed to provide a unique and interactive way to visually represent changes in response to music or other triggers, enhancing the user experience by making the webpage more lively and responsive to auditory cues.
 
 ## Contributing

@@ -1,5 +1,5 @@
-import {AbstractSetEffect} from './AbstractSetEffect';
 import {BackgroundColorEffect} from '../types';
+import {AbstractSetEffect} from './AbstractSetEffect';
 
 export class BackgroundColor extends AbstractSetEffect<BackgroundColorEffect> {
   update(dataArray: Uint8Array): void {
@@ -9,7 +9,6 @@ export class BackgroundColor extends AbstractSetEffect<BackgroundColorEffect> {
         const blue = 255 - red;
         element.style.backgroundColor = `rgb(${red}, 0, ${blue})`;
       });
-
     });
   }
 }

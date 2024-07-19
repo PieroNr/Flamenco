@@ -1,0 +1,57 @@
+$text-color: white;
+$border-color: #525252;
+$circle-size: 24rem;
+
+.main-container {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  color: $text-color;
+  perspective: 1000px;
+}
+
+section {
+  transform: rotateX(50deg);
+  transform-style: preserve-3d;
+}
+
+.circle-container {
+  width: $circle-size;
+  height: $circle-size;
+  position: relative;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+}
+
+.circle {
+  border-radius: 50%;
+  position: absolute;
+  border: 1px solid $border-color;
+  width: var(--circle-width, 100%);
+  height: var(--circle-height, 100%);
+  transform: translateZ(var(--transform-z, 0px));
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, border-width 0.2s ease-in-out;
+}
+
+.circle.animate {
+  animation: move 2s infinite ease-in-out;
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(0px) translateZ(var(--transform-z, 0px)) scale(1);
+  }
+  25% {
+    transform: translateY(20px) translateZ(calc(var(--transform-z, 0px) + 10px)) scale(1.1);
+  }
+  50% {
+    transform: translateY(40px) translateZ(calc(var(--transform-z, 0px) + 20px)) scale(1.2);
+  }
+  75% {
+    transform: translateY(20px) translateZ(calc(var(--transform-z, 0px) + 10px)) scale(1.1);
+  }
+  100% {
+    transform: translateY(0px) translateZ(var(--transform-z, 0px)) scale(1);
+  }
+}

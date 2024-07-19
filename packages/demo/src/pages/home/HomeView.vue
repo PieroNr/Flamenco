@@ -2,7 +2,7 @@
     <div id="smooth-wrapper">
         <div id="smooth-content">
             <div class="home-container">
-                <div class="section-container">
+                <div ref="sectionContainer" class="section-container">
                     <HeroSection ref="mainGrid" />
                     <HandSection ref="handSection" />
                     <CommonGridSection
@@ -52,29 +52,11 @@ const gridText2 = ref<typeof CommonGridSection>()
 const blobSection = ref<typeof BlobSection>()
 const slider = ref<typeof FeatureSliderSection>()
 
+const sectionContainer = ref<HTMLElement>()
+
 onMounted(() => {
-    const sections = [
-        mainGrid.value?.element,
-        gridText1.value?.element,
-        setupGrid.value?.element,
-        handSection.value?.element,
-        gridText2.value?.element,
-        blobSection.value?.element,
-        slider.value?.element,
-    ]
-
-    gsap.to(sections, {
-        yPercent: -100 * (sections.length - 1),
-        ease: 'none',
-        scrollTrigger: {
-            trigger: '.section-container',
-            pin: true,
-            scrub: 0,
-            snap: 1 / (sections.length - 1),
-            end: '+=3500',
-        },
-    })
-
+    if (!sectionContainer.value)
+        throw new Error('sectionContainer is not defined')
     ScrollSmoother.create({
         wrapper: '#smooth-wrapper',
         content: '#smooth-content',
