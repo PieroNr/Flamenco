@@ -6,7 +6,7 @@
             :cell-data="cell"
         >
             <template #default="{ slotId }">
-                <NavLink v-if="slotId === docSlotId" to="/docs"> docs </NavLink>
+                <NavLink v-if="slotId === docSlotId" to="/"> home </NavLink>
                 <NavLink v-else-if="slotId === aboutSlotId" to="/about">
                     about
                 </NavLink>
