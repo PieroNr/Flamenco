@@ -5,8 +5,25 @@
             :key="index"
             :cell-data="cell"
         >
-            <img v-if="cell.contentSlot === 'image'" src="" />
-            <span v-else-if="cell.contentSlot === 'text'">Contenu texte</span>
+            <template #default="{ slotId }">
+                <NavLink v-if="slotId === docSlotId" to="/docs">
+                    see the documentation
+                </NavLink>
+                <CodeHighlighter
+                    v-if="slotId === setupSlotId"
+                    class="setup-code"
+                    lang="ts"
+                    theme="light"
+                    >{{ setupCode }}</CodeHighlighter
+                >
+                <CodeHighlighter
+                    v-if="slotId === playCodeId"
+                    class="setup-code"
+                    lang="ts"
+                    theme="dark"
+                    >{{ playCode }}</CodeHighlighter
+                >
+            </template>
         </MainGridCell>
     </div>
 </template>
@@ -23,6 +40,8 @@ import CONCERT4 from '@/assets/img/concert-4.jpg'
 import CONCERT5 from '@/assets/img/concert-5.jpg'
 import CONCERT6 from '@/assets/img/concert-6.jpg'
 import CONCERT7 from '@/assets/img/concert-7.jpg'
+import NavLink from '@/components/NavLink.vue'
+import CodeHighlighter from '@/pages/docs/parts/content/components/CodeHighlighter.vue'
 
 const element = ref<HTMLDivElement>()
 
@@ -30,10 +49,20 @@ defineExpose({
     element,
 })
 
+const setupCode = `const flamenco = new Flamenco();
+flamenco.setMusic("your/audio.mp3");
+flamenco.addEffect({
+    kind: "color"
+});`
+const playCode = 'flamenco.play();'
 const emit = defineEmits(['loaded'])
 const cells = ref<Cell[]>([])
 const screenWidth = ref(window.innerWidth)
 const themeColor = ref(['#fff', '#2D2D2D', '#D9D9D9'])
+
+const setupSlotId = 'setup'
+const playCodeId = 'play'
+const docSlotId = 'doc'
 
 const updateCellSizes = () => {
     const cellSize = screenWidth.value / 8
@@ -90,12 +119,15 @@ const updateCellSizes = () => {
             backgroundPosition: '40% 40%',
             backgroundSize: '200%',
         },
-        { backgroundColor: themeColor.value[2], larger: 3 },
+        {
+            backgroundColor: themeColor.value[2],
+            larger: 3,
+            contentSlotId: setupSlotId,
+        },
         {
             backgroundColor: themeColor.value[0],
             larger: 2,
-            contentSlot:
-                '<router-link  to="/doc">see the documentation</router-link>',
+            contentSlotId: docSlotId,
         },
         { backgroundColor: themeColor.value[0] },
         {
@@ -106,7 +138,11 @@ const updateCellSizes = () => {
             backgroundSize: '500%',
         },
         { backgroundColor: themeColor.value[0], taller: 2 },
-        { backgroundColor: themeColor.value[1], larger: 3 },
+        {
+            backgroundColor: themeColor.value[1],
+            larger: 3,
+            contentSlotId: playCodeId,
+        },
         {
             backgroundColor: themeColor.value[1],
             taller: 2,
@@ -143,6 +179,7 @@ const updateCellSizes = () => {
                 radius: fixedCellParam.radius || '0',
                 hoverEffect: fixedCellParam.hoverEffect,
                 className: fixedCellParam.className || '',
+                contentSlotId: fixedCellParam.contentSlotId || '',
             }
         } else {
             const random = Math.random()
@@ -207,5 +244,15 @@ onUnmounted(() => {
     margin: 0;
     padding: 0;
     gap: 0;
+}
+.setup-code {
+    padding: 0;
+    background-color: transparent !important;
+    &.theme-dark:deep(> .code-highlighter),
+    &.theme-dark:deep(> .code-highlighter .shiki),
+    &.theme-light:deep(> .code-highlighter),
+    &.theme-light:deep(> .code-highlighter .shiki) {
+        background-color: transparent !important;
+    }
 }
 </style>
