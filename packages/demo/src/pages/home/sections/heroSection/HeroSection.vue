@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import MainGridCell from '@/components/MainGridCell.vue'
-import { Cell } from '@/components/types.ts'
+import { Cell } from '@/components/types'
 import F_letter from '@/assets/svg/f_letter.svg'
 import LA_letter from '@/assets/svg/la-letter.svg'
 import M_letter from '@/assets/svg/m_letter.svg'
@@ -39,9 +39,9 @@ import CONCERT4 from '@/assets/img/concert-4.jpg'
 import CONCERT5 from '@/assets/img/concert-5.jpg'
 import CONCERT6 from '@/assets/img/concert-6.jpg'
 import CONCERT7 from '@/assets/img/concert-7.jpg'
-import { HoverEffect } from '@/components/enums.ts'
+import { HoverEffect } from '@/components/enums'
 import NavLink from '@/components/NavLink.vue'
-import { themeColors } from '@/utils/theme.ts'
+import { themeColors } from '@/utils/theme'
 import PlayButton from '@/pages/home/sections/heroSection/PlayButton.vue'
 
 const element = ref<HTMLDivElement>()

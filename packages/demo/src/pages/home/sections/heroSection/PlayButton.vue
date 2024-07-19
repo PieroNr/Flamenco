@@ -32,7 +32,7 @@ function toggle() {
             >
                 <polygon points="6 3 20 12 6 21 6 3" />
             </svg>
-            Play
+            play
         </template>
         <template v-else>
             <svg
@@ -50,7 +50,7 @@ function toggle() {
                 <rect x="14" y="4" width="4" height="16" rx="1" />
                 <rect x="6" y="4" width="4" height="16" rx="1" />
             </svg>
-            Pause
+            pause
         </template>
     </button>
 </template>
